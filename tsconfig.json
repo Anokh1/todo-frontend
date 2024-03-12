@@ -18,9 +18,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react",
+    "strictNullChecks": true,
   },
   "include": [
-    "src"
-  ]
+    "src/**/*.tsx"
+, "src/App.tsx", "src/pages/home.tsx"  ]
 }

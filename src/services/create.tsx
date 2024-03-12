@@ -1,0 +1,24 @@
+import Axios from "axios";
+
+interface AddTodoProps {
+  name: string;
+  title: string;
+  description: string;
+  done: number;
+}
+
+export const addTodo = ({ name, title, description, done }: AddTodoProps) => {
+  if (name && title !== "") {
+    return Axios.post("http://localhost:3002/api/create", {
+      name: name,
+      title: title,
+      description: description,
+      done: done,
+    }).then(() => {
+      console.log("Create success");
+    });
+  } else {
+    console.log("Create error");
+    return Promise.reject("Invalid name or title");
+  }
+};

@@ -1,16 +1,31 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
+  /* margin-left: 30px; */
+  margin-top: 80px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.input {
+  /* width: 100%; */
+  margin-bottom: 30px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* color: black; */
+}
+
+.tree {
+  margin-left: 20px;
+}
+
+.todoCard {
+  margin: auto;
+  margin-bottom: 30px;
+  width: 800px;
 }
 
 .App-header {
@@ -24,15 +39,37 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.updateBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.menubar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999; /* Adjust z-index if needed */
 }
+
+.section {
+  display: flex;
+}
+
+.left-section {
+  /* background-color: aqua; */
+  flex: 1;
+}
+
+.mid-section {
+  
+  flex: 1;
+}
+
+.right-section {
+  flex: 1;
+}
+
+
