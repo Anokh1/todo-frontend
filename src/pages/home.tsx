@@ -9,9 +9,13 @@ import "primeicons/primeicons.css";
 import { clearField } from "../utils/clearField";
 import { addTodo } from "../services/create";
 import Navbar from "../components/navbar";
-import { countStatus } from "../services/read";
+import { countStatus, getDates } from "../services/read";
 import { DoughnutChart } from "../components/chart";
 import BasicDemo from "../components/treetable";
+
+// interface DateItem {
+//   date: string;
+// }
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -21,6 +25,7 @@ export default function Home() {
 
   const [completed, setCompleted] = useState<number>(0);
   const [inProgress, setInProgress] = useState<number>(0);
+  // const [dates, setDates] = useState<DateItem>([]); 
 
   const toastRef = useRef<Toast>(null);
 
@@ -45,6 +50,12 @@ export default function Home() {
               setTitle,
               setDescription,
             });
+            countStatus({ value: 0 }).then((count) => {
+              setInProgress(count);
+            });
+            countStatus({ value: 1 }).then((count) => {
+              setCompleted(count);
+            });
           }, 300);
         }
       })
@@ -66,6 +77,7 @@ export default function Home() {
     countStatus({ value: 1 }).then((count) => {
       setCompleted(count);
     });
+    // getDates(setDates); 
   }, []);
 
   const chartData = {

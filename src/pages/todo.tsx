@@ -76,7 +76,7 @@ export default function Todo() {
     );
     if (toastRef.current != null) {
       toastRef.current.show({
-        severity: "warn",
+        severity: "error",
         summary: "Information removed",
       });
     }
