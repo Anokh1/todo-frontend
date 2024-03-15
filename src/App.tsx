@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import Todo from "./pages/todo";
 import Results from "./pages/results";
+import Upload from "./pages/upload";
 
 type Theme = "light" | "dark" | "system";
 const ThemeContext = createContext<Theme>("system");
@@ -63,6 +64,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/todo" element={<Todo />} />
         <Route path="/results" element={<Results />} />
+        <Route path="/upload" element={<Upload />} />
       </Routes>
 
       {/* <div>

@@ -28,6 +28,11 @@ export default function Navbar() {
             label: "Todo",
             icon: 'pi pi-pencil',
             command: () => { navigate("/todo"); }
+        },
+        {
+            label: "Upload",
+            icon: 'pi pi-file',
+            command: () => { navigate("/upload"); }
         }
     ];
 

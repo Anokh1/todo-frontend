@@ -1,0 +1,8 @@
+git log --pretty=format:"%h - %an, %ar : %s"
+
+15 March 2024
+ba84c80 - Adrian, 4 hours ago : fixed Tree Table
+8d25480 - Adrian, 22 hours ago : fix Tree Table
+b9a8501 - Adrian, 2 days ago : implement Tree Table
+5fe1c57 - Adrian, 2 days ago : First commit
+0841355 - Adrian, 4 days ago : Initialize project using Create React App
