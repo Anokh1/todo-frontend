@@ -10,9 +10,9 @@ interface TodoItem {
   createdDate: Date;
 }
 
-interface DateItem {
-  date: string; 
-}
+// interface DateItem {
+//   date: string; 
+// }
 
 interface CountStatusProps {
   value: number;
@@ -22,7 +22,10 @@ interface CountStatusProps {
 // Define an interface for the array of todo items
 type TodoList = TodoItem[];
 
-type DateList = DateItem[]; 
+// type DateList = DateItem[]; 
+
+type DateList = { [date: string]: string[] };
+
 
 export const getTodo = (list: (data: TodoList) => void) => {
   Axios.get("http://localhost:3002/api/read").then((response) => {
