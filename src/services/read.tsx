@@ -58,7 +58,7 @@ export const findTodo = async (title: string) => {
   try {
       const url = `http://localhost:3002/api/find?title=${encodeURIComponent(title)}`;
       const response = await Axios.get(url);
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
   } catch (error) {
       console.error('Error fetching todo:', error);

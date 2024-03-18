@@ -13,7 +13,7 @@ interface ResultItem {
 function Results() {
   const location = useLocation();
   const { results } = location.state || {};
-  console.log(typeof results);
+  // console.log(typeof results);
 
   const searchParams = new URLSearchParams(location.search);
   const title = searchParams.get("query");
