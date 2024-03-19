@@ -5,9 +5,9 @@ import UploadExcelPage from "../components/excel";
 export default function Upload() {
 
     return (
-        <div>
+        <div className="App">
             <Navbar />
-            <div>
+            <div className="updateBox">
                 <UploadExcelPage />
             </div>
         </div>

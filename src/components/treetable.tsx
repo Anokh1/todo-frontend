@@ -8,7 +8,15 @@ interface TreeNode {
   data: any;
 }
 
-export default function BasicDemo() {
+interface TableTreeProps {
+  triggerUpdate: boolean; // Specify the type as boolean
+  setTriggerUpdate: React.Dispatch<React.SetStateAction<boolean>>; // Type of the setter function
+}
+
+export default function TableTree({
+  triggerUpdate,
+  setTriggerUpdate,
+}: TableTreeProps) {
   const [nodes, setNodes] = useState<TreeNode[]>([]);
 
   useEffect(() => {
@@ -26,7 +34,7 @@ export default function BasicDemo() {
 
       setNodes(treeNodes);
     });
-  }, []); // Empty dependency array to run the effect only once
+  }, [triggerUpdate]); // Listen for changes in triggerUpdate
 
   return (
     <div className="tree">

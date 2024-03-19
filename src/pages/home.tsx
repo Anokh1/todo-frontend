@@ -11,7 +11,7 @@ import { addTodo } from "../services/create";
 import Navbar from "../components/navbar";
 import { countStatus, getDates } from "../services/read";
 import { DoughnutChart } from "../components/chart";
-import BasicDemo from "../components/treetable";
+import TableTree from "../components/treetable";
 
 // interface DateItem {
 //   date: string;
@@ -25,7 +25,9 @@ export default function Home() {
 
   const [completed, setCompleted] = useState<number>(0);
   const [inProgress, setInProgress] = useState<number>(0);
-  // const [dates, setDates] = useState<DateItem>([]); 
+  // const [dates, setDates] = useState<DateItem>([]);
+
+  const [triggerUpdate, setTriggerUpdate] = useState(false);
 
   const toastRef = useRef<Toast>(null);
 
@@ -56,6 +58,7 @@ export default function Home() {
             countStatus({ value: 1 }).then((count) => {
               setCompleted(count);
             });
+            setTriggerUpdate((prevState) => !prevState);
           }, 300);
         }
       })
@@ -77,7 +80,7 @@ export default function Home() {
     countStatus({ value: 1 }).then((count) => {
       setCompleted(count);
     });
-    // getDates(setDates); 
+    // getDates(setDates);
   }, []);
 
   const chartData = {
@@ -96,7 +99,10 @@ export default function Home() {
       <Toast ref={toastRef}></Toast>
       <div className="section">
         <div className="left-section">
-          <BasicDemo />
+          <TableTree
+            triggerUpdate={triggerUpdate}
+            setTriggerUpdate={setTriggerUpdate}
+          />
         </div>
         <div className="mid-section">
           <div className="container">

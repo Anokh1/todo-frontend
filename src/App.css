@@ -51,7 +51,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 999; /* Adjust z-index if needed */
+  z-index: 999;
 }
 
 .section {
@@ -64,7 +64,6 @@
 }
 
 .mid-section {
-  
   flex: 1;
 }
 
@@ -72,4 +71,23 @@
   flex: 1;
 }
 
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #cccccc;
+  color: #000;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
 
+/* Hide the input element */
+#file-upload {
+  display: none;
+}
+
+.file-upload-container {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  margin-bottom: 0.5em;
+}
