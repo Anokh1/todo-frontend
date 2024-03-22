@@ -9,7 +9,7 @@ import "primeicons/primeicons.css";
 import { clearField } from "../utils/clearField";
 import { addTodo } from "../services/create";
 import Navbar from "../components/navbar";
-import { countStatus, getDates } from "../services/read";
+import { countStatus } from "../services/read";
 import { DoughnutChart } from "../components/chart";
 import TableTree from "../components/treetable";
 
@@ -46,7 +46,7 @@ export default function Home() {
             summary: "Information added",
             detail: "Please complete your todo",
           });
-          setTimeout(function () {
+          setTimeout(async function () {
             clearField({
               setName,
               setTitle,

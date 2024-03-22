@@ -20,21 +20,35 @@ export default function TableTree({
   const [nodes, setNodes] = useState<TreeNode[]>([]);
 
   useEffect(() => {
-    getDates((data) => {
-      const treeNodes: TreeNode[] = Object.entries(data).map(
-        ([date, titles], index) => ({
-          key: index.toString(),
-          data: { date: date },
-          children: titles.map((title, i) => ({
-            key: `${index}-${i}`,
-            data: { date: title },
-          })),
-        })
-      );
+    getDates((response) => {
+      const { data } = response;
 
-      setNodes(treeNodes);
+      if (data) {
+        const treeNodes: TreeNode[] = Object.entries(data).map(
+          ([date, array], index) => {
+            // Ensure array is treated as an array of strings
+            const arrayAsStrings = Array.isArray(array) ? array : [array];
+
+            // date is the key (date)
+            // array is the value (array)
+            const childrenNodes: TreeNode[] = arrayAsStrings.map(
+              (title: string, i: number) => ({
+                key: `${index}-${i}`,
+                data: { date: title },
+              })
+            );
+
+            return {
+              key: date,
+              data: { date },
+              children: childrenNodes,
+            };
+          }
+        );
+        setNodes(treeNodes);
+      }
     });
-  }, [triggerUpdate]); // Listen for changes in triggerUpdate
+  }, [triggerUpdate]);
 
   return (
     <div className="tree">
