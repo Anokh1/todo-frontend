@@ -1,12 +1,20 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Toast } from "primereact/toast";
-import { FileUpload } from "primereact/fileupload";
+import { getExcelFile } from "../services/read";
+
+// interface FileItem {
+//   name: string;
+// }
+
+
 
 const UploadExcelPage = () => {
   const [file, setFile] = useState<File | null>(null); // Added type File for useState
+  // const [fileNames, setFileNames] = useState<FileItem[]>([]);
+  const [fileNames, setFileNames] = useState<string[]>([]);
   const toastRef = useRef<Toast>(null);
 
   const upload = async () => {
@@ -45,6 +53,12 @@ const UploadExcelPage = () => {
     }
   };
 
+  useEffect(() => {
+    getExcelFile(setFileNames); // Pass setFileNames directly
+  }, []);
+
+  // console.log(fileNames); 
+
   return (
     <div className="updateBox">
       <Toast ref={toastRef}></Toast>
@@ -79,18 +93,17 @@ const UploadExcelPage = () => {
           />
         </div>
       </Card>
+      <div>
+        {fileNames.map((val, key) => {
+          return (
+            <div key={key}> {/* Add key prop for each mapped item */}
+              <h3>{val}</h3> {/* Access the file name directly */}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
 
 export default UploadExcelPage;
-
-{
-  /* <FileUpload
-        accept=".xls,.xlsx"
-        mode="basic"
-        url="http://localhost:3002/api/upload" // Specify the full URL of your backend endpoint here
-        uploadHandler={(e) => setFile(e.files ? e.files[0] : null)}
-        onUpload={upload}
-      /> */
-}

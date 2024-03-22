@@ -5,5 +5,8 @@ interface DeleteStatusProps {
 }
 
 export const deleteTodo = ({ id }: DeleteStatusProps) => {
-  Axios.delete(`http://localhost:3002/api/delete/${id}`);
+  // Axios.delete(`http://localhost:3002/api/delete/${id}`);
+  Axios.delete(
+    `http://localhost:3002/api/delete?id=${id}`
+  );
 };

@@ -10,6 +10,19 @@ interface TodoItem {
   createdDate: Date;
 }
 
+interface FileItem {
+  name: string; 
+}
+
+interface FileResponse {
+  data: string[]; // Adjust to match the structure of the data returned from the backend
+  message: string;
+  status: boolean;
+}
+
+
+
+
 // interface DateItem {
 //   date: string;
 // }
@@ -21,6 +34,11 @@ interface CountStatusProps {
 
 // Define an interface for the array of todo items
 type TodoList = TodoItem[];
+
+// type FileList = FileResponse[]; 
+
+type FileList = string[]; 
+
 
 // type DateList = DateItem[];
 
@@ -35,6 +53,12 @@ export const getTodo = (list: (data: TodoList) => void) => {
 export const getDates = (list: (data: DateList) => void) => {
   Axios.get("http://localhost:3002/api/dates").then((response) => {
     list(response.data);
+  });
+};
+
+export const getExcelFile = (list: (data: FileList) => void) => {
+  Axios.get("http://localhost:3002/api/readFiles").then((response) => {
+    list(response.data.data);
   });
 };
 
