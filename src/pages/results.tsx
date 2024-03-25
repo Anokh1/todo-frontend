@@ -1,9 +1,10 @@
 import React, { useState } from "react"; // Correct import statement
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import { Card } from "primereact/card";
 
 interface ResultItem {
+  id: number;
   title: string;
   name: string;
   createdDate: Date;
@@ -18,6 +19,12 @@ function Results() {
   const searchParams = new URLSearchParams(location.search);
   const title = searchParams.get("query");
 
+  const navigate = useNavigate();
+  const handleCardClick = (id: number): void => {
+    // Redirect to another page when the card is clicked
+    navigate(`/todo/${id}`); 
+  };
+
   if (Object.keys(results).length !== 0) {
     return (
       <div className="App">
@@ -26,8 +33,9 @@ function Results() {
           {results &&
             results.map((result: ResultItem, index: number) => (
               <div
-                key={index}
+                key={result.id}
                 className="card flex justify-content-center todoCard"
+                onClick={() => handleCardClick(result.id)} 
               >
                 <Card
                   title={result.title}
@@ -57,8 +65,3 @@ function Results() {
 }
 
 export default Results;
-
-
-
-
-

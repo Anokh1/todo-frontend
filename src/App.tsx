@@ -63,6 +63,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/todo" element={<Todo />} />
+        <Route path="/todo/:id" element={<Todo />} />
         <Route path="/results" element={<Results />} />
         <Route path="/upload" element={<Upload />} />
       </Routes>

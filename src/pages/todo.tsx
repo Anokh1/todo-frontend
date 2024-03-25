@@ -11,6 +11,7 @@ import Navbar from "../components/navbar";
 import { getTodo } from "../services/read";
 import { updateStatus, updateTodo } from "../services/update";
 import { deleteTodo } from "../services/delete";
+import { useParams } from "react-router-dom";
 
 interface TodoItem {
   id: number;
@@ -31,6 +32,9 @@ export default function Todo() {
   const toastRef = useRef<Toast>(null);
 
   const [visible, setVisible] = useState(false);
+
+  const { id } = useParams<{ id: string }>();
+  const [selectedTodo, setSelectedTodo] = useState<TodoItem | null>(null);
 
   const handleUpdateStatus = (id: number, done: boolean) => {
     updateStatus({ id, done });
@@ -74,6 +78,7 @@ export default function Todo() {
         return val.id !== id;
       })
     );
+    setSelectedTodo(null); 
     if (toastRef.current != null) {
       toastRef.current.show({
         severity: "error",
@@ -81,6 +86,17 @@ export default function Todo() {
       });
     }
   };
+
+  useEffect(() => {
+    if (id != null) {
+      const todoId = parseInt(id);
+      const selected = todoList.find((todo) => todo.id === todoId);
+      if (selected) {
+        setSelectedTodo(selected);
+      }
+    }
+    // console.log(id);
+  }, [id, todoList]);
 
   useEffect(() => {
     getTodo(setTodoList);
@@ -91,6 +107,81 @@ export default function Todo() {
       <Toast ref={toastRef}></Toast>
       <Navbar />
       <div>
+        {selectedTodo && (
+          <div className="card flex justify-content-center todoCard">
+            <Card
+              title={selectedTodo.title}
+              subTitle={
+                "Created by " +
+                selectedTodo.name +
+                " on " +
+                new Date(selectedTodo.createdDate).toDateString()
+              }
+              className="md:w-25rem"
+              style={{backgroundColor: "#DFF5FF"}}
+            >
+              <p className="m-0">{selectedTodo.description}</p>
+              <Button
+                onClick={() =>
+                  handleUpdateStatus(selectedTodo.id, selectedTodo.done)
+                }
+                label={selectedTodo.done === false ? "Done" : "Completed"}
+                icon={
+                  selectedTodo.done === false
+                    ? "pi pi-check"
+                    : "pi pi-thumbs-up-fill"
+                }
+                disabled={selectedTodo.done === true ? true : false}
+              />
+              <Button
+                onClick={() => handleDeleteTodo(selectedTodo.id)}
+                label="Delete"
+                severity="secondary"
+                icon="pi pi-times"
+                style={{ marginLeft: "0.5em" }}
+              />
+              <Button
+                onClick={() => getTitle(selectedTodo.id)}
+                label="Update"
+                severity="help"
+                icon="pi pi-pencil"
+                hidden={selectedTodo.done === true ? true : false}
+                disabled={selectedTodo.done === true ? true : false}
+                style={{
+                  marginLeft: "0.5em",
+                  visibility: selectedTodo.done === true ? "hidden" : "visible",
+                }}
+              />
+              <Dialog
+                header="Update Todo"
+                visible={visible}
+                onHide={() => setVisible(false)}
+              >
+                <div className="updateBox">
+                  <InputText
+                    defaultValue={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    style={{ marginBottom: "1em" }}
+                  />
+                  <InputText
+                    defaultValue={newDescription}
+                    onChange={(e) => setNewDescription(e.target.value)}
+                    style={{ marginBottom: "1em" }}
+                  />
+                  <Button
+                    onClick={() =>
+                      handleUpdateTodo(updateID, newTitle, newDescription)
+                    }
+                    label="Submit"
+                    severity="warning"
+                    icon="pi pi-check"
+                    style={{ marginLeft: "0.5em" }}
+                  />
+                </div>
+              </Dialog>
+            </Card>
+          </div>
+        )}
         {todoList.map((val, key) => {
           return (
             <div
