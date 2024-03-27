@@ -106,7 +106,7 @@ export default function Todo() {
     <div>
       <Toast ref={toastRef}></Toast>
       <Navbar />
-      <div>
+      <div className="todo">
         {selectedTodo && (
           <div className="card flex justify-content-center todoCard">
             <Card

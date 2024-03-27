@@ -29,7 +29,7 @@ function Results() {
     return (
       <div className="App">
         <Navbar />
-        <div>
+        <div className="todo">
           {results &&
             results.map((result: ResultItem, index: number) => (
               <div

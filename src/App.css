@@ -1,7 +1,7 @@
 .App {
   /* text-align: center; */
   /* margin-left: 30px; */
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 
 .input {
@@ -22,6 +22,10 @@
   margin-left: 20px;
 }
 
+.todo {
+  margin-top: 80px;
+}
+
 .todoCard {
   margin: auto;
   margin-bottom: 30px;
@@ -40,6 +44,7 @@
 }
 
 .updateBox {
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,6 +60,7 @@
 }
 
 .section {
+  margin-top: 80px;
   display: flex;
 }
 
@@ -92,7 +98,6 @@
   /* white-space: nowrap; */
 }
 
-
 /* Hide the input element */
 #file-upload {
   display: none;
@@ -100,7 +105,7 @@
 
 .file-upload-container {
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .excel-button-container {
@@ -116,14 +121,47 @@
 } */
 
 .file-name-container {
-  flex: 1; 
+  flex: 1;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-
 .file-name {
   margin: 0;
   white-space: nowrap;
+}
+
+.form-input {
+  width: 300px;
+}
+
+.form-section {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.register-form-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+
+.button-link {
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  /* Additional styles for hover effect */
+}
+
+.button-link:hover {
+  color: #0056b3;
 }

@@ -6,6 +6,9 @@ import Home from "./pages/home";
 import Todo from "./pages/todo";
 import Results from "./pages/results";
 import Upload from "./pages/upload";
+import Authentication from "./pages/authentication";
+import Login from "./pages/login";
+import Register from "./pages/register";
 
 type Theme = "light" | "dark" | "system";
 const ThemeContext = createContext<Theme>("system");
@@ -61,32 +64,16 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/todo" element={<Todo />} />
         <Route path="/todo/:id" element={<Todo />} />
         <Route path="/results" element={<Results />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/auth" element={<Authentication />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
-
-      {/* <div>
-        <h1>Welcome to my app</h1>
-        <MyButton title="I'm still a button" disabled={true} />
-      </div>
-
-      <div>
-        <h1>Welcome to my counter</h1>
-
-        <p>Count: {state.count}</p>
-        <button onClick={addFive}>Add 5</button>
-        <button onClick={reset}>Reset</button>
-      </div>
-
-      <ThemeContext.Provider value={theme}>
-        <MyComponent />
-      </ThemeContext.Provider>
-
-      <input value={value} onChange={handleChange} />
-      <p>Value: {value}</p> */}
     </div>
   );
 }

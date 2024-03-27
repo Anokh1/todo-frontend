@@ -22,7 +22,7 @@ export default function Navbar() {
         {
             label: "Home",
             icon: 'pi pi-home',
-            command: () => { navigate("/"); }
+            command: () => { navigate("/home"); }
         },
         {
             label: "Todo",
@@ -33,6 +33,11 @@ export default function Navbar() {
             label: "Upload",
             icon: 'pi pi-file',
             command: () => { navigate("/upload"); }
+        },
+        {
+            label: "Profile",
+            icon: 'pi pi-briefcase',
+            command: () => { navigate("/auth"); }
         }
     ];
 
