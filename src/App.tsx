@@ -9,6 +9,7 @@ import Upload from "./pages/upload";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import Profile from "./pages/profile";
+import PrivateRoute from "./utils/privateRoutes";
 
 type Theme = "light" | "dark" | "system";
 const ThemeContext = createContext<Theme>("system");
@@ -62,17 +63,32 @@ function App() {
   const reset = () => dispatch({ type: "reset" });
 
   return (
+    // <div className="App">
+    //   <Routes>
+    //     <Route path="/home" element={<Home />} />
+    //     <Route path="/todo" element={<Todo />} />
+    //     <Route path="/todo/:id" element={<Todo />} />
+    //     <Route path="/results" element={<Results />} />
+    //     <Route path="/upload" element={<Upload />} />
+    //     <Route path="/profile" element={<Profile />} />
+    //     <Route path="/" element={<Login />} />
+    //     <Route path="/login" element={<Login />} />
+    //     <Route path="/register" element={<Register />} />
+    //   </Routes>
+    // </div>
+
     <div className="App">
       <Routes>
+        {/* Public routes accessible to all users */}
         <Route path="/home" element={<Home />} />
-        <Route path="/todo" element={<Todo />} />
-        <Route path="/todo/:id" element={<Todo />} />
         <Route path="/results" element={<Results />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/" element={<Login />} />
+        {/* Routes accessible only to users who are not logged in */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        {/* Private route accessible only to logged-in users */}
+        <PrivateRoute path="/todo" element={<Todo />} />
       </Routes>
     </div>
   );
