@@ -6,9 +6,9 @@ import Home from "./pages/home";
 import Todo from "./pages/todo";
 import Results from "./pages/results";
 import Upload from "./pages/upload";
-import Authentication from "./pages/authentication";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import Profile from "./pages/profile";
 
 type Theme = "light" | "dark" | "system";
 const ThemeContext = createContext<Theme>("system");
@@ -69,7 +69,7 @@ function App() {
         <Route path="/todo/:id" element={<Todo />} />
         <Route path="/results" element={<Results />} />
         <Route path="/upload" element={<Upload />} />
-        <Route path="/auth" element={<Authentication />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

@@ -37,7 +37,7 @@ export default function Navbar() {
         {
             label: "Profile",
             icon: 'pi pi-briefcase',
-            command: () => { navigate("/auth"); }
+            command: () => { navigate("/profile"); }
         }
     ];
 
