@@ -80,15 +80,22 @@ function App() {
     <div className="App">
       <Routes>
         {/* Public routes accessible to all users */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/results" element={<Results />} />
-        <Route path="/upload" element={<Upload />} />
-        <Route path="/profile" element={<Profile />} />
         {/* Routes accessible only to users who are not logged in */}
+        <Route path="/todo" element={<Todo />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* Private route accessible only to logged-in users */}
-        <PrivateRoute path="/todo" element={<Todo />} />
+        {/* <PrivateRoute path="/todo" element={<Todo />} /> */}
+        <PrivateRoute
+          element={
+            <>
+              <Route path="/home" element={<Home />} />
+              <Route path="/results" element={<Results />} />
+              <Route path="/upload" element={<Upload />} />
+              <Route path="/profile" element={<Profile />} />
+            </>
+          }
+        />
       </Routes>
     </div>
   );
