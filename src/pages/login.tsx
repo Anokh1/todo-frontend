@@ -5,6 +5,7 @@ import ButtonLink from "../components/buttonLink";
 import { login } from "../services/authService";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../utils/userContext";
 // import { useAuth } from "../services/authService";
 
 export default function Login() {
@@ -14,6 +15,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const toastRef = useRef<Toast>(null);
+
+  const { userEmail, userId, setUser } = useUserContext();
 
   const handleLogin = () => {
     login(email, password)
@@ -27,6 +30,8 @@ export default function Login() {
           setTimeout(async function () {
             navigate("/home");
           }, 900);
+          setUser(email, "1"); 
+          console.log(userEmail, userId); 
         }
       })
       .catch((error) => {

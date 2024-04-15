@@ -12,6 +12,7 @@ import Navbar from "../components/navbar";
 import { countStatus } from "../services/read";
 import { DoughnutChart } from "../components/chart";
 import TableTree from "../components/treetable";
+import { useUserContext } from "../utils/userContext";
 
 // interface DateItem {
 //   date: string;
@@ -31,8 +32,11 @@ export default function Home() {
 
   const toastRef = useRef<Toast>(null);
 
+  const { userEmail, userId, setUser } = useUserContext();
+
   // Handler function for the submit button
   const handleSubmit = () => {
+    console.log(userEmail, userId); 
     addTodo({
       name,
       title,

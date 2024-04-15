@@ -10,6 +10,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Profile from "./pages/profile";
 import PrivateRoute from "./utils/privateRoutes";
+import { UserContextProvider } from "./utils/userContext";
 
 type Theme = "light" | "dark" | "system";
 const ThemeContext = createContext<Theme>("system");
@@ -63,41 +64,55 @@ function App() {
   const reset = () => dispatch({ type: "reset" });
 
   return (
+    <UserContextProvider>
+      <div className="App">
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/todo" element={<Todo />} />
+        <Route path="/todo/:id" element={<Todo />} />
+        <Route path="/results" element={<Results />} />
+        <Route path="/upload" element={<Upload />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </div>
+    </UserContextProvider>
+
     // <div className="App">
     //   <Routes>
-    //     <Route path="/home" element={<Home />} />
-    //     <Route path="/todo" element={<Todo />} />
-    //     <Route path="/todo/:id" element={<Todo />} />
-    //     <Route path="/results" element={<Results />} />
-    //     <Route path="/upload" element={<Upload />} />
-    //     <Route path="/profile" element={<Profile />} />
-    //     <Route path="/" element={<Login />} />
     //     <Route path="/login" element={<Login />} />
-    //     <Route path="/register" element={<Register />} />
+    //     {/* Other public routes */}
+    //     <PrivateRoute path="/home" element={<Home />} />
+    //     <PrivateRoute path="/todo" element={<Todo />} />
+    //     <PrivateRoute path="/todo/:id" element={<Todo />} />
+    //     <PrivateRoute path="/results" element={<Results />} />
+    //     <PrivateRoute path="/upload" element={<Upload />} />
+    //     <PrivateRoute path="/profile" element={<Profile />} />
+    //     <PrivateRoute path="/login" element={<Login />} />
+    //     <PrivateRoute path="/register" element={<Register />} />
+    //     {/* Other protected routes */}
     //   </Routes>
     // </div>
 
-    <div className="App">
-      <Routes>
-        {/* Public routes accessible to all users */}
-        {/* Routes accessible only to users who are not logged in */}
-        <Route path="/todo" element={<Todo />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {/* Private route accessible only to logged-in users */}
-        {/* <PrivateRoute path="/todo" element={<Todo />} /> */}
-        <PrivateRoute
-          element={
-            <>
-              <Route path="/home" element={<Home />} />
-              <Route path="/results" element={<Results />} />
-              <Route path="/upload" element={<Upload />} />
-              <Route path="/profile" element={<Profile />} />
-            </>
-          }
-        />
-      </Routes>
-    </div>
+    // <div className="App">
+    //   <Routes>
+    //     <Route path="/todo" element={<Todo />} />
+    //     <Route path="/login" element={<Login />} />
+    //     <Route path="/register" element={<Register />} />
+    //     <PrivateRoute
+    //       element={
+    //         <>
+    //           <Route path="/home" element={<Home />} />
+    //           <Route path="/results" element={<Results />} />
+    //           <Route path="/upload" element={<Upload />} />
+    //           <Route path="/profile" element={<Profile />} />
+    //         </>
+    //       }
+    //     />
+    //   </Routes>
+    // </div>
   );
 }
 
