@@ -21,6 +21,8 @@ export default function Login() {
   const handleLogin = () => {
     login(email, password)
       .then((user) => {
+        const userEmail = user[0]; 
+        console.log(user); 
         if (toastRef.current != null) {
           toastRef.current.show({
             severity: "success",
@@ -30,8 +32,8 @@ export default function Login() {
           setTimeout(async function () {
             navigate("/home");
           }, 900);
-          setUser(email, "1"); 
-          console.log(userEmail, userId); 
+          setUser(user[0], user[1]); 
+          // console.log(userEmail, userId); 
         }
       })
       .catch((error) => {
