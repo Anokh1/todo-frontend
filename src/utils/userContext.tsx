@@ -5,6 +5,7 @@ interface UserContextType {
   userEmail: string;
   userId: string;
   setUser: (email: string, id: string) => void;
+  clearUser: () => void;
 }
 
 // Create the context
@@ -36,11 +37,17 @@ export const UserContextProvider: React.FC<UserContextProps> = ({
     setUserId(id);
   };
 
+  const clearUser = () => {
+    setUserEmail("");
+    setUserId("");
+  };
+
   // Context value
   const contextValue: UserContextType = {
     userEmail,
     userId,
     setUser,
+    clearUser,
   };
 
   // Provide the context value to its children

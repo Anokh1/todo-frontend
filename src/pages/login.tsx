@@ -67,7 +67,7 @@ export default function Login() {
           <label htmlFor="input_value">Password</label>
         </span>
         <Button type="submit" onClick={handleLogin} label="Login" />
-        {/* <ButtonLink to="/register">Register</ButtonLink> */}
+        <ButtonLink to="/register">Register</ButtonLink>
       </div>
     </div>
   );

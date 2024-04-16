@@ -9,9 +9,6 @@ export default function Register() {
   const [lastName, setLastName] = useState("");
   const [age, setAge] = useState(0);
 
-
-
-
   return (
       <div className="register-form-section">
         <h2>Register</h2>
