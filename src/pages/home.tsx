@@ -32,7 +32,7 @@ export default function Home() {
 
   const toastRef = useRef<Toast>(null);
 
-  const { userEmail, userId, setUser } = useUserContext();
+  const { userEmail, userId } = useUserContext();
 
   // Handler function for the submit button
   const handleSubmit = () => {
@@ -78,6 +78,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    console.log(userEmail, userId); 
     countStatus({ value: 0 }).then((count) => {
       setInProgress(count);
     });
@@ -85,7 +86,7 @@ export default function Home() {
       setCompleted(count);
     });
     // getDates(setDates);
-  }, []);
+  }, [userEmail, userId]);
 
   const chartData = {
     labels: ["In Progress", "Completed"],

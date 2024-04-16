@@ -1,7 +1,7 @@
 import React, { useReducer, createContext, useContext, useState } from "react";
 // import logo from "./logo.svg";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import Todo from "./pages/todo";
 import Results from "./pages/results";
@@ -66,18 +66,24 @@ function App() {
   return (
     <UserContextProvider>
       <div className="App">
-      <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/todo" element={<Todo />} />
-        <Route path="/todo/:id" element={<Todo />} />
-        <Route path="/results" element={<Results />} />
-        <Route path="/upload" element={<Upload />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </div>
+        <Routes>
+          <Route
+            path="/"
+            element={<PrivateRoute path={""} element={undefined} />} // Pass the PrivateRoute component as the element
+          >
+            {" "}
+            <Route path="/home" element={<Home />} />
+            <Route path="/todo" element={<Todo />} />
+            <Route path="/todo/:id" element={<Todo />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/upload" element={<Upload />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </div>
     </UserContextProvider>
 
     // <div className="App">

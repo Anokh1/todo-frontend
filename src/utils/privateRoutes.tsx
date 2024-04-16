@@ -1,28 +1,6 @@
-// import React from 'react';
-// import { Route, Navigate } from 'react-router-dom';
-// import { useAuth } from './authProvider';
-
-// interface PrivateRouteProps {
-//   path: string;
-//   element: React.ReactNode;
-// }
-
-// const PrivateRoute: React.FC<PrivateRouteProps> = ({ path, element }) => {
-//   const { user } = useAuth();
-
-//   return user ? (
-//     <Route path={path} element={element} />
-//   ) : (
-//     <Navigate to="/login" />
-//   );
-// };
-
-// export default PrivateRoute;
-
-// PrivateRoute.tsx
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './authProvider';
+import React from "react";
+import { Outlet, Navigate } from "react-router-dom";
+import { useUserContext } from "./userContext";
 
 interface PrivateRouteProps {
   path: string;
@@ -30,13 +8,12 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ path, element }) => {
-  const { user } = useAuth();
+  const { userEmail, userId } = useUserContext();
 
-  return user ? (
-    <Route path={path} element={element} />
-  ) : (
-    <Navigate to="/login" />
-  );
+  // Check if user is authenticated based on userEmail and userId
+  const isAuthenticated = !!userEmail && !!userId;
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;
