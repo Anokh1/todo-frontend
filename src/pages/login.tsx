@@ -6,7 +6,6 @@ import { login } from "../services/authService";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../utils/userContext";
-// import { useAuth } from "../services/authService";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,24 +15,33 @@ export default function Login() {
 
   const toastRef = useRef<Toast>(null);
 
-  const { userEmail, userId, setUser } = useUserContext();
+  const { setUser } = useUserContext();
 
   const handleLogin = () => {
     login(email, password)
       .then((user) => {
-        const userEmail = user[0]; 
-        console.log(user); 
-        if (toastRef.current != null) {
-          toastRef.current.show({
-            severity: "success",
-            summary: "Login success",
-            detail: "Let's get started",
-          });
-          setTimeout(async function () {
-            navigate("/home");
-          }, 900);
-          setUser(user[0], user[1]); 
-          // console.log(userEmail, userId); 
+        console.log(user);
+
+        if (user.length === 1) {
+          if (toastRef.current != null) {
+            toastRef.current.show({
+              severity: "error",
+              summary: user[0],
+              detail: "Please try again",
+            });
+          }
+        } else {
+          if (toastRef.current != null) {
+            toastRef.current.show({
+              severity: "success",
+              summary: "Login success",
+              detail: "Let's get started",
+            });
+            setTimeout(async function () {
+              navigate("/home");
+            }, 900);
+            setUser(user[0], user[1]);
+          }
         }
       })
       .catch((error) => {
