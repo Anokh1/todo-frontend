@@ -6,6 +6,7 @@ import { login } from "../services/authService";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../utils/userContext";
+import { setAuthTokenCookie } from "../services/cookieService";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ export default function Login() {
               navigate("/home");
             }, 900);
             setUser(user[0], user[1]);
+            setAuthTokenCookie(user[2]);
           }
         }
       })
