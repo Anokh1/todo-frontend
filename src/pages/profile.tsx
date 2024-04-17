@@ -1,22 +1,36 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Divider } from "primereact/divider";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import Navbar from "../components/navbar";
 import { Card } from "primereact/card";
+import { Toast } from "primereact/toast";
 import { useUserContext } from "../utils/userContext";
 
 export default function Profile() {
   const { userEmail, userId, setUser, clearUser } = useUserContext();
 
+  const toastRef = useRef<Toast>(null);
+
   const handleLogout = () => {
-    // Call the clearUser function from the context
-    clearUser();
+    // clearUser(); 
+    if (toastRef.current != null) {
+      toastRef.current.show({
+        severity: "error",
+        summary: "Logout success",
+        detail: "Let's go",
+      });
+      setTimeout(async function () {
+        clearUser();
+      }, 900);
+      console.log(userEmail, userId);
+    }
     // Additional logout logic can go here (e.g., redirecting to the login page)
-  }
+  };
 
   return (
     <div className="App">
+      <Toast ref={toastRef}></Toast>
       <Navbar />
       <div className="updateBox">
         <div className="card flex justify-content-center">
