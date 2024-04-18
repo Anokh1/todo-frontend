@@ -4,7 +4,8 @@ import React, { ReactNode, createContext, useContext, useState } from "react";
 interface UserContextType {
   userEmail: string;
   userId: string;
-  setUser: (email: string, id: string) => void;
+  userName: string;
+  setUser: (email: string, id: string, username: string) => void;
   clearUser: () => void;
 }
 
@@ -30,22 +31,26 @@ export const UserContextProvider: React.FC<UserContextProps> = ({
 }) => {
   const [userEmail, setUserEmail] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
+  const [userName, setUserName] = useState<string>(""); 
 
   // Function to set user email and ID
-  const setUser = (email: string, id: string) => {
+  const setUser = (email: string, id: string, username: string) => {
     setUserEmail(email);
     setUserId(id);
+    setUserName(username); 
   };
 
   const clearUser = () => {
     setUserEmail("");
     setUserId("");
+    setUserName(""); 
   };
 
   // Context value
   const contextValue: UserContextType = {
     userEmail,
     userId,
+    userName,
     setUser,
     clearUser,
   };

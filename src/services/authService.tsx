@@ -28,6 +28,7 @@ export const login = async (
         response.data.data.email,
         response.data.data.id,
         response.data.data.token,
+        response.data.data.username,
       ];
       console.log(userArray);
     }

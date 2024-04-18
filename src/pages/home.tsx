@@ -33,7 +33,7 @@ export default function Home() {
 
   const toastRef = useRef<Toast>(null);
 
-  const { userEmail, userId } = useUserContext();
+  const { userEmail, userId, userName } = useUserContext();
 
   // Handler function for the submit button
   const handleSubmit = () => {
@@ -116,7 +116,9 @@ export default function Home() {
           <div className="container">
             <h1>T O D O</h1>
             <span className="p-float-label input">
-              <InputText id="name" onChange={(e) => setName(e.target.value)} />
+              {/* <InputText id="name" onChange={(e) => setName(e.target.value)} /> */}
+              <InputText id="name" value={userName} onChange={(e) => setName(userName)} />
+              {/* <label htmlFor="input_value">{userName}</label> */}
               <label htmlFor="input_value">Name</label>
             </span>
             <span className="p-float-label input">

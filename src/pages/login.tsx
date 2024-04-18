@@ -46,7 +46,7 @@ export default function Login() {
             // const decodedToken = jwtDecode(token);
             // console.log("Decoded Token:", decodedToken);
 
-            setUser(user[0], user[1]);
+            setUser(user[0], user[1], user[3]);
             setAuthTokenCookie(user[2]);
           }
         }
