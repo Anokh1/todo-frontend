@@ -6,6 +6,7 @@ import Navbar from "../components/navbar";
 import { Card } from "primereact/card";
 import { Toast } from "primereact/toast";
 import { useUserContext } from "../utils/userContext";
+import { removeAuthTokenCookie } from "../services/cookieService";
 
 export default function Profile() {
   const { userEmail, userId, setUser, clearUser } = useUserContext();
@@ -14,6 +15,7 @@ export default function Profile() {
 
   const handleLogout = () => {
     // clearUser(); 
+    removeAuthTokenCookie(); 
     if (toastRef.current != null) {
       toastRef.current.show({
         severity: "error",

@@ -68,7 +68,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route
-            path="/"
+            path="/" // Set the path for the nested routes
             element={<PrivateRoute path={""} element={undefined} />} // Pass the PrivateRoute component as the element
           >
             {" "}

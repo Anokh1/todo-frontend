@@ -6,7 +6,8 @@ import { login } from "../services/authService";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../utils/userContext";
-import { setAuthTokenCookie } from "../services/cookieService";
+import { decodedToken, setAuthTokenCookie } from "../services/cookieService";
+const jwtDecode = require("jwt-decode");
 
 export default function Login() {
   const navigate = useNavigate();
@@ -41,6 +42,10 @@ export default function Login() {
             setTimeout(async function () {
               navigate("/home");
             }, 900);
+            // const token = user[2];
+            // const decodedToken = jwtDecode(token);
+            // console.log("Decoded Token:", decodedToken);
+
             setUser(user[0], user[1]);
             setAuthTokenCookie(user[2]);
           }

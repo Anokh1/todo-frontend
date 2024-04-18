@@ -13,6 +13,7 @@ import { countStatus } from "../services/read";
 import { DoughnutChart } from "../components/chart";
 import TableTree from "../components/treetable";
 import { useUserContext } from "../utils/userContext";
+import { decodedToken, getAuthTokenFromCookie } from "../services/cookieService";
 
 // interface DateItem {
 //   date: string;
@@ -76,6 +77,8 @@ export default function Home() {
         }
       });
   };
+
+  // decodedToken(getAuthTokenFromCookie());
 
   useEffect(() => {
     console.log(userEmail, userId); 
