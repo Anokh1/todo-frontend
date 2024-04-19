@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.21",
     "axios": "^1.6.7",
     "chart.js": "^4.4.2",
+    "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
@@ -48,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6"
   }
 }

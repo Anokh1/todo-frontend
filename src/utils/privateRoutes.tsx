@@ -16,8 +16,8 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ path, element }) => {
   // const isAuthenticated = userEmail && userId;
 
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
-  // return getAuthTokenFromCookie() ? <Outlet /> : <Navigate to="/login" replace />;
+  // return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  return getAuthTokenFromCookie() ? <Outlet /> : <Navigate to="/login" replace />;
 
 };
 
