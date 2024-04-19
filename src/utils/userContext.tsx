@@ -1,7 +1,7 @@
 import React, { ReactNode, createContext, useContext, useState } from "react";
 // import jwtDecode from 'jwt-decode';
 import Cookies from "universal-cookie";
-import * as jwt_decode from "jwt-decode";
+// import * as jwt_decode from "jwt-decode";
 // const jwtDecode = require("jwt-decode");
 // import jwt from "jsonwebtoken";
 
@@ -45,9 +45,9 @@ export const UserContextProvider: React.FC<UserContextProps> = ({
 }) => {
   if (token) {
     // const decodedToken: any = jwt.decode(token);
-    const decodedToken= jwt_decode(token); 
-    email = decodedToken.email;
-    id = decodedToken.id;
+    // const decodedToken= jwt_decode(token); 
+    // email = decodedToken.email;
+    // id = decodedToken.id;
   }
 
   const [userEmail, setUserEmail] = useState<string>(email);
