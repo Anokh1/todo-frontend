@@ -8,11 +8,15 @@ import { Toast } from "primereact/toast";
 import { useUserContext } from "../utils/userContext";
 import { removeAuthTokenCookie } from "../services/cookieService";
 import { setToken } from "../services/localStorageService";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const { userEmail, userId, setUser, clearUser } = useUserContext();
 
   const toastRef = useRef<Toast>(null);
+
+  const navigate = useNavigate();
+
 
   const handleLogout = () => {
     // clearUser(); 
@@ -26,10 +30,10 @@ export default function Profile() {
       });
       setTimeout(async function () {
         clearUser();
+        navigate("/login");
       }, 900);
       console.log(userEmail, userId);
     }
-    // Additional logout logic can go here (e.g., redirecting to the login page)
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 // Define the shape of the user object
 interface User {
@@ -29,7 +29,7 @@ interface AuthProviderProps {
 // AuthProvider component to wrap your application
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-
+  
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

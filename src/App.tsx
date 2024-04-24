@@ -10,7 +10,8 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Profile from "./pages/profile";
 import PrivateRoute from "./utils/privateRoutes";
-import { UserContextProvider } from "./utils/userContext";
+import { UserContextProvider, useUserContext } from "./utils/userContext";
+import Axios from "axios";
 
 type Theme = "light" | "dark" | "system";
 const ThemeContext = createContext<Theme>("system");
@@ -49,6 +50,43 @@ function MyButton({ title, disabled }: MyButtonProps) {
   return <button disabled={disabled}>{title}</button>;
 }
 
+
+
+// const fetchUserData = async () => {
+//   const token = localStorage.getItem("jwt");
+
+
+//   if (!token) {
+//     console.error("Token not found");
+//     return;
+//   }
+
+//   try {
+//     const response = await fetch("http://localhost:3002/api/user", {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "x-access-token": token,
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error("Error fetching user data");
+//     }
+
+//     const data = await response.json();
+//     console.log("User data:", data);
+//   } catch (error) {
+//     // console.error('Error:', error.message);
+//   }
+// };
+
+// fetchUserData();
+
+// function setUser(token: string) {
+//   Axios.get("http://localhost:3002/api/user").then((response) => {});
+// }
+
 function App() {
   const [value, setValue] = useState("Change");
 
@@ -62,6 +100,9 @@ function App() {
 
   const addFive = () => dispatch({ type: "setCount", value: state.count + 5 });
   const reset = () => dispatch({ type: "reset" });
+
+
+  // fetchUserData();
 
   return (
     <UserContextProvider>
