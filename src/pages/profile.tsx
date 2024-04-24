@@ -7,6 +7,7 @@ import { Card } from "primereact/card";
 import { Toast } from "primereact/toast";
 import { useUserContext } from "../utils/userContext";
 import { removeAuthTokenCookie } from "../services/cookieService";
+import { setToken } from "../services/localStorageService";
 
 export default function Profile() {
   const { userEmail, userId, setUser, clearUser } = useUserContext();
@@ -15,7 +16,8 @@ export default function Profile() {
 
   const handleLogout = () => {
     // clearUser(); 
-    removeAuthTokenCookie(); 
+    // removeAuthTokenCookie();
+    setToken("");  
     if (toastRef.current != null) {
       toastRef.current.show({
         severity: "error",

@@ -7,6 +7,7 @@ import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../utils/userContext";
 import { decodedToken, setAuthTokenCookie } from "../services/cookieService";
+import { setToken } from "../services/localStorageService";
 const jwtDecode = require("jwt-decode");
 
 export default function Login() {
@@ -34,6 +35,7 @@ export default function Login() {
           }
         } else {
           if (toastRef.current != null) {
+            setToken(user[2]); 
             toastRef.current.show({
               severity: "success",
               summary: "Login success",
@@ -46,8 +48,9 @@ export default function Login() {
             // const decodedToken = jwtDecode(token);
             // console.log("Decoded Token:", decodedToken);
 
-            setUser(user[0], user[1], user[3]);
-            setAuthTokenCookie(user[2]);
+            // setUser(user[0], user[1], user[3]);
+            // setToken(user[2]); 
+            // setAuthTokenCookie(user[2]);
           }
         }
       })
