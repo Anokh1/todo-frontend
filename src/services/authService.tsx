@@ -23,7 +23,7 @@ export const login = async (
         response.data.data.token,
         response.data.data.username,
       ];
-      console.log(userArray);
+      // console.log(userArray);
     }
     return userArray;
   } catch (error) {

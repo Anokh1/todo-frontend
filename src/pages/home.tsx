@@ -13,13 +13,15 @@ import { countStatus } from "../services/read";
 import { DoughnutChart } from "../components/chart";
 import TableTree from "../components/treetable";
 import { useUserContext } from "../utils/userContext";
-import { decodedToken, getAuthTokenFromCookie } from "../services/cookieService";
+// import { decodedToken, getAuthTokenFromCookie } from "../services/cookieService";
 
 // interface DateItem {
 //   date: string;
 // }
 
 export default function Home() {
+  const { userEmail, userId, userName } = useUserContext();
+
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -33,11 +35,10 @@ export default function Home() {
 
   const toastRef = useRef<Toast>(null);
 
-  const { userEmail, userId, userName } = useUserContext();
-
   // Handler function for the submit button
   const handleSubmit = () => {
-    console.log(userEmail, userId); 
+    // console.log(userEmail, userId);
+    // console.log(name);
     addTodo({
       name,
       title,
@@ -81,7 +82,8 @@ export default function Home() {
   // decodedToken(getAuthTokenFromCookie());
 
   useEffect(() => {
-    // console.log(userEmail, userId); 
+    setName(userName);
+    // console.log(userEmail, userId);
     countStatus({ value: 0 }).then((count) => {
       setInProgress(count);
     });
@@ -89,7 +91,7 @@ export default function Home() {
       setCompleted(count);
     });
     // getDates(setDates);
-  }, [userEmail, userId]);
+  }, [userEmail, userId, userName]);
 
   const chartData = {
     labels: ["In Progress", "Completed"],
@@ -116,8 +118,8 @@ export default function Home() {
           <div className="container">
             <h1>T O D O</h1>
             <span className="p-float-label input">
-              {/* <InputText id="name" onChange={(e) => setName(e.target.value)} /> */}
-              <InputText id="name" value={userName} onChange={(e) => setName(userName)} />
+              <InputText id="name" value={userName} onChange={(e) => setName(e.target.value)} />
+              {/* <InputText id="name" value={userName} /> */}
               {/* <label htmlFor="input_value">{userName}</label> */}
               <label htmlFor="input_value">Name</label>
             </span>

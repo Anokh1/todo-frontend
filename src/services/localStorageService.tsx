@@ -7,10 +7,11 @@ export const setToken = (jwt: string) => {
 }
 
 export const getToken = () => {
-    if (localStorage.getItem("jwt") !== "") {
-        authenticated = true; 
-    } else {
-        authenticated = false;
-    }
+    // if (localStorage.getItem("jwt") !== "") {
+    //     authenticated = true; 
+    // } else {
+    //     authenticated = false;
+    // }
+    localStorage.getItem("jwt")
 }
 
