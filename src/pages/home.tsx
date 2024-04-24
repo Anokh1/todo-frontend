@@ -81,7 +81,7 @@ export default function Home() {
   // decodedToken(getAuthTokenFromCookie());
 
   useEffect(() => {
-    console.log(userEmail, userId); 
+    // console.log(userEmail, userId); 
     countStatus({ value: 0 }).then((count) => {
       setInProgress(count);
     });

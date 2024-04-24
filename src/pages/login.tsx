@@ -44,19 +44,13 @@ export default function Login() {
             setTimeout(async function () {
               navigate("/home");
             }, 900);
-            // const token = user[2];
-            // const decodedToken = jwtDecode(token);
-            // console.log("Decoded Token:", decodedToken);
 
-            // setUser(user[0], user[1], user[3]);
-            // setToken(user[2]); 
-            // setAuthTokenCookie(user[2]);
+            setUser(user[0], user[1], user[3]);
+            console.log(user[3]); 
           }
         }
       })
       .catch((error) => {
-        // Handle login error
-        // console.error("Login failed:", error.message);
         if (toastRef.current != null) {
           toastRef.current.show({
             severity: "error",
