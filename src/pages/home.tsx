@@ -118,7 +118,7 @@ export default function Home() {
           <div className="container">
             <h1>T O D O</h1>
             <span className="p-float-label input">
-              <InputText id="name" value={userName} onChange={(e) => setName(e.target.value)} />
+              <InputText id="name" value={userName} onChange={(e) => setName(e.target.value)} disabled/>
               {/* <InputText id="name" value={userName} /> */}
               {/* <label htmlFor="input_value">{userName}</label> */}
               <label htmlFor="input_value">Name</label>

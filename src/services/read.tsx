@@ -96,7 +96,7 @@ export const verifyID = async (id: number) => {
         "x-access-token": localStorage.getItem("jwt"),
       },
     });
-    console.log(response.data.data); 
+    // console.log(response.data.data); 
     return response.data;
   } catch (error) {
     return error;

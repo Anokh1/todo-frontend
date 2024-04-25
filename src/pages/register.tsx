@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import ButtonLink from "../components/buttonLink";
+import { Toast } from "primereact/toast";
+import { register } from "../services/authService";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [age, setAge] = useState(0);
+  const [password, setPassword] = useState(""); 
+  const [confirmPassword, setConfirmPassword] = useState(""); 
+  const [age, setAge] = useState(21);
+
+  const toastRef = useRef<Toast>(null);
+
+  const handleRegister = () => {
+    register({email, firstName, lastName, age, password})
+  }
 
   return (
       <div className="register-form-section">

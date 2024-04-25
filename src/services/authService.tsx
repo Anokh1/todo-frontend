@@ -30,3 +30,36 @@ export const login = async (
     throw new Error("Login failed");
   }
 };
+
+interface RegisterProps {
+  email: string;
+  firstName: string;
+  lastName: string;
+  age: number;
+  password: string;
+}
+
+export const register = async ({
+  email,
+  firstName,
+  lastName,
+  age,
+  password,
+}: RegisterProps) => {
+  // console.log(name, title);
+  try {
+    const response = await Axios.post("http://localhost:3002/api/register", {
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      age: age,
+      password: password,
+    });
+
+    if (response.data.status) {
+      login(email, password); 
+    }
+  } catch (error) {
+    return error;
+  }
+};

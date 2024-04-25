@@ -23,7 +23,7 @@ export default function Login() {
   const handleLogin = () => {
     login(email, password)
       .then((user) => {
-        console.log(user);
+        // console.log(user);
 
         if (user.length === 1) {
           if (toastRef.current != null) {
@@ -46,7 +46,7 @@ export default function Login() {
             }, 900);
 
             setUser(user[0], user[1], user[3]);
-            console.log(user[3]); 
+            // console.log(user[3]); 
           }
         }
       })
