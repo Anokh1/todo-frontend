@@ -36,8 +36,18 @@ export default function Todo() {
   const { id } = useParams<{ id: string }>();
   const [selectedTodo, setSelectedTodo] = useState<TodoItem | null>(null);
 
-  const handleUpdateStatus = (id: number, done: boolean) => {
-    updateStatus({ id, done });
+  const handleUpdateStatus = async (id: number, done: boolean) => {
+    const result = await updateStatus({ id, done });
+    // console.log(result.status);
+    if (result.status === false) {
+      if (toastRef.current != null) {
+        toastRef.current.show({
+          severity: "error",
+          summary: "Update failed",
+          detail: result.message,
+        });
+      }
+    }
     setTimeout(function () {
       getTodo(setTodoList);
     }, 300);
@@ -78,7 +88,7 @@ export default function Todo() {
         return val.id !== id;
       })
     );
-    setSelectedTodo(null); 
+    setSelectedTodo(null);
     if (toastRef.current != null) {
       toastRef.current.show({
         severity: "error",
@@ -118,7 +128,7 @@ export default function Todo() {
                 new Date(selectedTodo.createdDate).toDateString()
               }
               className="md:w-25rem"
-              style={{backgroundColor: "#DFF5FF"}}
+              style={{ backgroundColor: "#DFF5FF" }}
             >
               <p className="m-0">{selectedTodo.description}</p>
               <Button
