@@ -11,7 +11,7 @@ interface TodoItem {
 }
 
 interface FileItem {
-  name: string; 
+  name: string;
 }
 
 interface FileResponse {
@@ -19,9 +19,6 @@ interface FileResponse {
   message: string;
   status: boolean;
 }
-
-
-
 
 // interface DateItem {
 //   date: string;
@@ -35,10 +32,9 @@ interface CountStatusProps {
 // Define an interface for the array of todo items
 type TodoList = TodoItem[];
 
-// type FileList = FileResponse[]; 
+// type FileList = FileResponse[];
 
-type FileList = string[]; 
-
+type FileList = string[];
 
 // type DateList = DateItem[];
 
@@ -88,5 +84,21 @@ export const findTodo = async (title: string) => {
   } catch (error) {
     console.error("Error fetching todo:", error);
     return []; // Return an empty array in case of an error
+  }
+};
+
+export const verifyID = async (id: number) => {
+  try {
+    const response = await Axios.get(`http://localhost:3002/api/verifyID?id=${encodeURIComponent(
+      id)}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("jwt"),
+      },
+    });
+    console.log(response.data.data); 
+    return response.data;
+  } catch (error) {
+    return error;
   }
 };

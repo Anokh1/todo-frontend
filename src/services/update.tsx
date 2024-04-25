@@ -31,9 +31,18 @@ export const updateStatus = async ({ id, done }: UpdateStatusProps) => {
 };
 
 export const updateTodo = ({ id, title, description }: UpdateTodoProps) => {
-  Axios.put("http://localhost:3002/api/updateTodo", {
-    id: id,
-    title: title,
-    description: description,
-  });
+  Axios.put(
+    "http://localhost:3002/api/updateTodo",
+    {
+      id: id,
+      title: title,
+      description: description,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("jwt"),
+      },
+    }
+  );
 };

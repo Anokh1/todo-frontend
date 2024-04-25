@@ -8,7 +8,7 @@ import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import Navbar from "../components/navbar";
-import { getTodo } from "../services/read";
+import { getTodo, verifyID } from "../services/read";
 import { updateStatus, updateTodo } from "../services/update";
 import { deleteTodo } from "../services/delete";
 import { useParams } from "react-router-dom";
@@ -53,17 +53,31 @@ export default function Todo() {
     }, 300);
   };
 
-  const getTitle = (id: number) => {
+  const getTitle = async (id: number) => {
     var elementPos = todoList
       .map(function (x) {
         return x.id;
       })
       .indexOf(id);
     var objectFound = todoList[elementPos].id;
-    setVisible(true);
-    setUpdateID(objectFound);
-    setNewTitle(todoList[elementPos].title);
-    setNewDescription(todoList[elementPos].description);
+    // need to check if user id and todo user id match
+    const result = await verifyID(id);
+    if (result.data) {
+      setVisible(true);
+      setUpdateID(objectFound);
+      setNewTitle(todoList[elementPos].title);
+      setNewDescription(todoList[elementPos].description);
+    } else {
+      if (result.status === false) {
+        if (toastRef.current != null) {
+          toastRef.current.show({
+            severity: "error",
+            summary: "Update denied",
+            detail: result.message,
+          });
+        }
+      }
+    }
   };
 
   const handleUpdateTodo = (id: number, title: string, description: string) => {
@@ -81,20 +95,34 @@ export default function Todo() {
     }
   };
 
-  const handleDeleteTodo = (id: number) => {
-    deleteTodo({ id });
-    setTodoList(
-      todoList.filter((val) => {
-        return val.id !== id;
-      })
-    );
-    setSelectedTodo(null);
-    if (toastRef.current != null) {
-      toastRef.current.show({
-        severity: "error",
-        summary: "Information removed",
-      });
+  const handleDeleteTodo = async (id: number) => {
+    const result = await verifyID(id); 
+    if (result.data) {
+      deleteTodo({ id });
+      setTodoList(
+        todoList.filter((val) => {
+          return val.id !== id;
+        })
+      );
+      setSelectedTodo(null);
+      if (toastRef.current != null) {
+        toastRef.current.show({
+          severity: "error",
+          summary: "Information removed",
+        });
+      }
+    } else {
+      if (result.status === false) {
+        if (toastRef.current != null) {
+          toastRef.current.show({
+            severity: "error",
+            summary: "Delete failed",
+            detail: result.message,
+          });
+        }
+      }
     }
+    
   };
 
   useEffect(() => {
