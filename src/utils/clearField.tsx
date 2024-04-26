@@ -9,14 +9,14 @@ export const clearField = ({
   setTitle,
   setDescription,
 }: ClearFieldProps) => {
-  setName("");
+  // setName("");
   setTitle("");
   setDescription("");
 
   const nameInput = document.getElementById("name") as HTMLInputElement;
   const titleInput = document.getElementById("title") as HTMLInputElement;
   const todoInput = document.getElementById("todo") as HTMLInputElement;
-  if (nameInput) nameInput.value = "";
+  // if (nameInput) nameInput.value = "";
   if (titleInput) titleInput.value = "";
   if (todoInput) todoInput.value = "";
 };
