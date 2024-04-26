@@ -3,7 +3,7 @@ import Axios from "axios";
 export const login = async (
   email: string,
   password: string
-): Promise<any[]> => {
+): Promise<string[]> => {
   var userArray = [];
   try {
     const response = await Axios.post("http://localhost:3002/api/login", {
@@ -31,22 +31,21 @@ export const login = async (
   }
 };
 
-interface RegisterProps {
-  email: string;
-  firstName: string;
-  lastName: string;
-  age: number;
-  password: string;
-}
+// interface RegisterProps {
+// email: string;
+// firstName: string;
+// lastName: string;
+// age: number;
+// password: string;
+// }
 
-export const register = async ({
-  email,
-  firstName,
-  lastName,
-  age,
-  password,
-}: RegisterProps) => {
-  // console.log(name, title);
+export const register = async (
+  email: string,
+  firstName: string,
+  lastName: string,
+  age: number,
+  password: string
+): Promise<string> => {
   try {
     const response = await Axios.post("http://localhost:3002/api/register", {
       email: email,
@@ -57,9 +56,11 @@ export const register = async ({
     });
 
     if (response.data.status) {
-      login(email, password); 
+      return response.data.message;
+    } else {
+      return response.data.message;
     }
   } catch (error) {
-    return error;
+    throw new Error("Register failed");
   }
 };
