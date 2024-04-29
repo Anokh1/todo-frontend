@@ -64,7 +64,7 @@ export const countStatus = ({ value }: CountStatusProps): Promise<number> => {
       `http://localhost:3002/api/status?status=${encodeURIComponent(value)}`
     )
       .then((response) => {
-        const count = response.data.data.result;
+        const count = response.data.data;
         resolve(count);
       })
       .catch((error) => {

@@ -57,10 +57,11 @@ export const UserContextProvider: React.FC<UserContextProps> = ({
         });
 
         const userData = response.data.data;
+        const id = response.data.message;
         const [email, firstName, lastName] = userData.split(" ");
         setUserEmail(email);
         setUserName(`${firstName} ${lastName}`);
-        setUserId(response.data.message);
+        setUserId(id);
       } catch (error) {
         // console.error('Error:', error.message);
       }
