@@ -96,9 +96,10 @@ export default function Todo() {
   };
 
   const handleDeleteTodo = async (id: number) => {
-    const result = await verifyID(id); 
-    if (result.data) {
-      deleteTodo({ id });
+    // const result = await verifyID(id);
+    // if (result.data) {
+    const result = await deleteTodo({ id });
+    if (result.status === true) {
       setTodoList(
         todoList.filter((val) => {
           return val.id !== id;
@@ -122,7 +123,6 @@ export default function Todo() {
         }
       }
     }
-    
   };
 
   useEffect(() => {
