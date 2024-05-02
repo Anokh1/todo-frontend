@@ -7,6 +7,7 @@ import { login, register } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../utils/userContext";
 import { setToken } from "../services/localStorageService";
+import { Password } from "primereact/password";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -108,18 +109,20 @@ export default function Register() {
         <label htmlFor="input_value">Age</label>
       </span>
       <span className="p-float-label input">
-        <InputText
-          type="password"
-          className="form-input"
+        <Password
           onChange={(e) => setPassword(e.target.value)}
+          toggleMask
+          feedback={false}
+          inputStyle={{ width: "300px" }}
         />
         <label htmlFor="input_value">Password</label>
       </span>
       <span className="p-float-label input">
-        <InputText
-          type="password"
-          className="form-input"
+        <Password
           onChange={(e) => setConfirmPassword(e.target.value)}
+          toggleMask
+          feedback={false}
+          inputStyle={{ width: "300px" }}
         />
         <label htmlFor="input_value">Confirm Password</label>
       </span>

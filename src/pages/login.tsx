@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../utils/userContext";
 import { decodedToken, setAuthTokenCookie } from "../services/cookieService";
 import { setToken } from "../services/localStorageService";
+import { Password } from "primereact/password";
 const jwtDecode = require("jwt-decode");
 
 export default function Login() {
@@ -35,7 +36,7 @@ export default function Login() {
           }
         } else {
           if (toastRef.current != null) {
-            setToken(user[2]); 
+            setToken(user[2]);
             toastRef.current.show({
               severity: "success",
               summary: "Login success",
@@ -46,7 +47,7 @@ export default function Login() {
             }, 900);
 
             setUser(user[0], user[1], user[3]);
-            // console.log(user[3]); 
+            // console.log(user[3]);
           }
         }
       })
@@ -73,10 +74,11 @@ export default function Login() {
           <label htmlFor="input_value">Email</label>
         </span>
         <span className="p-float-label input">
-          <InputText
-            type="password"
-            className="form-input"
+          <Password
             onChange={(e) => setPassword(e.target.value)}
+            toggleMask
+            feedback={false}
+            inputStyle={{ width: "300px" }}
           />
           <label htmlFor="input_value">Password</label>
         </span>
