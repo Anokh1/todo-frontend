@@ -13,7 +13,8 @@ export const login = async (
 
     if (
       response.data.message === "Incorrect password" ||
-      response.data.message === "User not found"
+      response.data.message === "User not found" ||
+      response.data.message === "Missing email or password"
     ) {
       userArray = [response.data.message];
     } else {

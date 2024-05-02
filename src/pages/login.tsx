@@ -24,7 +24,6 @@ export default function Login() {
   const handleLogin = () => {
     login(email, password)
       .then((user) => {
-        // console.log(user);
 
         if (user.length === 1) {
           if (toastRef.current != null) {

@@ -62,7 +62,7 @@ export default function Todo() {
     var objectFound = todoList[elementPos].id;
     // need to check if user id and todo user id match
     const result = await verifyID(id);
-    if (result.data) {
+    if (result.status) {
       setVisible(true);
       setUpdateID(objectFound);
       setNewTitle(todoList[elementPos].title);
