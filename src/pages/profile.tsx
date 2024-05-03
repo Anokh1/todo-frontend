@@ -12,7 +12,7 @@ import { Avatar } from "primereact/avatar";
 import { Password } from "primereact/password";
 
 export default function Profile() {
-  const { userEmail, userId, clearUser } = useUserContext();
+  const { userEmail, userId, userName, clearUser } = useUserContext();
 
   const toastRef = useRef<Toast>(null);
 
@@ -36,7 +36,7 @@ export default function Profile() {
   };
 
   const [showPassword, setShowPassword] = useState(false);
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>("");
 
   return (
     <div className="App">
@@ -45,12 +45,13 @@ export default function Profile() {
       <div className="updateBox">
         <div className="card flex justify-content-center">
           <Card
-            title={userEmail}
+            // title={userEmail}
             className="md:w-45rem"
             style={{ width: "33em", marginTop: "3em" }}
           >
             <div>
-              <h3>{userId}</h3>
+              <Avatar icon="pi pi-user" shape="circle" size="xlarge" />
+              <h3>{userName}</h3>
               <Button
                 onClick={handleLogout}
                 type="button"
@@ -102,7 +103,7 @@ export default function Profile() {
     //     <Panel header="Profile">
     //       <div className="p-grid p-justify-center">
     //         <div className="p-col-4">
-    //           <Avatar icon="pi pi-user" shape="circle" size="xlarge" />
+    // <Avatar icon="pi pi-user" shape="circle" size="xlarge" />
     //         </div>
     //         <div className="p-col-8">
     //           <div className="p-fluid">

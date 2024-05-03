@@ -23,8 +23,12 @@ export const login = async (
         response.data.data.id,
         response.data.data.token,
         response.data.data.username,
+        // response.data.data[1],
+        // response.data.data[0],
+        // response.data.data[2],
+        // response.data.data[3]
       ];
-      // console.log(userArray);
+      console.log(userArray);
     }
     return userArray;
   } catch (error) {
