@@ -38,6 +38,11 @@ export default function Navbar() {
             label: "Profile",
             icon: 'pi pi-briefcase',
             command: () => { navigate("/profile"); }
+        },
+        {
+            label: "Workspace",
+            icon: 'pi pi-briefcase',
+            command: () => { navigate("/profile"); }
         }
     ];
 
