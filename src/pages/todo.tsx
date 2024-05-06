@@ -20,6 +20,7 @@ interface TodoItem {
   description: string;
   done: boolean;
   createdDate: Date;
+  userName: string;
 }
 
 export default function Todo() {
@@ -151,7 +152,7 @@ export default function Todo() {
               title={selectedTodo.title}
               subTitle={
                 "Created by " +
-                selectedTodo.name +
+                selectedTodo.userName +
                 " on " +
                 new Date(selectedTodo.createdDate).toDateString()
               }
@@ -230,7 +231,7 @@ export default function Todo() {
                 title={val.title}
                 subTitle={
                   "Created by " +
-                  val.name +
+                  val.userName +
                   " on " +
                   new Date(val.createdDate).toDateString()
                 }

@@ -8,6 +8,7 @@ interface TodoItem {
   description: string;
   done: boolean;
   createdDate: Date;
+  userName: string;
 }
 
 interface FileItem {
