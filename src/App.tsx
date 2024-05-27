@@ -12,6 +12,7 @@ import Profile from "./pages/profile";
 import PrivateRoute from "./utils/privateRoutes";
 import { UserContextProvider, useUserContext } from "./utils/userContext";
 import Axios from "axios";
+import Workspace from "./pages/workspace";
 
 type Theme = "light" | "dark" | "system";
 const ThemeContext = createContext<Theme>("system");
@@ -119,6 +120,7 @@ function App() {
             <Route path="/results" element={<Results />} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/workspace" element={<Workspace />} />
           </Route>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />

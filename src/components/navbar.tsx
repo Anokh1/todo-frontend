@@ -42,7 +42,7 @@ export default function Navbar() {
         {
             label: "Workspace",
             icon: 'pi pi-briefcase',
-            command: () => { navigate("/profile"); }
+            command: () => { navigate("/workspace"); }
         }
     ];
 
