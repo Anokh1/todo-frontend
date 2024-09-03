@@ -38,7 +38,8 @@ export const UserContextProvider = ({ children }: any) => {
   const [user, setUser] = useState<any>(null);
 
   const navigateToLogin = () => {
-    window.location.href = `${config.hostname}:${config.backend_port}/login`;
+    // window.location.href = `${config.hostname}:${config.backend_port}/login`;
+    navigate("/login");
   };
 
   useEffect(() => {

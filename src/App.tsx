@@ -1,18 +1,6 @@
-import React, { useReducer, createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useReducer, useState } from "react";
 // import logo from "./logo.svg";
 import "./App.css";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Home from "./pages/home";
-import Todo from "./pages/todo";
-import Results from "./pages/results";
-import Upload from "./pages/upload";
-import Login from "./pages/login";
-import Register from "./pages/register";
-import Profile from "./pages/profile";
-import PrivateRoute from "./utils/privateRoutes";
-import { UserContextProvider, useUserContext } from "./utils/userContext";
-import Axios from "axios";
-import Workspace from "./pages/workspace";
 
 type Theme = "light" | "dark" | "system";
 const ThemeContext = createContext<Theme>("system");
@@ -51,12 +39,8 @@ function MyButton({ title, disabled }: MyButtonProps) {
   return <button disabled={disabled}>{title}</button>;
 }
 
-
-
-
 // const fetchUserData = async () => {
 //   const token = localStorage.getItem("jwt");
-
 
 //   if (!token) {
 //     console.error("Token not found");
@@ -103,32 +87,32 @@ function App() {
   const addFive = () => dispatch({ type: "setCount", value: state.count + 5 });
   const reset = () => dispatch({ type: "reset" });
 
-
   // fetchUserData();
 
   return (
-    <UserContextProvider>
-      <div className="App">
-        <Routes>
-          <Route
-            path="/" // Set the path for the nested routes
-            element={<PrivateRoute path={""} element={undefined} />} // Pass the PrivateRoute component as the element
-          >
-            {" "}
-            <Route path="/home" element={<Home />} />
-            <Route path="/todo" element={<Todo />} />
-            <Route path="/todo/:id" element={<Todo />} />
-            <Route path="/results" element={<Results />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/workspace" element={<Workspace />} />
-          </Route>
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </div>
-    </UserContextProvider>
+    <></>
+    // <UserContextProvider>
+    //   <div className="App">
+    //     <Routes>
+    //       <Route
+    //         path="/" // Set the path for the nested routes
+    //         element={<PrivateRoute path={""} element={undefined} />} // Pass the PrivateRoute component as the element
+    //       >
+    //         {" "}
+    //         <Route path="/home" element={<Home />} />
+    //         <Route path="/todo" element={<Todo />} />
+    //         <Route path="/todo/:id" element={<Todo />} />
+    //         <Route path="/results" element={<Results />} />
+    //         <Route path="/upload" element={<Upload />} />
+    //         <Route path="/profile" element={<Profile />} />
+    //         <Route path="/workspace" element={<Workspace />} />
+    //       </Route>
+    //       <Route path="/" element={<Login />} />
+    //       <Route path="/login" element={<Login />} />
+    //       <Route path="/register" element={<Register />} />
+    //     </Routes>
+    //   </div>
+    // </UserContextProvider>
 
     // <div className="App">
     //   <Routes>
