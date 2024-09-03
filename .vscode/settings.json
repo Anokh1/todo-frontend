@@ -5,6 +5,8 @@
         "inputtext",
         "inputtextarea",
         "primeicons",
+        "swal",
+        "sweetalert",
         "toastify",
         "todos",
         "treetable"
