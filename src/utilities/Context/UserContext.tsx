@@ -1,4 +1,7 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import UserService from "services/user.service";
+import { useLoading } from "./LoadingContext";
 
 export type UserContextProps = {
   user: {
@@ -23,5 +26,10 @@ export const UserContext = createContext<UserContextProps>({
 });
 
 export const UserContextProvider = ({ children }: any) => {
-    
+  const userService = new UserService();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { startLoading, stopLoading } = useLoading();
+
+  const [user, setUser] = useState<any>(null);
 };

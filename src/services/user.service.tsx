@@ -17,3 +17,9 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+export default class UserService {
+  getOneUser() {
+    return axiosInstance.get("/getOneUser").then((res) => res.data);
+  }
+}
