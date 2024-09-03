@@ -1,18 +1,16 @@
-import React, { useReducer, createContext, useContext, useState } from "react";
-// import logo from "./logo.svg";
+import React, { createContext, useContext, useReducer, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Home from "./pages/home";
-import Todo from "./pages/todo";
-import Results from "./pages/results";
-import Upload from "./pages/upload";
 import Login from "./pages/login";
-import Register from "./pages/register";
 import Profile from "./pages/profile";
-import PrivateRoute from "./utils/privateRoutes";
-import { UserContextProvider, useUserContext } from "./utils/userContext";
-import Axios from "axios";
+import Register from "./pages/register";
+import Results from "./pages/results";
+import Todo from "./pages/todo";
+import Upload from "./pages/upload";
 import Workspace from "./pages/workspace";
+import PrivateRoute from "./utils/privateRoutes";
+import { UserContextProvider } from "./utils/userContext";
 
 type Theme = "light" | "dark" | "system";
 const ThemeContext = createContext<Theme>("system");
