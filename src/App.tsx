@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useReducer, useState } from "react";
-// import logo from "./logo.svg";
 import "./App.css";
 
 type Theme = "light" | "dark" | "system";
