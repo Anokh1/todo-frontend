@@ -1,173 +1,47 @@
-.App {
-  /* text-align: center; */
-  /* margin-left: 30px; */
-  /* margin-top: 80px; */
-}
-
-.input {
-  /* width: 100%; */
-  margin-bottom: 30px;
-}
-
-.container {
-  min-height: 80vh;
+/* Container for the entire inline menu */
+.app-inline-menu {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  /* color: black; */
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
-.tree {
-  margin-left: 20px;
+.app-inline-menu:hover {
+  background-color: #e9ecef;
 }
 
-.todo {
-  margin-top: 80px;
-}
-
-.todoCard {
-  margin: auto;
-  margin-bottom: 30px;
-  width: 800px;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  /* color: white; */
-}
-
-.updateBox {
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.workspaceDialog {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.menubar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 999;
-}
-
-.section {
-  margin-top: 80px;
-  display: flex;
-}
-
-.left-section {
-  /* background-color: aqua; */
-  flex: 1;
-}
-
-.mid-section {
-  flex: 1;
-}
-
-.right-section {
-  flex: 1;
-}
-
-/* .custom-file-upload {
-  display: inline-block;
-  padding: 10px 10px;
-  background-color: #cccccc;
-  color: #000;
-  border-radius: 5px;
-  cursor: pointer;
+/* Button styling */
+.app-inline-menu button {
+  background: none;
+  border: none;
+  padding: 0;
   margin-right: 10px;
-} */
-
-.custom-file-upload {
-  display: inline-block;
-  padding: 10px 10px;
-  background-color: #cccccc;
-  color: #000;
-  border-radius: 5px;
   cursor: pointer;
-  margin-right: 10px;
-  /* white-space: nowrap; */
-}
-
-/* Hide the input element */
-#file-upload {
-  display: none;
-}
-
-.file-upload-container {
   display: flex;
   align-items: center;
 }
 
-.excel-button-container {
-  display: "flex";
-  justify-content: "flex-end";
-  margin-top: "1.5em";
+/* Avatar image styling */
+.app-inline-menu img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-/* .file-name-container {
-  width: 100%; // no flex is the problem
-  overflow: hidden;
-  text-overflow: ellipsis;
-} */
-
-.file-name-container {
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.app-inline-menu button:hover img {
+  transform: scale(1.1);
 }
 
-.file-name {
-  margin: 0;
+/* Name text styling */
+.app-inline-menu span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.form-input {
-  width: 300px;
-}
-
-.form-section {
-  margin-top: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-}
-
-.register-form-section {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-}
-
-.button-link {
-  margin-top: 10px;
-  color: #007bff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-
-  /* Additional styles for hover effect */
-}
-
-.button-link:hover {
-  color: #0056b3;
+  overflow: hidden;
 }
