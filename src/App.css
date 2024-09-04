@@ -1,18 +1,66 @@
-/* Container for the entire inline menu */
+/* General styling for the app */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+}
+
+/* Container for the overall app layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 20px;
+}
+
+/* AppMenu container */
+.app-menu {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.app-menu div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.app-menu img {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  background-color: #e0e0e0; /* Placeholder background */
+  border-radius: 50%;
+}
+
+.app-menu p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+/* AppInlineMenu container */
 .app-inline-menu {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 8px 12px;
   transition: background-color 0.3s ease;
+  width: fit-content;
 }
 
 .app-inline-menu:hover {
   background-color: #e9ecef;
 }
 
-/* Button styling */
 .app-inline-menu button {
   background: none;
   border: none;
@@ -23,7 +71,6 @@
   align-items: center;
 }
 
-/* Avatar image styling */
 .app-inline-menu img {
   width: 44px;
   height: 44px;
@@ -36,7 +83,6 @@
   transform: scale(1.1);
 }
 
-/* Name text styling */
 .app-inline-menu span {
   font-size: 16px;
   font-weight: 500;

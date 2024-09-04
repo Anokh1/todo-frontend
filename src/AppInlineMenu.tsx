@@ -5,11 +5,11 @@ const AppInlineMenu = (props: any) => {
     <div className="app-inline-menu">
       <button>
         <img
-          src={`https://api.dicebear.com/7.x/initials/svg?seed=Adrian`}
+          src={`https://api.dicebear.com/7.x/initials/svg?seed=Adrian Ooi`}
           alt="avatar"
         />
       </button>
-      <span>Adrian</span>
+      <span>Adrian Ooi</span>
     </div>
   );
 };

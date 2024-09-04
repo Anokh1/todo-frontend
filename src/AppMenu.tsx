@@ -1,11 +1,14 @@
+import React from "react";
+import "./App.css";
+
 const AppMenu = (props: any) => {
   return (
-    <div>
-      <div className="menu-logo">
-        <img></img>
+    <div className="app-menu">
+      <div>
+        <img src="" alt="Menu Icon" />
         <p>TODO</p>
       </div>
-      <div className="menu-container"></div>
+      <div></div>
     </div>
   );
 };
