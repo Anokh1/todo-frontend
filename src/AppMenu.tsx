@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import AppInlineMenu from "AppInlineMenu";
 
 const AppMenu = (props: any) => {
   return (
@@ -9,6 +10,7 @@ const AppMenu = (props: any) => {
         <p>TODO</p>
       </div>
       <div></div>
+      <AppInlineMenu />
     </div>
   );
 };
