@@ -5,6 +5,8 @@ import TodoService from "services/todo.service";
 import { MenuItem } from "primereact/menuitem";
 import { confirmDialog } from "primereact/confirmdialog";
 import { callApi } from "utilities/Function/callApi.function";
+import { showSuccessToast } from "utilities/Function/customToast.function";
+import MediaQuery from "utilities/Function/mediaQuery.function";
 
 const Todo = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -55,13 +57,13 @@ const Todo = () => {
                       { apiFunction: todoService.deactivateTodo, setLoading },
                       { id: selectedTodo?.id }
                     ).then((res: any) => {
-
-                        if (res.status) {
-                            // callGetTodoList(); 
-                            // showSuccessToast(res.message); 
-                        }
-                    })
+                      if (res.status) {
+                        // callGetTodoList();
+                        showSuccessToast(res.message);
+                      }
+                    });
                   },
+                  reject: () => {},
                 });
               }}
             >
@@ -73,4 +75,9 @@ const Todo = () => {
       },
     },
   ];
+
+  MediaQuery("(min-width: 768px)", (matches: any) => {
+    setSmallScreen(!matches);
+
+  })
 };
