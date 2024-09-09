@@ -1,12 +1,14 @@
 import { DataTableFilterMeta } from "primereact/datatable";
 import { FilterMatchMode } from "primereact/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodoService from "services/todo.service";
 import { MenuItem } from "primereact/menuitem";
 import { confirmDialog } from "primereact/confirmdialog";
 import { callApi } from "utilities/Function/callApi.function";
 import { showSuccessToast } from "utilities/Function/customToast.function";
 import MediaQuery from "utilities/Function/mediaQuery.function";
+import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
 
 const Todo = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -58,7 +60,7 @@ const Todo = () => {
                       { id: selectedTodo?.id }
                     ).then((res: any) => {
                       if (res.status) {
-                        // callGetTodoList();
+                        callGetTodoList();
                         showSuccessToast(res.message);
                       }
                     });
@@ -78,6 +80,46 @@ const Todo = () => {
 
   MediaQuery("(min-width: 768px)", (matches: any) => {
     setSmallScreen(!matches);
+  });
 
-  })
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      callGetTodoList();
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const callGetTodoList = () => {
+    callApi({ apiFunction: todoService.getTodo, setLoading }, filters).then(
+      (res: any) => {
+        if (res.status) {
+          setTodoList(res.data);
+        }
+      }
+    );
+  };
+
+  const renderHeader = () => {
+    return (
+      <div className="flex align-items-center justify-content-between">
+        <Button
+          icon="pi pi-plus-circle"
+          label="Create Todo"
+          className="mr-2"
+          onClick={(e) => {
+            setVisibleAddTodoDialog(true);
+          }}
+          loading={loading}
+        />
+        <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText type="search" value={globalFilterValue} onChange={(e) => onGlobalFilterChange} />
+        </span>
+      </div>
+    );
+  };
 };
