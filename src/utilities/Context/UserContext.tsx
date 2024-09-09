@@ -1,11 +1,10 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserService from "services/user.service";
-import { useLoading } from "./LoadingContext";
-import { getToken } from "utilities/Function/getToken.function";
 import { callApi } from "utilities/Function/callApi.function";
-import config from "config/server.config";
 import { ClearToken } from "utilities/Function/clearToken.function";
+import { getToken } from "utilities/Function/getToken.function";
+import { useLoading } from "./LoadingContext";
 
 export type UserContextProps = {
   user: {

@@ -40,7 +40,4 @@ export default class TodoService {
       .patch(url + "/deactivateTodo", values)
       .then((res) => res.data);
   }
-
-
-
 }

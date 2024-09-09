@@ -7,5 +7,4 @@ const Dashboard = () => {
   document.title = DOCUMENT_TITLE.Dashboard;
   const { startLoading, stopLoading } = useLoading();
   const { user } = useContext(UserContext);
-  
 };
