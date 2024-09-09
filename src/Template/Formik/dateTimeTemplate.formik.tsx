@@ -1,11 +1,17 @@
 import moment from "moment";
 
-export const DateTimeTemplate = (rowData: any, field: string) => {
-  const formattedDateTime = moment(rowData[field]).format("DD MMM YYYY h:mm A");
-  return <>{formattedDateTime}</>;
-};
+interface DateTemplateProps {
+  rowData: any;
+  field: string;
+  showTime?: boolean;
+}
 
-export const DateTemplate = (rowData: any, field: string) => {
-  const formattedDate = moment(rowData[field]).format("DD MMM YYYY");
+export const DateTemplate = ({
+  rowData,
+  field,
+  showTime = false,
+}: DateTemplateProps) => {
+  const formatString = showTime ? "DD MMM YYYY h:mm A" : "DD MMM YYYY";
+  const formattedDate = moment(rowData[field]).format(formatString);
   return <>{formattedDate}</>;
 };
