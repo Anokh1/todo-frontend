@@ -1,16 +1,20 @@
 import { DataTableFilterMeta } from "primereact/datatable";
 import { FilterMatchMode } from "primereact/api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TodoService from "services/todo.service";
 import { MenuItem } from "primereact/menuitem";
-import { confirmDialog } from "primereact/confirmdialog";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { callApi } from "utilities/Function/callApi.function";
 import { showSuccessToast } from "utilities/Function/customToast.function";
 import MediaQuery from "utilities/Function/mediaQuery.function";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
+import { onGlobalFilterChange } from "utilities/Function/onGlobalFilterChange.function";
+import { Menu } from "primereact/menu";
+import { Dialog } from "primereact/dialog";
 
 const Todo = () => {
+  const menuAction = useRef<Menu>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [todoList, setTodoList] = useState<any>([]);
   const [selectedTodo, setSelectedTodo] = useState<any>();
@@ -117,9 +121,38 @@ const Todo = () => {
         />
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
-          <InputText type="search" value={globalFilterValue} onChange={(e) => onGlobalFilterChange} />
+          <InputText
+            type="search"
+            value={globalFilterValue}
+            onChange={(e) =>
+              onGlobalFilterChange({
+                e,
+                filters,
+                setFilters,
+                setGlobalFilterValue,
+              })
+            }
+            placeholder="Search"
+            disabled={loading}
+          />
         </span>
       </div>
     );
   };
+
+  return (
+    <div>
+      <ConfirmDialog />
+      <Menu model={items} popup ref={menuAction} id="popup_menu" />
+      <Dialog
+        header="Create Todo"
+        visible={visibleAddTodoDialog}
+        style={{ width: smallScreen ? "90vw" : "70vw" }}
+        onHide={() => {
+          if (!visibleAddTodoDialog) return;
+          setVisibleAddTodoDialog(false);
+        }}
+      ></Dialog>
+    </div>
+  );
 };
