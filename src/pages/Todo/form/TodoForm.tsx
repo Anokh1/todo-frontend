@@ -11,7 +11,7 @@ import { Button } from "primereact/button";
 
 interface TodoFormProps {
   isEdit?: boolean;
-  selectedTodo: any;
+  selectedTodo?: any;
   setVisibleAddTodoDialog?: React.Dispatch<React.SetStateAction<boolean>>;
   setVisibleEditTodoDialog?: React.Dispatch<React.SetStateAction<boolean>>;
   callGetTodoList?: () => void;
@@ -97,7 +97,7 @@ const TodoForm = ({
                   <InputText
                     id="description"
                     name="description"
-                    value={props.values.title}
+                    value={props.values.description}
                     onChange={props.handleChange}
                     onBlur={props.handleBlur}
                     placeholder="Description"

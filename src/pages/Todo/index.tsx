@@ -12,6 +12,7 @@ import { InputText } from "primereact/inputtext";
 import { onGlobalFilterChange } from "utilities/Function/onGlobalFilterChange.function";
 import { Menu } from "primereact/menu";
 import { Dialog } from "primereact/dialog";
+import TodoForm from "./form/TodoForm";
 
 const Todo = () => {
   const menuAction = useRef<Menu>(null);
@@ -152,7 +153,33 @@ const Todo = () => {
           if (!visibleAddTodoDialog) return;
           setVisibleAddTodoDialog(false);
         }}
-      ></Dialog>
+      >
+        <div>
+          <TodoForm
+            setVisibleAddTodoDialog={setVisibleAddTodoDialog}
+            isEdit={false}
+            callGetTodoList={callGetTodoList}
+          />
+        </div>
+      </Dialog>
+      <Dialog
+        header={`Edit ${selectedTodo?.title}`}
+        visible={visibleEditTodoDialog}
+        style={{ width: smallScreen ? "90vw" : "70vw" }}
+        onHide={() => {
+          if (!visibleEditTodoDialog) return;
+          setVisibleEditTodoDialog(false);
+        }}
+      >
+        <div>
+          <TodoForm
+            selectedTodo={selectedTodo}
+            setVisibleEditTodoDialog={setVisibleEditTodoDialog}
+            isEdit={true}
+            callGetTodoList={callGetTodoList}
+          />
+        </div>
+      </Dialog>
     </div>
   );
 };
