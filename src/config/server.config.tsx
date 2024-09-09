@@ -7,7 +7,7 @@ console.log("REACT ENV", import.meta.env.VITE_APP_ENV);
 
 const devConfig: configProps = {
   hostname: "http://localhost",
-  frontend_port: 3112,
+  frontend_port: 3222,
   backend_port: 3002,
 };
 

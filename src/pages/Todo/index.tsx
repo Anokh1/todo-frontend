@@ -1,4 +1,4 @@
-import { DataTableFilterMeta } from "primereact/datatable";
+import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { FilterMatchMode } from "primereact/api";
 import { useEffect, useRef, useState } from "react";
 import TodoService from "services/todo.service";
@@ -13,6 +13,7 @@ import { onGlobalFilterChange } from "utilities/Function/onGlobalFilterChange.fu
 import { Menu } from "primereact/menu";
 import { Dialog } from "primereact/dialog";
 import TodoForm from "./form/TodoForm";
+import { Column } from "primereact/column";
 
 const Todo = () => {
   const menuAction = useRef<Menu>(null);
@@ -180,6 +181,43 @@ const Todo = () => {
           />
         </div>
       </Dialog>
+
+      <div className="card">
+        <DataTable
+          sortMode="single"
+          header={renderHeader()}
+          filters={filters}
+          value={todoList}
+          paginator
+          stripedRows
+          rows={10}
+          loading={loading}
+          globalFilterFields={["title", "description"]}
+          emptyMessage="No data found"
+        >
+          <Column field="title" header="Title" sortable />
+          <Column field="description" header="Description" sortable />
+          {/* <Column field="insert_date" header="Create Date" sortable bodyStyle={(rowData: any) => DateTimeTemplate(rowData, "insert_date")} */}
+
+          <Column
+            body={(rowData) => (
+              <Button
+                icon="pi pi-ellipsis-h"
+                rounded
+                text
+                onClick={(e) => {
+                  setSelectedTodo(rowData);
+                  menuAction.current?.toggle(e);
+                }}
+                aria-controls="popup_menu"
+                aria-haspopup
+              />
+            )}
+          />
+        </DataTable>
+      </div>
     </div>
   );
 };
+
+export default Todo;

@@ -91,3 +91,62 @@ body {
   white-space: nowrap;
   overflow: hidden;
 }
+
+/* Styles for Todo component */
+
+/* Card component */
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Flexbox utility classes */
+.flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+/* Input icon left */
+.p-input-icon-left {
+  position: relative;
+}
+
+.p-input-icon-left i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+
+.p-input-icon-left input {
+  padding-left: 30px;
+}
+
+/* Menu item content */
+.p-menuitem-content {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.p-menuitem-content:hover {
+  background-color: #f0f2f5;
+}
+
+.m1-3 {
+  margin-left: 3px;
+}
+
