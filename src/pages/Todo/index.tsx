@@ -14,6 +14,7 @@ import { Menu } from "primereact/menu";
 import { Dialog } from "primereact/dialog";
 import TodoForm from "./form/TodoForm";
 import { Column } from "primereact/column";
+import { DateTemplate } from "Template/Formik/dateTimeTemplate.formik";
 
 const Todo = () => {
   const menuAction = useRef<Menu>(null);
@@ -109,7 +110,6 @@ const Todo = () => {
     );
   };
 
-
   const renderHeader = () => {
     return (
       <div className="flex align-items-center justify-content-between">
@@ -123,7 +123,7 @@ const Todo = () => {
           loading={loading}
         />
         <span className="p-input-icon-left">
-          <i className="pi pi-search" />
+          {/* <i className="pi pi-search" /> */}
           <InputText
             type="search"
             value={globalFilterValue}
@@ -198,8 +198,38 @@ const Todo = () => {
         >
           <Column field="title" header="Title" sortable />
           <Column field="description" header="Description" sortable />
-          {/* <Column field="insert_date" header="Create Date" sortable bodyStyle={(rowData: any) => DateTimeTemplate(rowData, "insert_date")} */}
-
+          <Column
+            field="insert_date"
+            header="Create Date"
+            sortable
+            body={(rowData: any) =>
+              DateTemplate({ rowData, field: "insert_date", showTime: true })
+            }
+          />
+          <Column
+            field="update_date"
+            header="Update Date"
+            sortable
+            style={{ whiteSpace: "nowrap" }}
+            body={(rowData: any) =>
+              rowData.update_date
+                ? DateTemplate({
+                    rowData,
+                    field: "update_date",
+                    showTime: true,
+                  })
+                : "-"
+            }
+          />
+          <Column
+            field="user_id.last_name"
+            header="Created By"
+            sortable
+            style={{ whiteSpace: "nowrap" }}
+            body={(rowData: any) =>
+              rowData.user?.last_name ? rowData.user?.last_name : "-"
+            }
+          />
           <Column
             body={(rowData) => (
               <Button
