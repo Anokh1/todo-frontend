@@ -43,8 +43,9 @@ const Todo = () => {
                 setVisibleEditTodoDialog(true);
               }}
             >
-              <span className="pi pi-pencil" style={{ color: "#6A9C89" }} />
-              <span className="m1-3">Edit</span>
+              {/* <span className="pi pi-pencil" style={{ color: "#6A9C89" }} />
+              <span className="m1-3">Edit</span> */}
+              Edit
             </a>
           </div>
         );
@@ -76,8 +77,9 @@ const Todo = () => {
                 });
               }}
             >
-              <span className="pi pi-pencil" style={{ color: "#C7253E" }} />
-              <span className="m1-3">Delete</span>
+              {/* <span className="pi pi-trash" style={{ color: "#C7253E" }} /> */}
+              {/* <span className="m1-3">Delete</span> */}
+              Delete
             </a>
           </div>
         );
