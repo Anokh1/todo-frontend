@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useCallback, useState } from "react";
 import "./App.css";
 import AppInlineMenu from "AppInlineMenu";
 import { useLocation } from "react-router-dom";
@@ -33,7 +33,21 @@ const AppSubmenu = forwardRef((props: any, ref: any) => {
     } else {
       if (props.menuMode !== "sidebar") {
         const ink = getInk(event.currentTarget);
+        if (ink) {
+          removeClass(ink, "p-ink-active");
+        }
       }
+    }
+
+    props.onMenuItemClick({
+      originalEvent: event,
+      item: item,
+    });
+  };
+
+  const onKeyDown = (event: any, item: any, index: any) => {
+    if (event.key === "Enter") {
+      onMenuItemClick(event, item, index);
     }
   };
 
@@ -48,6 +62,51 @@ const AppSubmenu = forwardRef((props: any, ref: any) => {
     }
     return null;
   };
+
+  const removeClass = (element: any, className: string) => {
+    if (element.classList) element.classList.remove(className);
+    else
+      element.className = element.className.replace(
+        new RegExp(
+          "(^|\\b)" + className.split(" ").join("|") + "(\\b|$)",
+          "gi"
+        ),
+        " "
+      );
+  };
+
+  const onMenuItemMouseEnter = (index: any) => {
+    if (props.root && props.menuActive && isHorizontalOrSlim() && !isMobile()) {
+      setActiveIndex(index);
+    }
+  };
+
+  const isMobile = () => {
+    return window.innerWidth <= 991;
+  };
+
+  const isStatic = () => {
+    return props.menuMode === "static";
+  };
+
+  const isHorizontalOrSlim = useCallback(() => {
+    return props.menuMode === "horizontal" || props.menuMode === "slim";
+  }, [props.menuMode]);
+
+  const visible = (item: any) => {
+    return typeof item.visible === "function"
+      ? item.visible()
+      : item.visible !== false;
+  };
+
+  // const getLink = (item: any, index: any) => {
+  //   const menuItemIconClassName = classNames("layout-menuitem-icon", item.icon); 
+  //   const content = (
+  //     <>
+  //     </>
+  //   )
+  // }
+
 
   return <></>;
 });
