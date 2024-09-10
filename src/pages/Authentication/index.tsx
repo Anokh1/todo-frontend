@@ -2,7 +2,9 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "services/auth.service";
+import { TODO_TOKEN } from "utilities/Constant/localStorageName.constant";
 import { callApi } from "utilities/Function/callApi.function";
+import { showErrorToast } from "utilities/Function/customToast.function";
 import * as Yup from "yup";
 
 const Authentication = () => {
@@ -24,8 +26,17 @@ const Authentication = () => {
         email: values.email,
         password: values.password,
       };
-      callApi({ apiFunction: authService.loginUser, setLoading }, { data })
-        .then
+      callApi(
+        { apiFunction: authService.loginUser, setLoading },
+        { data }
+      ).then((res) => {
+        if (res.status) {
+          localStorage.setItem(TODO_TOKEN, res.data.token);
+          navigate("/todo");
+        } else {
+          showErrorToast(res.message);
+        }
+      });
     },
   });
 };

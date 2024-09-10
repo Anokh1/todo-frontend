@@ -3,7 +3,7 @@ import config from "config/server.config";
 import { serviceApiPrefix } from "utilities/Constant/serviceApiPrefix.constant";
 import { getToken } from "utilities/Function/getToken.function";
 
-const url = `${config.hostname}:${config.backend_port}/${serviceApiPrefix.USER_API_PREFIX}`;
+const url = `${config.hostname}:${config.backend_port}/${serviceApiPrefix.TODO_API_PREFIX}`;
 const axiosInstance = axios.create({ baseURL: url });
 
 axiosInstance.interceptors.request.use(
@@ -37,7 +37,7 @@ export default class TodoService {
 
   deactivateTodo(values: any) {
     return axiosInstance
-      .patch(url + "/deactivateTodo", values)
+      .patch(url + "/deleteTodo", values)
       .then((res) => res.data);
   }
 }

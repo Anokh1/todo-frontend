@@ -1,0 +1,64 @@
+@import 'node_modules/primeflex/primeflex.scss';
+
+// @import './AppDemo.scss';
+body {
+    margin: 0px;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.p-paginator .p-dropdown .p-dropdown-label {
+    display: flex;
+    align-items: center;
+
+}
+
+.p-paginator .p-dropdown {
+    margin-left: 0;
+
+}
+
+.p-toolbar {
+    padding: 0;
+    border: none !important;
+}
+
+html {
+    font-size: 13px;
+}
+
+.layout-wrapper.layout-sidebar .layout-menu-wrapper .layout-menu-container .layout-menu li {
+    padding: 3px;
+    font-size: 13px; /* Include font-size here since it's part of the second rule */
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+    color: #333;
+    border: 1px solid #dee2e6;
+    border-width: 0 0 1px 0;
+    text-align: left;
+    // padding: 0rem;
+    padding: 0.571rem 0.429rem 0.571rem 1rem; // will cause checkbox button not align to center
+    height: 45px;
+}
+
+.p-datatable .p-sortable-column {
+    border-radius: 0px !important;
+}
+
+.p-link:focus {
+    box-shadow: none;
+}
+
+.p-scrolltop .p-scrolltop-icon {
+    color: white;
+}
+
+.p-datatable .p-column-header-content {
+    display: block;
+}
+
+.apexcharts-legend-marker {
+    stroke: black;
+}

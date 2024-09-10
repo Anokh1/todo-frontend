@@ -1,9 +1,7 @@
-import React from "react";
-import "./App.css";
-import AppInlineMenu from "./AppInlineMenu";
-import AppMenu from "./AppMenu";
-import { Route, Routes } from "react-router-dom";
 import Todo from "pages/Todo";
+import { Route, Routes } from "react-router-dom";
+import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import "./App.css";
 
 const App = (props: any) => {
   return (
