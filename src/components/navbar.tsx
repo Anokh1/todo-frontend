@@ -3,7 +3,7 @@ import { Menubar } from 'primereact/menubar';
 import { useNavigate } from "react-router-dom"
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { findTodo } from '../services/read';
+// import { findTodo } from '../services/read';
 
 export default function Navbar() {
     const navigate = useNavigate();
@@ -11,8 +11,8 @@ export default function Navbar() {
 
     const handleSearch = async () => {
         try {
-            const results = await findTodo(title);
-            navigate(`/results?query=${encodeURIComponent(title)}`, { state: { results } });
+            // const results = await findTodo(title);
+            // navigate(`/results?query=${encodeURIComponent(title)}`, { state: { results } });
         } catch (error) {
             console.error('Error searching for todo:', error);
         }

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Toast } from "primereact/toast";
-import { getExcelFile } from "../services/read";
+// import { getExcelFile } from "../services/read";
 
 // interface FileItem {
 //   name: string;
@@ -67,7 +67,7 @@ const UploadExcelPage = () => {
   };
 
   useEffect(() => {
-    getExcelFile(setFileNames); // Pass setFileNames directly
+    // getExcelFile(setFileNames); // Pass setFileNames directly
   }, []);
 
   // console.log(fileNames);
