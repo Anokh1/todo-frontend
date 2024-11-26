@@ -10,6 +10,7 @@ import "primereact/resources/primereact.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "./css/App.scss";
+import { LoadingProvider } from "context/LoadingContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -18,7 +19,9 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
-        <App />
+        <LoadingProvider>
+          <App />
+        </LoadingProvider>
       </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>

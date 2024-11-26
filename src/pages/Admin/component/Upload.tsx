@@ -1,10 +1,14 @@
-import { useLoading } from "Context/LoadingContext";
+import config from "config/server.config";
+import { useLoading } from "context/LoadingContext";
+import { Card } from "primereact/card";
 import { FileUpload } from "primereact/fileupload";
+import { Image } from "primereact/image";
 import { Menu } from "primereact/menu";
 import { TabPanel, TabView } from "primereact/tabview";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import FileService from "services/file.service";
 
-interface Resource {
+interface ImageFile {
   id: number;
   file_name: string;
   file_location: string;
@@ -14,33 +18,59 @@ interface Resource {
 
 const Upload: React.FC = ({}) => {
   const fileUploadRef = useRef<FileUpload>(null);
-  //   const { startLoading, stopLoading } = useLoading();
+  const { startLoading, stopLoading } = useLoading();
   const [isLoading, setIsLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [imageFile, setImageFile] = useState<ImageFile[]>([]);
 
-  //   const handleUpload = async (event: any) => {
-  //     const formData = new FormData();
-  //     const files = event.files;
+  const fileService = new FileService();
 
-  //     if (files && files.length > 0) {
-  //       files.forEach((file: File) => {
-  //         formData.append("files", file);
-  //       });
-  //       startLoading();
-  //       setIsLoading(true);
-  //       //   try {
-  //       //     let res;
-  //       //     if (activeindex === 0) {
+  const fetchImage = async () => {
+    const res = await fileService.getImage();
+    if (res.status) {
+      setImageFile(
+        res.data.map((img: ImageFile) => ({
+          ...img,
+          actual_url: `${config.hostname}:${config.backend_port}/${img.file_location}`,
+        }))
+      );
+    }
+  };
 
-  //       //     }
-  //       //   } catch () {
+  useEffect(() => {
+    fetchImage();
+  }, []);
 
-  //       //   }
-  //       stopLoading();
-  //       setIsLoading(false);
-  //     } else {
-  //     }
-  //   };
+  const handleUpload = async (event: any) => {
+    const formData = new FormData();
+    const files = event.files;
+
+    if (files && files.length > 0) {
+      files.forEach((file: File) => {
+        formData.append("files", file);
+      });
+      startLoading();
+      setIsLoading(true);
+      try {
+        let res;
+        if (activeIndex === 0) {
+          res = await fileService.uploadImage(formData);
+        }
+
+        if (res && res.status) {
+          fetchImage();
+        }
+
+        fileUploadRef.current?.clear();
+      } catch (error) {
+        console.error("Upload error: ", error);
+      }
+      stopLoading();
+      setIsLoading(false);
+    } else {
+      console.error("Upload error");
+    }
+  };
 
   return (
     <div>
@@ -52,10 +82,10 @@ const Upload: React.FC = ({}) => {
         accept={activeIndex === 0 ? "image/*,application/pdf" : "video/*"}
         customUpload
         multiple
-        // uploadHandler={handleUpload}
+        uploadHandler={handleUpload}
         maxFileSize={100 * 1024 * 1024}
         auto={true}
-        chooseLabel="Upload an image or PDF"
+        chooseLabel="Upload"
         style={{ width: "100%", marginBottom: "20px" }}
         disabled={isLoading}
       />
@@ -63,7 +93,44 @@ const Upload: React.FC = ({}) => {
       <Menu />
 
       <TabView>
-        <TabPanel></TabPanel>
+        <TabPanel header="Images">
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "30px" }}>
+            {imageFile.map((image, index) => (
+              <Card
+                key={index}
+                style={{
+                  width: "200px",
+                  height: "auto",
+                  overflow: "hidden",
+                  cursor: "pointer",
+                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <Image
+                  src={image.actual_url}
+                  width="80"
+                  height="auto"
+                  style={{ marginBottom: "8px", marginTop: "8px" }}
+                  preview
+                />
+                <div
+                  style={{
+                    marginTop: "5px",
+                    fontSize: "12px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {image.file_name}
+                </div>
+              </Card>
+            ))}
+          </div>
+        </TabPanel>
       </TabView>
     </div>
   );

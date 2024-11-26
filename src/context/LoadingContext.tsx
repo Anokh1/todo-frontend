@@ -39,4 +39,5 @@ const useLoading = (): LoadingContextProps => {
   return context;
 };
 
+//! need to use LoadingProvider in main.tsx
 export { LoadingProvider, useLoading };
