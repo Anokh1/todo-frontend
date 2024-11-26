@@ -21,7 +21,12 @@ const NAS: React.FC = () => {
           <a href="Z:\\tv.png">Local</a>
         </div>
         <div>
-          <a href="http://192.168.50.180:5000/sharing/oHxEZ3P4Q">NAS Server</a>
+          <a href="http://192.168.50.180:5000/sharing/oHxEZ3P4Q">
+            NAS Server - EXPIRED
+          </a>
+        </div>
+        <div>
+          <a href="http://192.168.50.180:5000/sharing/rBCLYfwBv">NAS Server</a>
         </div>
         <div>
           <a

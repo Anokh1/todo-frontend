@@ -3,4 +3,5 @@ export const serviceApiPrefix = {
   USER_API_PREFIX: "user",
   TODO_API_PREFIX: "todo",
   WORKSPACE_API_PREFIX: "workspace",
+  FILE_API_PREFIX: "file",
 };
