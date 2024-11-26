@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "./css/App.scss";
 import { LoadingProvider } from "context/LoadingContext";
-
+// TEst the branch 1
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
