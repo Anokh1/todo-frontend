@@ -24,7 +24,7 @@ const NAS: React.FC = () => {
           padding: "5px",
         }}
       >
-        <h1>NAS-UV</h1>
+        {/* <h1>NAS-UV</h1> */}
         <Upload />
       </div>
       <div style={{ width: "75%", padding: "5px" }}>

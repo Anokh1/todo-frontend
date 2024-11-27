@@ -35,8 +35,7 @@ const Viewer = () => {
   }, []);
 
   return (
-    <div className="card" style={{ width: "800px" }}>
-      <h1>Viewer</h1>
+    <div className="card" style={{ width: "800px", height: "550px" }}>
       <div style={{ marginBottom: "20px" }}>
         <label htmlFor="fileDropdown">Select File: </label>
         <Dropdown
@@ -46,10 +45,9 @@ const Viewer = () => {
           onChange={(e) => setSelectedFile(e.value)}
           optionLabel="file_name"
           placeholder="Select a file"
-          style={{ width: "200px", marginLeft: "10px" }}
+          style={{ width: "500px", marginLeft: "10px" }}
         />
         <Button
-          //   onClick={() => window.open(selectedFile ? selectedFile.file_location : "", "_blank")}
           onClick={() => setSelectedFile(null)}
           style={{ marginLeft: "10px" }}
           severity="danger"
@@ -59,11 +57,17 @@ const Viewer = () => {
       </div>
 
       <Panel className="mb-2" header="PDF Viewer">
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <embed
             src={selectedFile ? selectedFile.file_location : ""}
-            width="600"
-            height="400"
+            width="700"
+            height="370"
             type="application/pdf"
           />
         </div>

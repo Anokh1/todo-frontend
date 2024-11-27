@@ -9,4 +9,10 @@ export default class SynologyService {
   getFileList() {
     return axiosInstance.get(url + "/getFileList").then((res) => res.data);
   }
+
+  uploadOne(files: any) {
+    return axiosInstance
+      .post(url + "/uploadOne", files)
+      .then((res) => res.data);
+  }
 }
