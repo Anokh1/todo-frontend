@@ -5,8 +5,14 @@ import { FileUpload } from "primereact/fileupload";
 import { Image } from "primereact/image";
 import { Menu } from "primereact/menu";
 import { TabPanel, TabView } from "primereact/tabview";
+import { Toast } from "primereact/toast";
 import { useEffect, useRef, useState } from "react";
 import FileService from "services/file.service";
+import {
+  showError,
+  showSuccess,
+  showWarning,
+} from "utilities/Function/toast.function";
 
 interface ImageFile {
   id: number;
@@ -18,6 +24,7 @@ interface ImageFile {
 
 const Upload: React.FC = ({}) => {
   const fileUploadRef = useRef<FileUpload>(null);
+  const toastRef = useRef<Toast>(null);
   const { startLoading, stopLoading } = useLoading();
   const [isLoading, setIsLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -58,22 +65,27 @@ const Upload: React.FC = ({}) => {
         }
 
         if (res && res.status) {
+          showSuccess(toastRef, "File upload success");
           fetchImage();
+        } else {
+          showError(toastRef, "File upload fail");
         }
 
         fileUploadRef.current?.clear();
       } catch (error) {
         console.error("Upload error: ", error);
+        showError(toastRef, "Upload error");
       }
       stopLoading();
       setIsLoading(false);
     } else {
-      console.error("Upload error");
+      showWarning(toastRef, "No file for upload");
     }
   };
 
   return (
     <div>
+      <Toast ref={toastRef} />
       <h2>Upload</h2>
       <FileUpload
         mode="basic"
