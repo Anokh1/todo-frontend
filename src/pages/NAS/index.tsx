@@ -1,3 +1,4 @@
+import Upload from "./component/Upload";
 import Viewer from "./component/Viewer";
 
 const NAS: React.FC = () => {
@@ -23,75 +24,8 @@ const NAS: React.FC = () => {
           padding: "5px",
         }}
       >
-        <h1>NAS</h1>
-        <div className="card">
-          <div>
-            <a href="Z:\\tv.png">Local</a>
-          </div>
-          <div>
-            <a href="http://192.168.50.180:5000/sharing/oHxEZ3P4Q">
-              NAS Server - EXPIRED
-            </a>
-          </div>
-          <div>
-            <a href="http://192.168.50.180:5000/sharing/rBCLYfwBv">
-              NAS Server
-            </a>
-          </div>
-          <div>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent navigation
-                handleCopyToClipboard("Z:\\tv.png");
-              }}
-            >
-              Copy File Path
-            </a>
-            {/* Optional: Styled Button */}
-            {/* <Button
-            label="Copy File Path"
-            icon="pi pi-copy"
-            onClick={handleCopyToClipboard}
-            className="p-button-text"
-          /> */}
-          </div>
-          <div>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent navigation
-                handleCopyToClipboard(
-                  "Z:\\multi-img-1727916262792d03b0ce7-39ac-4657-82e1-f341a39f7241.png"
-                );
-              }}
-            >
-              PNG
-            </a>
-          </div>
-          <div>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent navigation
-                handleCopyToClipboard("Z:\\P&L_SA-2024-005 (Revision 1).pdf");
-              }}
-            >
-              PDF
-            </a>
-          </div>
-          <div>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent navigation
-                handleCopyToClipboard("Z:\\PartMaster.xlsx");
-              }}
-            >
-              XLSX
-            </a>
-          </div>
-        </div>
+        <h1>NAS-UV</h1>
+        <Upload />
       </div>
       <div style={{ width: "75%", padding: "5px" }}>
         <Viewer />

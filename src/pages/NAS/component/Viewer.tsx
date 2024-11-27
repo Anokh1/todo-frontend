@@ -1,41 +1,70 @@
+import config from "config/server.config";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { Panel } from "primereact/panel";
-import { Image } from "primereact/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import SynologyService from "services/synology.service";
 
-const Viewer = ({}) => {
-  const [selectedPath, setSelectedPath] = useState<string[]>([]);
-  const pathOptions = [{ label: "Z", value: "Z:/" }];
+interface NasFile {
+  id: number;
+  file_name: string;
+  file_location: string;
+}
+
+const Viewer = () => {
+  const [selectedFile, setSelectedFile] = useState<NasFile | null>(null);
+  const [fileList, setFileList] = useState<NasFile[]>([]);
+
+  const synologyService = new SynologyService();
+
+  const fetchList = async () => {
+    const res = await synologyService.getFileList();
+    if (res.status) {
+      setFileList(
+        res.data.map((file: string, index: number) => ({
+          id: index,
+          file_name: file,
+          file_location: `${config.hostname}:${config.backend_port}/Z/${file}`,
+        }))
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchList();
+  }, []);
+
   return (
-    <div className="card">
+    <div className="card" style={{ width: "800px" }}>
       <h1>Viewer</h1>
       <div style={{ marginBottom: "20px" }}>
-        <label htmlFor="pathDropdown">Select Path: </label>
+        <label htmlFor="fileDropdown">Select File: </label>
         <Dropdown
-          id="pathDropdown"
-          value={selectedPath}
-          options={pathOptions}
-          onChange={(e) => setSelectedPath(e.value)}
-          placeholder="Select a path"
+          id="fileDropdown"
+          value={selectedFile}
+          options={fileList}
+          onChange={(e) => setSelectedFile(e.value)}
+          optionLabel="file_name"
+          placeholder="Select a file"
           style={{ width: "200px", marginLeft: "10px" }}
         />
         <Button
-          onClick={() => window.open(`/#/TV/${selectedPath}`, "_blank")}
+          //   onClick={() => window.open(selectedFile ? selectedFile.file_location : "", "_blank")}
+          onClick={() => setSelectedFile(null)}
           style={{ marginLeft: "10px" }}
-          severity="success"
+          severity="danger"
         >
-          Navigate to view file
+          Clear
         </Button>
       </div>
 
-      <Panel className="mb-2" header="NAS File Viewer">
+      <Panel className="mb-2" header="PDF Viewer">
         <div>
-          <Image
-            src="http://localhost:3002/assets/nas/tv.png"
-            alt="Image"
-            width="500"
-            preview
+          <embed
+            src={selectedFile ? selectedFile.file_location : ""}
+            width="600"
+            height="400"
+            type="application/pdf"
           />
         </div>
       </Panel>

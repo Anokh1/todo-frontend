@@ -1,9 +1,8 @@
-import Todo from "pages/Todo";
-import { Route, Routes } from "react-router-dom";
-import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
-import "./App.css";
 import Admin from "pages/Admin";
 import NAS from "pages/NAS";
+import Todo from "pages/Todo";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
 
 const App = (props: any) => {
   return (
