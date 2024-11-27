@@ -54,6 +54,13 @@ const Viewer = () => {
         >
           Clear
         </Button>
+        <Button
+          onClick={() => fetchList()}
+          style={{ marginLeft: "10px" }}
+          severity="success"
+        >
+          Refresh
+        </Button>
       </div>
 
       <Panel className="mb-2" header="PDF Viewer">

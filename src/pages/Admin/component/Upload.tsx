@@ -86,7 +86,6 @@ const Upload: React.FC = ({}) => {
   return (
     <div>
       <Toast ref={toastRef} />
-      <h2>Upload</h2>
       <FileUpload
         mode="basic"
         name="files"
