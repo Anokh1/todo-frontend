@@ -35,7 +35,7 @@ const Viewer = () => {
   }, []);
 
   return (
-    <div className="card" style={{ width: "800px", height: "550px" }}>
+    <div className="card" style={{ width: "800px", height: "550px", padding: "30px"}}>
       <div style={{ marginBottom: "20px" }}>
         <label htmlFor="fileDropdown">Select File: </label>
         <Dropdown

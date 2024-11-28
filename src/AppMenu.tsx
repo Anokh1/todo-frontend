@@ -1,7 +1,18 @@
-import React, { forwardRef, useCallback, useState } from "react";
+import React, {
+  createRef,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import "./App.css";
 import AppInlineMenu from "AppInlineMenu";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { classNames } from "primereact/utils";
+import { Badge } from "primereact/badge";
+import { Ripple } from "primereact/ripple";
+import { CSSTransition } from "react-transition-group";
+import logo from "./assets/images/todo-logo.png";
 
 const AppSubmenu = forwardRef((props: any, ref: any) => {
   const location = useLocation();
@@ -99,27 +110,232 @@ const AppSubmenu = forwardRef((props: any, ref: any) => {
       : item.visible !== false;
   };
 
-  // const getLink = (item: any, index: any) => {
-  //   const menuItemIconClassName = classNames("layout-menuitem-icon", item.icon); 
-  //   const content = (
-  //     <>
-  //     </>
-  //   )
-  // }
+  const getLink = (item: any, index: any) => {
+    const menuItemIconClassName = classNames("layout-menuitem-icon", item.icon);
+    const content = (
+      <>
+        <i className={menuItemIconClassName}></i>
+        <span className="layout-menuitem-text">{item.label}</span>
+        {item.items && (
+          <i className="pi pi-fw pi-chevron-down layout-submenu-toggler"></i>
+        )}
+        {item.badge && <Badge value={item.badge} severity="success" />}
+        <Ripple />
+      </>
+    );
+    const commonLinkProps = {
+      style: item.style,
+      className: classNames(item.className, "p-ripple", {
+        "p-disabled": item.disabled,
+      }),
+      target: item.target,
+      onClick: (e: any) => onMenuItemClick(e, item, index),
+      onmouseenter: () => onMenuItemMouseEnter(index),
+      onKeyDown: (e: any) => onKeyDown(e, item, index),
+    };
 
+    if (item.to && !item.subItems) {
+      return (
+        <NavLink
+          to={item.to}
+          {...commonLinkProps}
+          className={({ isActive }) =>
+            classNames(
+              commonLinkProps.className,
+              isActive ? "active-route" : undefined
+            )
+          }
+        >
+          {content}
+        </NavLink>
+      );
+    } else if (item.subItems) {
+      const containsCurrentSubItem = item.subItems.some(
+        (itemSub: { to: string }) =>
+          itemSub.to.split("/")[1] === location.pathname.split("/")[1]
+      );
 
-  return <></>;
+      if (containsCurrentSubItem) {
+        return (
+          <NavLink
+            to={location.pathname}
+            {...commonLinkProps}
+            className={({ isActive }) =>
+              classNames(
+                commonLinkProps.className,
+                isActive ? "active-route" : undefined
+              )
+            }
+          >
+            {content}
+          </NavLink>
+        );
+      } else {
+        return (
+          <NavLink
+            to={item.to}
+            {...commonLinkProps}
+            className={({ isActive }) =>
+              classNames(
+                commonLinkProps.className,
+                isActive ? "active-route" : undefined
+              )
+            }
+          >
+            {content}
+          </NavLink>
+        );
+      }
+    } else {
+      return (
+        <a
+          href={item.url}
+          rel="noopener noreferrer"
+          tabIndex={item.url ? undefined : 0}
+          {...commonLinkProps}
+        >
+          {content}
+        </a>
+      );
+    }
+  };
+
+  const getItems = () => {
+    const transitionTimeout =
+      isHorizontalOrSlim() && !props.root
+        ? { enter: 1000, exit: 450 }
+        : isHorizontalOrSlim() && !isMobile()
+        ? 0
+        : { enter: 1000, exit: 450 };
+    return props.items.map((item: any, i: any) => {
+      if (visible(item)) {
+        const submenuRef = createRef();
+        const active = activeIndex === i;
+        const menuitemClassName = classNames({
+          "layout-root-menuitem": props.root,
+          "active-menuitem": active && !item.disabled,
+        });
+        const link = getLink(item, i);
+
+        return (
+          <li
+            key={item.label || i}
+            className={menuitemClassName}
+            role="menuitem"
+          >
+            {props.root && isStatic() && (
+              <div className="layout-menuitem-text">{item.label}</div>
+            )}
+            {link}
+            <CSSTransition
+              //@ts-ignore
+              nodeRef={submenuRef}
+              classNames="p-toggleable-content"
+              timeout={transitionTimeout}
+              in={item.items && props.root && isStatic() ? true : active}
+              unmountOnExit
+            >
+              <AppSubmenu
+                ref={submenuRef}
+                items={visible(item) && item.items}
+                menuActive={props.menuActive}
+                menuMode={props.menuMode}
+                parentMenuItemActive={active}
+                onMenuItemClick={props.onMenuItemClick}
+              ></AppSubmenu>
+            </CSSTransition>
+          </li>
+        );
+      }
+      return null;
+    });
+  };
+
+  useEffect(() => {
+    if (props.resetActiveIndex && isHorizontalOrSlim()) {
+      setActiveIndex(null);
+    }
+  }, [props.resetActiveIndex, isHorizontalOrSlim]);
+
+  useEffect(() => {
+    if (!props.menuActive && isHorizontalOrSlim() && !isMobile()) {
+      setActiveIndex(null);
+    }
+  }, [props.menuActive, isHorizontalOrSlim]);
+
+  if (!props.items) {
+    return null;
+  }
+
+  const items = getItems();
+  return (
+    <ul ref={ref} className={props.className} role="menu">
+      {items}
+    </ul>
+  );
 });
 
 const AppMenu = (props: any) => {
+  const navigate = useNavigate();
+
+  const isOverlay = () => {
+    return props.menuMode === "overlay";
+  };
+
+  const isSideBar = () => {
+    return props.menuMode === "sidebar";
+  };
+
   return (
-    <div className="app-menu">
-      <div>
-        <img src="" alt="Menu Icon" />
-        <p>TODO</p>
+    <div
+      className={classNames("layout-menu-wrapper", {
+        "layout-sidebar-active": props.sidebarActive,
+      })}
+      onClick={props.onMenuClick}
+      onMouseOver={props.onSidebarMouseOver}
+      onMouseLeave={props.onSidebarMouseLeave}
+    >
+      <div className="menu-logo">
+        <button>
+          <img src={logo} alt="logo" onClick={() => navigate("/")} />
+        </button>
+        <div className="app-name p-link">
+          <p
+            className="ml-3"
+            style={{ fontSize: "1.6em", whiteSpace: "nowrap" }}
+            onClick={() => navigate("/")}
+          >
+            Todo
+          </p>
+        </div>
+        <button className="menu-pin p-link" onClick={props.onToggleMenu}>
+          {isOverlay() && <span className="pi pi-times"></span>}
+          {isSideBar() && !props.sidebarStatic && props.pinActive && (
+            <span className="pi pi-lock"></span>
+          )}
+          {isSideBar() && props.sidebarStatic && props.pinActive && (
+            <span className="pi pi-lock"></span>
+          )}
+        </button>
       </div>
-      <div></div>
-      <AppInlineMenu />
+      <div className="layout-menu-container">
+        <AppSubmenu
+          items={props.model}
+          className="layout-menu"
+          menuMode={props.menuMode}
+          menuActive={props.menuActive}
+          root
+          parentMenuItemActive
+          onMenuClick={props.onMenuClick}
+          onMenuItemClick={props.onMenuItemClick}
+          onRootMenuItemClick={props.onRootMenuItemClick}
+        />
+      </div>
+      <AppInlineMenu
+        menuMode={props.menuMode}
+        activeInlineProfile={props.activeInlineProfile}
+        onChangeActiveInlineMenu={props.onChangeActiveInlineMenu}
+      />
     </div>
   );
 };

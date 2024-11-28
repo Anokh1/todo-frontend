@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import { classNames } from "primereact/utils";
 import AppTopBar from "AppTopBar";
+import AppMenu from "AppMenu";
 
 interface MenuItem {
   label: string;
@@ -16,7 +17,7 @@ interface MenuItem {
 }
 
 const App: React.FC = () => {
-  const [menuMode] = useState("horizontal");
+  const [menuMode, setMenuMode] = useState("sidebar");
   const [staticMenuDesktopInactive, setStaticMenuDesktopInactive] =
     useState(false);
   const [staticMenuMobileActive, setStaticMenuMobileActive] = useState(false);
@@ -28,6 +29,12 @@ const App: React.FC = () => {
   const [configActive, setConfigActive] = useState(false);
 
   const ripple = true;
+
+  const routes = [
+    { label: "Todo", label_url: "todo" },
+    { label: "NAS", label_url: "nas" },
+    { label: "Admin", label_url: "admin" },
+  ];
 
   let configClick: any;
   let menuClick: any;
@@ -116,7 +123,7 @@ const App: React.FC = () => {
   return (
     <div className={layoutClassName} onClick={onDocumentClick}>
       <div className="layout-main">
-        <AppTopBar
+        {/* <AppTopBar
           // items={menu}
           menuMode={menuMode}
           menuActive={menuActive}
@@ -135,9 +142,26 @@ const App: React.FC = () => {
           // sidebarActive={sidebarActive}
           sidebarStatic={sidebarStatic}
           // pinActive={pinActive}
-        />
+        /> */}
       </div>
-      {/* <AppMenu /> */}
+      {/* <AppMenu
+        // model={menu}
+        // onRootMenuItemClick={onRootMenuItemClick}
+        // onMenuItemClick={onMenuItemClick}
+        // onToggleMenu={onToggleMenu}
+        // onMenuClick={onMenuClick}
+        menuMode={menuMode}
+        // colorScheme={props.colorScheme}
+        menuActive={menuActive}
+        // sidebarActive={sidebarActive}
+        sidebarStatic={sidebarStatic}
+        // pinActive={pinActive}
+        // onSidebarMouseLeave={onSidebarMouseLeave}
+        // onSidebarMouseOver={onSidebarMouseOver}
+        // activeInlineProfile={activeInlineProfile}
+        // onChangeActiveInlineMenu={onChangeActiveInlineMenu}
+        resetActiveIndex={resetActiveIndex}
+      /> */}
       <div className="layout-main-content">
         <Routes>
           {/* <Route path="/" element={}/> */}

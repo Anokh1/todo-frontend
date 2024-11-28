@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "./assets/images/todo-logo.png";
+import AppMenu from "AppMenu";
 
 const AppTopBar = (props: any) => {
   //   const { username, role } = useContext(UserContext);
@@ -28,13 +29,33 @@ const AppTopBar = (props: any) => {
         >
           <i className="pi pi-bars"></i>
         </button>
-        <img
-          src={logo}
-          onAuxClick={handleLogoClick}
-          alt="Todo Logo"
-          style={{ height: "50px", cursor: "pointer" }}
-        />
+        <button className="logo p-link" onClick={() => navigate("/")}>
+          <img src={logo} alt="logo" />
+        </button>
+
+        <p
+          className="ml-3 p-link"
+          style={{ fontSize: "1.6em" }}
+          onClick={() => navigate("/")}
+        >
+          Todo
+        </p>
       </div>
+
+      <AppMenu
+        model={props.items}
+        menuMode={props.menuMode}
+        colorScheme={props.colorScheme}
+        menuActive={props.menuActive}
+        activeInlineProfile={props.activeInlineProfile}
+        onSidebarMouseOver={props.onSidebarMouseOver}
+        onSidebarMouseLeave={props.onSidebarMouseLeave}
+        toggleMenu={props.onToggleMenu}
+        onChangeActiveInlineMenu={props.onChangeActiveInlineMenu}
+        onMenuClick={props.onMenuClick}
+        onRootMenuItemClick={props.onRootMenuItemClick}
+        onMenuItemClick={props.onMenuItemClick}
+      />
     </div>
   );
 };
