@@ -2,13 +2,143 @@ import Admin from "pages/Admin";
 import NAS from "pages/NAS";
 import Todo from "pages/Todo";
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
+// import "./App.css";
+import { useState } from "react";
+import { classNames } from "primereact/utils";
+import AppTopBar from "AppTopBar";
 
-const App = (props: any) => {
+interface MenuItem {
+  label: string;
+  icon: string;
+  to?: string;
+  items?: MenuItem[];
+  badge?: number;
+}
+
+const App: React.FC = () => {
+  const [menuMode] = useState("horizontal");
+  const [staticMenuDesktopInactive, setStaticMenuDesktopInactive] =
+    useState(false);
+  const [staticMenuMobileActive, setStaticMenuMobileActive] = useState(false);
+  const [overlayMenuActive, setOverlayMenuActive] = useState(false);
+  const [menuActive, setMenuActive] = useState(false);
+  const [sidebarStatic, setSideBarStatic] = useState(false);
+  const [topBarMenuActive, setTopBarMenuActive] = useState(false);
+  const [resetActiveIndex, setResetActiveIndex] = useState(false);
+  const [configActive, setConfigActive] = useState(false);
+
+  const ripple = true;
+
+  let configClick: any;
+  let menuClick: any;
+  let topbarItemClick: any;
+
+  const onDocumentClick = () => {
+    if (!topbarItemClick) setTopBarMenuActive(false);
+    if (!menuClick) {
+      if (isHorizontal()) {
+        setMenuActive(false);
+        setResetActiveIndex;
+      }
+      if (overlayMenuActive || staticMenuMobileActive) {
+        setOverlayMenuActive(false);
+        setStaticMenuMobileActive(false);
+      }
+      hideOverlayMenu();
+      unlockBodyScroll();
+    }
+    if (configActive && !configClick) setConfigActive(false);
+    topbarItemClick = false;
+    menuClick = false;
+    configClick = false;
+  };
+
+  const onMenuButtonClick = (event: any) => {
+    menuClick = true;
+
+    if (isOverlay()) {
+      setOverlayMenuActive((prevState) => !prevState);
+    }
+
+    if (isDesktop()) {
+      setStaticMenuDesktopInactive((prevState) => !prevState);
+    } else {
+      setStaticMenuMobileActive((prevState) => !prevState);
+    }
+
+    event.preventDefault();
+  };
+
+  const hideOverlayMenu = () => {
+    setOverlayMenuActive(false);
+    setStaticMenuMobileActive(false);
+  };
+
+  const isHorizontal = () => menuMode === "horizontal";
+
+  const isOverlay = () => {
+    return menuMode === "slim";
+  };
+
+  const isDesktop = () => {
+    return window.innerWidth > 991;
+  };
+
+  const unlockBodyScroll = () => {
+    if (document.body.classList) {
+      document.body.classList.remove("blocked-scroll");
+    } else {
+      document.body.className = document.body.className.replace(
+        new RegExp(
+          "(^|\\b)" + "blocked-scroll".split(" ").join("|") + "(\\b|$)",
+          "gi"
+        ),
+        " "
+      );
+    }
+  };
+
+  const layoutClassName = classNames("layout-wrapper", {
+    "layout-static": menuMode === "static",
+    "layout-overlay": menuMode === "overlay",
+    "layout-overlay-active": overlayMenuActive,
+    "layout-slim": menuMode === "slim",
+    "layout-horizontal": menuMode === "horizontal",
+    "layout-active": menuActive,
+    "layout-mobile-active": staticMenuMobileActive,
+    "layout-sidebar": menuMode === "sidebar",
+    "layout-sidebar-static": menuMode === "sidebar" && sidebarStatic,
+    "layout-static-inactive":
+      staticMenuDesktopInactive && menuMode === "static",
+    "p-ripple-disabled": !ripple,
+  });
+
   return (
-    <div className="app-container">
+    <div className={layoutClassName} onClick={onDocumentClick}>
+      <div className="layout-main">
+        <AppTopBar
+          // items={menu}
+          menuMode={menuMode}
+          menuActive={menuActive}
+          // topbarMenuActive={topbarMenuActive}
+          // activeInlineProfile={activeInlineProfile}
+          // onTopbarItemClick={onTopbarItemClick}
+          onMenuButtonClick={onMenuButtonClick}
+          // onToggleMenu={onToggleMenu}
+          // onChangeActiveInlineMenu={onChangeActiveInlineMenu}
+          // onMenuClick={onMenuClick}
+          // onMenuItemClick={onMenuItemClick}
+          // onRootMenuItemClick={onRootMenuItemClick}
+          resetActiveIndex={resetActiveIndex}
+          // onSidebarMouseOver={onSidebarMouseOver}
+          // onSidebarMouseLeave={onSidebarMouseLeave}
+          // sidebarActive={sidebarActive}
+          sidebarStatic={sidebarStatic}
+          // pinActive={pinActive}
+        />
+      </div>
       {/* <AppMenu /> */}
-      <div>
+      <div className="layout-main-content">
         <Routes>
           {/* <Route path="/" element={}/> */}
           <Route path="/todo" element={<Todo />} />
