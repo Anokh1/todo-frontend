@@ -7,6 +7,7 @@ import { useState } from "react";
 import { classNames } from "primereact/utils";
 import AppTopBar from "AppTopBar";
 import AppMenu from "AppMenu";
+import Network from "pages/Network";
 
 interface MenuItem {
   label: string;
@@ -168,6 +169,7 @@ const App: React.FC = () => {
           <Route path="/todo" element={<Todo />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/nas" element={<NAS />} />
+          <Route path="/network" element={<Network />} />
         </Routes>
       </div>
     </div>
