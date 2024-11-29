@@ -6,8 +6,14 @@ const url = `${config.hostname}:${config.backend_port}/${serviceApiPrefix.SYNOLO
 const axiosInstance = axios.create({ baseURL: url });
 
 export default class SynologyService {
-  getFileList() {
-    return axiosInstance.get(url + "/getFileList").then((res) => res.data);
+  getFileList(networkPath: string) {
+    return axiosInstance
+      .get(url + "/getFileList", { params: { networkPath } })
+      .then((res) => res.data);
+  }
+
+  getFolderList() {
+    return axiosInstance.get(url + "/getFolderList").then((res) => res.data);
   }
 
   uploadOne(files: any) {

@@ -18,7 +18,7 @@ const Viewer = () => {
   const synologyService = new SynologyService();
 
   const fetchList = async () => {
-    const res = await synologyService.getFileList();
+    const res = await synologyService.getFileList("");
     if (res.status) {
       setFileList(
         res.data.map((file: string, index: number) => ({
