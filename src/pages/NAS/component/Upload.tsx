@@ -57,7 +57,7 @@ const Upload: React.FC = ({}) => {
       try {
         let res;
         if (activeIndex === 0) {
-          res = await synologyService.uploadOne(formData);
+          res = await synologyService.upload(formData);
         }
 
         if (res && res.status) {

@@ -16,9 +16,7 @@ export default class SynologyService {
     return axiosInstance.get(url + "/getFolderList").then((res) => res.data);
   }
 
-  uploadOne(files: any) {
-    return axiosInstance
-      .post(url + "/uploadOne", files)
-      .then((res) => res.data);
+  upload(files: any) {
+    return axiosInstance.post(url + "/upload", files).then((res) => res.data);
   }
 }

@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react";
-import UploadViewer from "./component/UploadViewer";
-import Upload from "./component/Upload";
-import { Panel } from "primereact/panel";
+import { useLoading } from "context/LoadingContext";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
+import { FileUpload } from "primereact/fileupload";
+import { Panel } from "primereact/panel";
+import { Toast } from "primereact/toast";
+import { useRef, useState } from "react";
 import SynologyService from "services/synology.service";
-
-interface NasFolder {
-  id: number;
-  folder_name: string;
-  folder_path: string;
-}
 
 interface NasFile {
   id: number;
@@ -18,9 +13,12 @@ interface NasFile {
   file_path: string;
 }
 
-const Network: React.FC = () => {
-  const [updateFileList, setUpdateFileList] = useState(false);
-  const [selectedFolder, setSelectedFolder] = useState<NasFolder | null>(null);
+const Viewer: React.FC = () => {
+  const fileUploadRef = useRef<FileUpload>(null);
+  const toastRef = useRef<Toast>(null);
+  const { startLoading, stopLoading } = useLoading();
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedFile, setSelectedFile] = useState<NasFile | null>(null);
   const [fileList, setFileList] = useState<NasFile[]>([]);
 
@@ -33,22 +31,15 @@ const Network: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (selectedFolder) {
-      fetchList(selectedFolder?.folder_path);
-    }
-    // fetchList("Z:/Intel/");
-  }, [updateFileList]);
+  //   useEffect(() => {
+  //     if (selectedFolder) {
+  //       fetchList(selectedFolder?.folder_path);
+  //     }
+  //   }, [selectedFolder]);
 
   return (
-    <div style={{ display: "flex" }}>
-      <UploadViewer />
-      {/* <Upload
-        setUpdateFileList={setUpdateFileList}
-        updateFileList={updateFileList}
-        setCurrentFolder={setSelectedFolder}
-        currentFolder={selectedFolder}
-      />
+    <div style={{ display: "flex", flexWrap: "wrap", padding: "20px" }}>
+      {/* Viewer Section */}
       <div
         style={{
           justifyContent: "center",
@@ -96,10 +87,10 @@ const Network: React.FC = () => {
               )}
             </div>
           </Panel>
-        </div> */}
-      {/* </div> */}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Network;
+export default Viewer;
