@@ -1,3 +1,4 @@
+import { useLoading } from "context/LoadingContext";
 import moment from "moment";
 import Upload from "pages/Admin/component/Upload";
 import { Card } from "primereact/card";
@@ -7,12 +8,16 @@ import { Image } from "primereact/image";
 import { Menu } from "primereact/menu";
 import { TabPanel, TabView } from "primereact/tabview";
 import { useRef, useState } from "react";
+import FileService from "services/file.service";
 import { ImageFile } from "utilities/Interface/AdminInterface";
 
 const Admin: React.FC = () => {
+  const { startLoading, stopLoading } = useLoading();
   const [imageList, setImageList] = useState<ImageFile[]>([]);
   const [image, setImage] = useState<ImageFile>();
   const menuRef = useRef<Menu>(null);
+
+  const fileService = new FileService();
 
   const updateImageList = (images: ImageFile[]) => {
     setImageList(images);
@@ -26,34 +31,49 @@ const Admin: React.FC = () => {
     menuRef.current?.toggle(event);
   };
 
+  const handleRemoveImage = async () => {
+    if (image) {
+      startLoading();
+      const res = await fileService.deleteImage(image.id);
+      if (res.status) {
+        const newImageList = imageList.filter((img) => img.id !== image.id);
+        updateImageList(newImageList);
+      }
+      stopLoading();
+    }
+  };
+
   const menuImage = [
     {
       label: "Remove",
-      // command: handleRemoveImg,
+      command: handleRemoveImage,
       icon: "pi pi-trash",
     },
   ];
 
   return (
-    <div className="flex flex-column align-items-center justify-content-center min-h-screen p-4">
-      {/* <h1 className="text-center mb-4">Admin</h1> */}
-      <div className="w-full mt-4">
-        <TabView>
+    <div className="flex flex-column min-h-screen p-4">
+      <Menu model={menuImage} popup ref={menuRef} className="mb-4" />
+
+      <div className="flex flex-col flex-grow">
+        <TabView className="flex-grow w-full md:w-[800px]">
           <TabPanel header="Grid View">
-            <div className="flex justify-content-between mb-4">
-              <div className="flex-1"></div> {/* Spacer */}
+            <div className="flex justify-content-between items-center mb-4">
+              <div className="flex-1"></div>
               <Upload onUpdateImageList={updateImageList} />
             </div>
-            <div className="flex flex-wrap gap-3 justify-content-center">
+            <div className="grid grid-nogutter justify-content-center gap-3">
               {imageList.map((image, index) => (
                 <Card
                   key={index}
                   className="flex flex-column align-items-center justify-content-start"
                   style={{
                     width: "200px",
-                    height: "260px", // Fixed height for consistent layout
+                    height: "260px",
                     overflow: "hidden",
+                    flexShrink: 0,
                   }}
+                  onClick={(event) => handleImageClick(image, event)}
                 >
                   <div
                     className="flex justify-content-center align-items-center"
@@ -70,9 +90,9 @@ const Admin: React.FC = () => {
                   <div
                     className="text-sm text-center text-ellipsis overflow-hidden whitespace-nowrap"
                     style={{
-                      maxWidth: "180px", // Prevents overflow horizontally
-                      lineHeight: "1.2rem", // Adjust based on font size
-                      maxHeight: "1.2rem", // Same as lineHeight to enforce a single line
+                      maxWidth: "180px",
+                      lineHeight: "1.2rem",
+                      maxHeight: "1.2rem",
                     }}
                   >
                     {image.file_name}
@@ -82,8 +102,8 @@ const Admin: React.FC = () => {
             </div>
           </TabPanel>
           <TabPanel header="List View">
-            <div className="flex justify-content-between mb-4">
-              <div className="flex-1"></div> {/* Spacer */}
+            <div className="flex justify-content-between items-center mb-4">
+              <div className="flex-1"></div>
               <Upload onUpdateImageList={updateImageList} />
             </div>
             <div className="p-fluid">
@@ -98,7 +118,7 @@ const Admin: React.FC = () => {
                   header="Insert Date"
                   body={(rowData) => (
                     <span>
-                      {moment(rowData.insert_date).format("DD-MM-YYYY")}
+                      {moment(rowData.insert_date).format("DD MMM YYYY h:mm A")}
                     </span>
                   )}
                   style={{ minWidth: "150px" }}

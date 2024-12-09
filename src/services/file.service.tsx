@@ -15,4 +15,8 @@ export default class FileService {
       .post(url + "/uploadImage", files)
       .then((res) => res.data);
   }
+
+  deleteImage(id: number) {
+    return axiosInstance.post("/deleteImage", { id }).then((res) => res.data);
+  }
 }
