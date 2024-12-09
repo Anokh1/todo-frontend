@@ -1,56 +1,80 @@
-import { useLoading } from "context/LoadingContext";
+import { useEffect, useRef, useState } from "react";
+
+import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { FileUpload } from "primereact/fileupload";
+import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
-import { Image } from "primereact/image";
-import { useEffect, useRef, useState } from "react";
-import NASService from "services/nas.service";
+import { NasFile, NasFolder } from "utilities/Interface/NetworkInterface";
 import SynologyService from "services/synology.service";
-import {
-  showError,
-  showSuccess,
-  showWarning,
-} from "utilities/Function/toast.function";
+import { showSuccess, showError, showWarning } from "utilities/Function/toast.function";
+import { useLoading } from "context/LoadingContext";
 
-interface NasPath {
-  id: number;
-  name: string;
-  path: string;
+interface UploadProps {
+  onUpdateFileList: (files: NasFile[]) => void;
 }
 
-const Upload: React.FC = ({}) => {
+const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
   const fileUploadRef = useRef<FileUpload>(null);
   const toastRef = useRef<Toast>(null);
   const { startLoading, stopLoading } = useLoading();
   const [isLoading, setIsLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [selectedPath, setSelectedPath] = useState<NasPath | null>(null);
-  const [pathList, setPathList] = useState<NasPath[]>([]);
+  const [selectedFolder, setSelectedFolder] = useState<NasFolder | null>(null);
+  const [folderList, setFolderList] = useState<NasFolder[]>([]);
+  const [uploadList, setUploadList] = useState<File[]>([]);
+  const [newFolder, setNewFolder] = useState<string>("");
 
-  const nasService = new NASService();
   const synologyService = new SynologyService();
 
-  const fetchPath = async () => {
-    const res = await nasService.getPath();
+  const fetchList = async (path: string) => {
+    const res = await synologyService.getFileList(path);
     if (res.status) {
-      setPathList(res.data);
+      onUpdateFileList(res.data);
     }
   };
 
   useEffect(() => {
-    fetchPath();
+    if (selectedFolder) {
+      fetchList(selectedFolder?.folder_path);
+    }
+  }, [selectedFolder]);
+
+  const fetchFolder = async () => {
+    const res = await synologyService.getFolderList();
+    if (res.status) {
+      setFolderList(res.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchFolder();
   }, []);
 
-  const handleUpload = async (event: any) => {
-    const formData = new FormData();
-    const files = event.files;
+  const addFolder = async (folder: string) => {
+    const res = await synologyService.createFolder(folder);
+    if (res.status) {
+      showSuccess(toastRef, res.message);
+      fetchFolder();
+    } else {
+      showError(toastRef, "Folder exists");
+    }
+    setNewFolder("");
+  };
 
-    if (files && files.length > 0 && selectedPath) {
-      files.forEach((file: File) => {
+  const handleFileSelect = (event: any) => {
+    setUploadList([...event.files]);
+  };
+
+  const handleSubmit = async (event: any) => {
+    const formData = new FormData();
+
+    if (uploadList && uploadList.length > 0 && selectedFolder) {
+      uploadList.forEach((file) => {
         formData.append("files", file);
       });
 
-      const networkPath = selectedPath.path;
+      const networkPath = selectedFolder.folder_path;
       formData.append("networkPath", networkPath);
       startLoading();
       setIsLoading(true);
@@ -62,13 +86,14 @@ const Upload: React.FC = ({}) => {
 
         if (res && res.status) {
           showSuccess(toastRef, "File upload success");
+          fetchList(selectedFolder?.folder_path);
         } else {
           showError(toastRef, "File upload fail");
         }
 
+        setUploadList([]);
         fileUploadRef.current?.clear();
       } catch (error) {
-        console.error("Upload error: ", error);
         showError(toastRef, "Upload error");
       }
       stopLoading();
@@ -78,51 +103,101 @@ const Upload: React.FC = ({}) => {
     }
   };
 
+  const handleClear = async () => {
+    setUploadList([]);
+    fileUploadRef.current?.clear();
+  };
+
   return (
-    <div style={{ padding: "10px", maxWidth: "600px", margin: "auto" }}>
+    <div>
       <Toast ref={toastRef} />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "10px",
-        }}
-      >
-        <Image
-          src="src\assets\images\data-server.png"
-          width="120"
-          height="auto"
-          style={{ marginBottom: "8px", marginTop: "8px" }}
-        />
-        <h1>NAS.UV DSM223</h1>
-      </div>
-      <div style={{ marginBottom: "20px" }}>
-        <Dropdown
-          id="fileDropdown"
-          value={selectedPath}
-          options={pathList}
-          onChange={(e) => setSelectedPath(e.value)}
-          optionLabel="name"
-          placeholder="Select a path"
-          style={{ width: "100%" }}
-        />
-      </div>
       <div>
-        <FileUpload
-          mode="basic"
-          name="files"
-          ref={fileUploadRef}
-          accept={activeIndex === 0 ? "image/*,application/pdf" : "video/*"}
-          customUpload
-          multiple
-          uploadHandler={handleUpload}
-          maxFileSize={100 * 1024 * 1024}
-          auto={true}
-          chooseLabel="Upload"
-          style={{ width: "100%" }}
-          disabled={isLoading}
-        />
+        <div>
+          <div className="grid align-items-center">
+            <div className="col-12">
+              <Dropdown
+                className="w-full"
+                id="fileDropdown"
+                value={selectedFolder}
+                options={folderList}
+                onChange={(e) => setSelectedFolder(e.value)}
+                optionLabel="folder_name"
+                placeholder="Select a folder"
+                showClear
+              />
+            </div>
+            <div className="col-12">
+              <div className="flex gap-2 w-full">
+                <InputText
+                  value={newFolder}
+                  onChange={(e) => setNewFolder(e.target.value)}
+                  placeholder="Enter folder name"
+                  className="w-full"
+                />
+                <Button
+                  label="Create Folder"
+                  onClick={() => addFolder(newFolder)}
+                  disabled={isLoading || newFolder.trim() === ""}
+                  className="w-full"
+                  severity="secondary"
+                />
+              </div>
+            </div>
+            {uploadList.length > 0 && (
+              <div className="col-12">
+                <div className="flex gap-2 w-full">
+                  <Button
+                    label="Upload"
+                    icon="pi pi-upload"
+                    className="p-button-success w-full"
+                    onClick={handleSubmit}
+                    disabled={isLoading || uploadList.length === 0}
+                  />
+                  <Button
+                    label="Cancel"
+                    icon="pi pi-times"
+                    className="p-button-danger w-full"
+                    onClick={handleClear}
+                    disabled={isLoading || uploadList.length === 0}
+                  />
+                </div>
+              </div>
+            )}
+            <div className="col-12">
+              <FileUpload
+                name="files"
+                ref={fileUploadRef}
+                accept={
+                  activeIndex === 0 ? "image/*,application/pdf" : "video/*"
+                }
+                customUpload
+                multiple
+                uploadHandler={handleFileSelect}
+                maxFileSize={100 * 1024 * 1024}
+                auto={true}
+                chooseLabel="Add Files For Upload"
+                style={{ width: "100%" }}
+                disabled={isLoading}
+                onSelect={(event) => {
+                  setUploadList((prevList) => [...prevList, ...event.files]);
+                }}
+                onRemove={(event) => {
+                  setUploadList((prevList) =>
+                    prevList.filter((file) => file.name !== event.file.name)
+                  );
+                }}
+                emptyTemplate={
+                  <p
+                    className="p-8 p-text-center"
+                    style={{ textAlign: "center" }}
+                  >
+                    Drop files here for upload.
+                  </p>
+                }
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

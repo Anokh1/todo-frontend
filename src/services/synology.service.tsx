@@ -19,4 +19,10 @@ export default class SynologyService {
   upload(files: any) {
     return axiosInstance.post(url + "/upload", files).then((res) => res.data);
   }
+
+  createFolder(folderName: string) {
+    return axiosInstance
+      .post(url + "/createFolder", { folderName })
+      .then((res) => res.data);
+  }
 }

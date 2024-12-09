@@ -1,5 +1,4 @@
 import Admin from "pages/Admin";
-import NAS from "pages/NAS";
 import Todo from "pages/Todo";
 import { Route, Routes } from "react-router-dom";
 // import "./App.css";
@@ -11,6 +10,9 @@ import Network from "pages/Network";
 import AppNavbar from "AppNavbar";
 import Home from "pages/Home";
 import AppFooter from "AppFooter";
+import { LoadingProvider } from "context/LoadingContext";
+import NAS from "pages/NAS";
+// import NAS from "pages/NAS copy";
 
 interface MenuItem {
   label: string;
@@ -168,7 +170,7 @@ const App: React.FC = () => {
       /> */}
       <div className="layout-main-content">
         <AppNavbar></AppNavbar>
-
+        {/* <LoadingProvider> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/todo" element={<Todo />} />
@@ -176,6 +178,7 @@ const App: React.FC = () => {
           <Route path="/nas" element={<NAS />} />
           <Route path="/network" element={<Network />} />
         </Routes>
+        {/* </LoadingProvider> */}
 
         <AppFooter />
       </div>
