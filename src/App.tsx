@@ -9,6 +9,8 @@ import AppTopBar from "AppTopBar";
 import AppMenu from "AppMenu";
 import Network from "pages/Network";
 import AppNavbar from "AppNavbar";
+import Home from "pages/Home";
+import AppFooter from "AppFooter";
 
 interface MenuItem {
   label: string;
@@ -168,12 +170,14 @@ const App: React.FC = () => {
         <AppNavbar></AppNavbar>
 
         <Routes>
-          {/* <Route path="/" element={}/> */}
+          <Route path="/" element={<Home />} />
           <Route path="/todo" element={<Todo />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/nas" element={<NAS />} />
           <Route path="/network" element={<Network />} />
         </Routes>
+
+        <AppFooter />
       </div>
     </div>
   );
