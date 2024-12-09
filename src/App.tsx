@@ -8,6 +8,7 @@ import { classNames } from "primereact/utils";
 import AppTopBar from "AppTopBar";
 import AppMenu from "AppMenu";
 import Network from "pages/Network";
+import AppNavbar from "AppNavbar";
 
 interface MenuItem {
   label: string;
@@ -164,6 +165,8 @@ const App: React.FC = () => {
         resetActiveIndex={resetActiveIndex}
       /> */}
       <div className="layout-main-content">
+        <AppNavbar></AppNavbar>
+
         <Routes>
           {/* <Route path="/" element={}/> */}
           <Route path="/todo" element={<Todo />} />

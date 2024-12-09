@@ -1,6 +1,7 @@
 import { useLoading } from "context/LoadingContext";
 import moment from "moment";
 import Upload from "pages/Admin/component/Upload";
+import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
@@ -25,7 +26,7 @@ const Admin: React.FC = () => {
 
   const handleImageClick = (
     image: ImageFile,
-    event: React.MouseEvent<HTMLDivElement>
+    event: React.MouseEvent<HTMLElement>
   ) => {
     setImage(image);
     menuRef.current?.toggle(event);
@@ -122,6 +123,17 @@ const Admin: React.FC = () => {
                     </span>
                   )}
                   style={{ minWidth: "150px" }}
+                />
+                <Column
+                  header=""
+                  body={(rowData) => (
+                    <Button
+                      className="p-button-text"
+                      onClick={(event) => handleImageClick(rowData, event)}
+                      icon="pi pi-ellipsis-h"
+                    />
+                  )}
+                  style={{ minWidth: "10px" }}
                 />
               </DataTable>
             </div>
