@@ -2,19 +2,19 @@ import { ClearToken } from "./clearToken.function";
 import { VerifyToken } from "./verifyToken.function";
 
 interface CallApiProps<T> {
-  apiFunction: (...args: any[]) => Promise<T>;
+  apiFunc: (...args: any[]) => Promise<T>;
   setLoading?: (loading: boolean) => void;
   navigateToLogin?: () => void;
 }
 
 export function callApi<T>(
-  { apiFunction, setLoading, navigateToLogin }: CallApiProps<T>,
+  { apiFunc, setLoading, navigateToLogin }: CallApiProps<T>,
   ...args: any[]
 ): Promise<T> {
   if (setLoading) {
     setLoading(true);
   }
-  return apiFunction(...args)
+  return apiFunc(...args)
     .then((res: any) => {
       if (setLoading) {
         setLoading(false);

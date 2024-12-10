@@ -12,6 +12,7 @@ import Home from "pages/Home";
 import AppFooter from "AppFooter";
 import { LoadingProvider } from "context/LoadingContext";
 import NAS from "pages/NAS";
+import { Login } from "pages/Authentication/Login";
 // import NAS from "pages/NAS copy";
 
 interface MenuItem {
@@ -177,6 +178,8 @@ const App: React.FC = () => {
           <Route path="/admin" element={<Admin />} />
           <Route path="/nas" element={<NAS />} />
           <Route path="/network" element={<Network />} />
+
+          <Route path="/login" element={<Login />} />
         </Routes>
         {/* </LoadingProvider> */}
 

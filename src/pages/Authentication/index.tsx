@@ -27,7 +27,7 @@ const Authentication = () => {
         password: values.password,
       };
       callApi(
-        { apiFunction: authService.loginUser, setLoading },
+        { apiFunc: authService.loginUser, setLoading },
         { data }
       ).then((res) => {
         if (res.status) {
