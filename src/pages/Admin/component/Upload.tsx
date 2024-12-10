@@ -89,30 +89,50 @@ const Upload: React.FC<UploadProps> = ({
   const handleFileExport = async () => {
     startLoading();
     setIsLoading(true);
-    const res = await fileService.exportExcel(date);
-    if (res) {
-      const blob = new Blob([res.data], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      const contentDispositionHeader = res.headers["content-disposition"];
-      const fileName = contentDispositionHeader
-        .split(";")
-        .find((part: any) => part.trim().startsWith("filename="))
-        .split("=")[1]
-        .trim()
-        .split('"')[1]
-        .split(".")[0];
-      link.setAttribute("download", `${fileName}.xlsx`);
-      document.body.appendChild(link);
-      link.click();
+    try {
+      const res = await fileService.exportExcel(date);
+
+      if (res) {
+        const contentDispositionHeader = res.headers["content-disposition"];
+        if (!contentDispositionHeader) {
+          console.error("Content-Disposition header is missing");
+          showWarning(toastRef, "File download failed. Please try again.");
+          stopLoading();
+          setIsLoading(false);
+          return;
+        }
+
+        const fileName = contentDispositionHeader
+          .split(";")
+          .find((part) => part.trim().startsWith("filename="))
+          .split("=")[1]
+          .trim()
+          .split('"')[1]
+          .split(".")[0];
+
+        const blob = new Blob([res.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${fileName}.xlsx`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link); // Clean up
+        stopLoading();
+        setIsLoading(false);
+        return { status: true, message: "Success" };
+      } else {
+        showWarning(toastRef, "No file for upload");
+        stopLoading();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Error while exporting file:", error);
+      showWarning(toastRef, "An error occurred while exporting the file");
       stopLoading();
       setIsLoading(false);
-      return { status: true, message: "Success" };
-    } else {
-      showWarning(toastRef, "No file for upload");
     }
   };
 
