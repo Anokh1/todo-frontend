@@ -16,7 +16,9 @@ const Admin: React.FC = () => {
   const { startLoading, stopLoading } = useLoading();
   const [imageList, setImageList] = useState<ImageFile[]>([]);
   const [image, setImage] = useState<ImageFile>();
+  const [date, setDate] = useState<Date>(new Date());
   const menuRef = useRef<Menu>(null);
+  const dateRef = useRef<Date>(date);
 
   const fileService = new FileService();
 
@@ -59,10 +61,15 @@ const Admin: React.FC = () => {
       <div className="flex flex-col flex-grow">
         <TabView className="flex-grow w-full md:w-[800px]">
           <TabPanel header="Grid View">
-            <div className="flex justify-content-between items-center mb-4">
+            <div className="flex flex-column justify-content-between items-center mb-4">
               <div className="flex-1"></div>
-              <Upload onUpdateImageList={updateImageList} />
+              <Upload
+                onUpdateImageList={updateImageList}
+                date={date}
+                setDate={setDate}
+              />
             </div>
+
             <div className="grid grid-nogutter justify-content-center gap-3">
               {imageList.map((image, index) => (
                 <Card
@@ -103,9 +110,13 @@ const Admin: React.FC = () => {
             </div>
           </TabPanel>
           <TabPanel header="List View">
-            <div className="flex justify-content-between items-center mb-4">
+            <div className="flex flex-column justify-content-between items-center mb-4">
               <div className="flex-1"></div>
-              <Upload onUpdateImageList={updateImageList} />
+              <Upload
+                onUpdateImageList={updateImageList}
+                date={date}
+                setDate={setDate}
+              />
             </div>
             <div className="p-fluid">
               <DataTable value={imageList} className="p-datatable-striped">

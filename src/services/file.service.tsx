@@ -19,4 +19,10 @@ export default class FileService {
   deleteImage(id: number) {
     return axiosInstance.post("/deleteImage", { id }).then((res) => res.data);
   }
+
+  exportExcel(date: Date) {
+    return axiosInstance
+      .post("/exportExcel", { date }, { responseType: "blob" })
+      .then((res) => res);
+  }
 }
