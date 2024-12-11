@@ -6,28 +6,29 @@ import { ToastContainer } from "react-toastify";
 import { LoadingProvider } from "utilities/Context/LoadingContext";
 import { UserContextProvider } from "utilities/Context/UserContext";
 
-const AppWrapper = (props: any) => {
+const AppWrapper = () => {
   let location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+
   return (
     <>
-      <ToastContainer />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="*"
-          element={
-            <LoadingProvider>
+      <LoadingProvider>
+        <ToastContainer />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="*"
+            element={
               <UserContextProvider>
                 <App />
               </UserContextProvider>
-            </LoadingProvider>
-          }
-        />
-      </Routes>
+            }
+          />
+        </Routes>
+      </LoadingProvider>
     </>
   );
 };

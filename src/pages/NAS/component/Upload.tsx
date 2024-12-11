@@ -7,8 +7,12 @@ import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { NasFile, NasFolder } from "utilities/Interface/NetworkInterface";
 import SynologyService from "services/synology.service";
-import { showSuccess, showError, showWarning } from "utilities/Function/toast.function";
-import { useLoading } from "context/LoadingContext";
+import {
+  showSuccess,
+  showError,
+  showWarning,
+} from "utilities/Function/toast.function";
+import { LoadingProvider, useLoading } from "context/LoadingContext";
 
 interface UploadProps {
   onUpdateFileList: (files: NasFile[]) => void;
@@ -109,97 +113,99 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
   };
 
   return (
-    <div>
-      <Toast ref={toastRef} />
+    <LoadingProvider>
       <div>
+        <Toast ref={toastRef} />
         <div>
-          <div className="grid align-items-center">
-            <div className="col-12">
-              <Dropdown
-                className="w-full"
-                id="fileDropdown"
-                value={selectedFolder}
-                options={folderList}
-                onChange={(e) => setSelectedFolder(e.value)}
-                optionLabel="folder_name"
-                placeholder="Select a folder"
-                showClear
-              />
-            </div>
-            <div className="col-12">
-              <div className="flex gap-2 w-full">
-                <InputText
-                  value={newFolder}
-                  onChange={(e) => setNewFolder(e.target.value)}
-                  placeholder="Enter folder name"
+          <div>
+            <div className="grid align-items-center">
+              <div className="col-12">
+                <Dropdown
                   className="w-full"
-                />
-                <Button
-                  label="Create Folder"
-                  onClick={() => addFolder(newFolder)}
-                  disabled={isLoading || newFolder.trim() === ""}
-                  className="w-full"
-                  severity="secondary"
+                  id="fileDropdown"
+                  value={selectedFolder}
+                  options={folderList}
+                  onChange={(e) => setSelectedFolder(e.value)}
+                  optionLabel="folder_name"
+                  placeholder="Select a folder"
+                  showClear
                 />
               </div>
-            </div>
-            {uploadList.length > 0 && (
               <div className="col-12">
                 <div className="flex gap-2 w-full">
-                  <Button
-                    label="Upload"
-                    icon="pi pi-upload"
-                    className="p-button-success w-full"
-                    onClick={handleSubmit}
-                    disabled={isLoading || uploadList.length === 0}
+                  <InputText
+                    value={newFolder}
+                    onChange={(e) => setNewFolder(e.target.value)}
+                    placeholder="Enter folder name"
+                    className="w-full"
                   />
                   <Button
-                    label="Cancel"
-                    icon="pi pi-times"
-                    className="p-button-danger w-full"
-                    onClick={handleClear}
-                    disabled={isLoading || uploadList.length === 0}
+                    label="Create Folder"
+                    onClick={() => addFolder(newFolder)}
+                    disabled={isLoading || newFolder.trim() === ""}
+                    className="w-full"
+                    severity="secondary"
                   />
                 </div>
               </div>
-            )}
-            <div className="col-12">
-              <FileUpload
-                name="files"
-                ref={fileUploadRef}
-                accept={
-                  activeIndex === 0 ? "image/*,application/pdf" : "video/*"
-                }
-                customUpload
-                multiple
-                uploadHandler={handleFileSelect}
-                maxFileSize={100 * 1024 * 1024}
-                auto={true}
-                chooseLabel="Add Files For Upload"
-                style={{ width: "100%" }}
-                disabled={isLoading}
-                onSelect={(event) => {
-                  setUploadList((prevList) => [...prevList, ...event.files]);
-                }}
-                onRemove={(event) => {
-                  setUploadList((prevList) =>
-                    prevList.filter((file) => file.name !== event.file.name)
-                  );
-                }}
-                emptyTemplate={
-                  <p
-                    className="p-8 p-text-center"
-                    style={{ textAlign: "center" }}
-                  >
-                    Drop files here for upload.
-                  </p>
-                }
-              />
+              {uploadList.length > 0 && (
+                <div className="col-12">
+                  <div className="flex gap-2 w-full">
+                    <Button
+                      label="Upload"
+                      icon="pi pi-upload"
+                      className="p-button-success w-full"
+                      onClick={handleSubmit}
+                      disabled={isLoading || uploadList.length === 0}
+                    />
+                    <Button
+                      label="Cancel"
+                      icon="pi pi-times"
+                      className="p-button-danger w-full"
+                      onClick={handleClear}
+                      disabled={isLoading || uploadList.length === 0}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="col-12">
+                <FileUpload
+                  name="files"
+                  ref={fileUploadRef}
+                  accept={
+                    activeIndex === 0 ? "image/*,application/pdf" : "video/*"
+                  }
+                  customUpload
+                  multiple
+                  uploadHandler={handleFileSelect}
+                  maxFileSize={100 * 1024 * 1024}
+                  auto={true}
+                  chooseLabel="Add Files For Upload"
+                  style={{ width: "100%" }}
+                  disabled={isLoading}
+                  onSelect={(event) => {
+                    setUploadList((prevList) => [...prevList, ...event.files]);
+                  }}
+                  onRemove={(event) => {
+                    setUploadList((prevList) =>
+                      prevList.filter((file) => file.name !== event.file.name)
+                    );
+                  }}
+                  emptyTemplate={
+                    <p
+                      className="p-8 p-text-center"
+                      style={{ textAlign: "center" }}
+                    >
+                      Drop files here for upload.
+                    </p>
+                  }
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </LoadingProvider>
   );
 };
 

@@ -2,6 +2,7 @@ import { Menubar } from "primereact/menubar";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
+import { ClearToken } from "utilities/Function/clearToken.function";
 
 const AppNavbar: React.FC = () => {
   const navigate = useNavigate();
@@ -54,6 +55,10 @@ const AppNavbar: React.FC = () => {
         label="Login"
         icon="pi pi-sign-in"
         className="p-button-outlined"
+        onClick={() => {
+          ClearToken();
+          navigate("/login");
+        }}
       />
     </div>
   );

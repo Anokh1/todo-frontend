@@ -1,5 +1,5 @@
 import config from "config/server.config";
-import { useLoading } from "context/LoadingContext";
+import { LoadingProvider, useLoading } from "context/LoadingContext";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { FileUpload } from "primereact/fileupload";
@@ -184,13 +184,15 @@ const Upload: React.FC<UploadProps> = ({
   );
 
   return (
-    <div className="p-3">
-      <Toast ref={toastRef} />
-      <div className="flex justify-content-between align-items-center">
-        <div>{startContent}</div>
-        <div>{endContent}</div>
+    <LoadingProvider>
+      <div className="p-3">
+        <Toast ref={toastRef} />
+        <div className="flex justify-content-between align-items-center">
+          <div>{startContent}</div>
+          <div>{endContent}</div>
+        </div>
       </div>
-    </div>
+    </LoadingProvider>
   );
 };
 

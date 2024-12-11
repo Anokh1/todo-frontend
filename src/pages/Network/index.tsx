@@ -1,10 +1,7 @@
+import { LoadingProvider } from "context/LoadingContext";
 import { useEffect, useState } from "react";
-import UploadViewer from "./component/UploadViewer";
-import Upload from "./component/Upload";
-import { Panel } from "primereact/panel";
-import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
 import SynologyService from "services/synology.service";
+import UploadViewer from "./component/UploadViewer";
 
 interface NasFolder {
   id: number;
@@ -42,7 +39,9 @@ const Network: React.FC = () => {
 
   return (
     <div style={{ display: "flex" }}>
-      <UploadViewer />
+      <LoadingProvider>
+        <UploadViewer />
+      </LoadingProvider>
       {/* <Upload
         setUpdateFileList={setUpdateFileList}
         updateFileList={updateFileList}

@@ -1,4 +1,4 @@
-import { useLoading } from "context/LoadingContext";
+import { LoadingProvider, useLoading } from "context/LoadingContext";
 import moment from "moment";
 import Upload from "pages/Admin/component/Upload";
 import { Button } from "primereact/button";
@@ -13,7 +13,7 @@ import FileService from "services/file.service";
 import { ImageFile } from "utilities/Interface/AdminInterface";
 
 const Admin: React.FC = () => {
-  const { startLoading, stopLoading } = useLoading();
+  // const { startLoading, stopLoading } = useLoading();
   const [imageList, setImageList] = useState<ImageFile[]>([]);
   const [image, setImage] = useState<ImageFile>();
   const [date, setDate] = useState<Date>(new Date());
@@ -36,13 +36,13 @@ const Admin: React.FC = () => {
 
   const handleRemoveImage = async () => {
     if (image) {
-      startLoading();
+      // startLoading();
       const res = await fileService.deleteImage(image.id);
       if (res.status) {
         const newImageList = imageList.filter((img) => img.id !== image.id);
         updateImageList(newImageList);
       }
-      stopLoading();
+      // stopLoading();
     }
   };
 
@@ -55,103 +55,107 @@ const Admin: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-column min-h-screen p-4">
-      <Menu model={menuImage} popup ref={menuRef} className="mb-4" />
+    <LoadingProvider>
+      <div className="flex flex-column min-h-screen p-4">
+        <Menu model={menuImage} popup ref={menuRef} className="mb-4" />
 
-      <div className="flex flex-col flex-grow">
-        <TabView className="flex-grow w-full md:w-[800px]">
-          <TabPanel header="Grid View">
-            <div className="flex flex-column justify-content-between items-center mb-4">
-              <div className="flex-1"></div>
-              <Upload
-                onUpdateImageList={updateImageList}
-                date={date}
-                setDate={setDate}
-              />
-            </div>
+        <div className="flex flex-col flex-grow">
+          <TabView className="flex-grow w-full md:w-[800px]">
+            <TabPanel header="Grid View">
+              <div className="flex flex-column justify-content-between items-center mb-4">
+                <div className="flex-1"></div>
+                <Upload
+                  onUpdateImageList={updateImageList}
+                  date={date}
+                  setDate={setDate}
+                />
+              </div>
 
-            <div className="grid grid-nogutter justify-content-center gap-3">
-              {imageList.map((image, index) => (
-                <Card
-                  key={index}
-                  className="flex flex-column align-items-center justify-content-start"
-                  style={{
-                    width: "200px",
-                    height: "260px",
-                    overflow: "hidden",
-                    flexShrink: 0,
-                  }}
-                  onClick={(event) => handleImageClick(image, event)}
-                >
-                  <div
-                    className="flex justify-content-center align-items-center"
-                    style={{ height: "180px" }}
-                  >
-                    <Image
-                      src={image.actual_url}
-                      width="80"
-                      height="auto"
-                      className="mb-2"
-                      preview
-                    />
-                  </div>
-                  <div
-                    className="text-sm text-center text-ellipsis overflow-hidden whitespace-nowrap"
+              <div className="grid grid-nogutter justify-content-center gap-3">
+                {imageList.map((image, index) => (
+                  <Card
+                    key={index}
+                    className="flex flex-column align-items-center justify-content-start"
                     style={{
-                      maxWidth: "180px",
-                      lineHeight: "1.2rem",
-                      maxHeight: "1.2rem",
+                      width: "200px",
+                      height: "260px",
+                      overflow: "hidden",
+                      flexShrink: 0,
                     }}
+                    onClick={(event) => handleImageClick(image, event)}
                   >
-                    {image.file_name}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </TabPanel>
-          <TabPanel header="List View">
-            <div className="flex flex-column justify-content-between items-center mb-4">
-              <div className="flex-1"></div>
-              <Upload
-                onUpdateImageList={updateImageList}
-                date={date}
-                setDate={setDate}
-              />
-            </div>
-            <div className="p-fluid">
-              <DataTable value={imageList} className="p-datatable-striped">
-                <Column
-                  field="file_name"
-                  header="File Name"
-                  style={{ minWidth: "200px" }}
+                    <div
+                      className="flex justify-content-center align-items-center"
+                      style={{ height: "180px" }}
+                    >
+                      <Image
+                        src={image.actual_url}
+                        width="80"
+                        height="auto"
+                        className="mb-2"
+                        preview
+                      />
+                    </div>
+                    <div
+                      className="text-sm text-center text-ellipsis overflow-hidden whitespace-nowrap"
+                      style={{
+                        maxWidth: "180px",
+                        lineHeight: "1.2rem",
+                        maxHeight: "1.2rem",
+                      }}
+                    >
+                      {image.file_name}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </TabPanel>
+            <TabPanel header="List View">
+              <div className="flex flex-column justify-content-between items-center mb-4">
+                <div className="flex-1"></div>
+                <Upload
+                  onUpdateImageList={updateImageList}
+                  date={date}
+                  setDate={setDate}
                 />
-                <Column
-                  field="insert_date"
-                  header="Insert Date"
-                  body={(rowData) => (
-                    <span>
-                      {moment(rowData.insert_date).format("DD MMM YYYY h:mm A")}
-                    </span>
-                  )}
-                  style={{ minWidth: "150px" }}
-                />
-                <Column
-                  header=""
-                  body={(rowData) => (
-                    <Button
-                      className="p-button-text"
-                      onClick={(event) => handleImageClick(rowData, event)}
-                      icon="pi pi-ellipsis-h"
-                    />
-                  )}
-                  style={{ minWidth: "10px" }}
-                />
-              </DataTable>
-            </div>
-          </TabPanel>
-        </TabView>
+              </div>
+              <div className="p-fluid">
+                <DataTable value={imageList} className="p-datatable-striped">
+                  <Column
+                    field="file_name"
+                    header="File Name"
+                    style={{ minWidth: "200px" }}
+                  />
+                  <Column
+                    field="insert_date"
+                    header="Insert Date"
+                    body={(rowData) => (
+                      <span>
+                        {moment(rowData.insert_date).format(
+                          "DD MMM YYYY h:mm A"
+                        )}
+                      </span>
+                    )}
+                    style={{ minWidth: "150px" }}
+                  />
+                  <Column
+                    header=""
+                    body={(rowData) => (
+                      <Button
+                        className="p-button-text"
+                        onClick={(event) => handleImageClick(rowData, event)}
+                        icon="pi pi-ellipsis-h"
+                      />
+                    )}
+                    style={{ minWidth: "10px" }}
+                  />
+                </DataTable>
+              </div>
+            </TabPanel>
+          </TabView>
+        </div>
       </div>
-    </div>
+    </LoadingProvider>
   );
 };
 

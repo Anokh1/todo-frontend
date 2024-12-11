@@ -1,27 +1,15 @@
 import Admin from "pages/Admin";
 import Todo from "pages/Todo";
 import { Route, Routes } from "react-router-dom";
-// import "./App.css";
-import { useState } from "react";
-import { classNames } from "primereact/utils";
-import AppTopBar from "AppTopBar";
-import AppMenu from "AppMenu";
-import Network from "pages/Network";
-import AppNavbar from "AppNavbar";
-import Home from "pages/Home";
 import AppFooter from "AppFooter";
-import { LoadingProvider } from "context/LoadingContext";
-import NAS from "pages/NAS";
+import AppNavbar from "AppNavbar";
 import { Login } from "pages/Authentication/Login";
-// import NAS from "pages/NAS copy";
-
-interface MenuItem {
-  label: string;
-  icon: string;
-  to?: string;
-  items?: MenuItem[];
-  badge?: number;
-}
+import Home from "pages/Home";
+import NAS from "pages/NAS";
+import Network from "pages/Network";
+import { classNames } from "primereact/utils";
+import { useState } from "react";
+import { LoadingProvider } from "utilities/Context/LoadingContext";
 
 const App: React.FC = () => {
   const [menuMode, setMenuMode] = useState("sidebar");
@@ -129,60 +117,17 @@ const App: React.FC = () => {
 
   return (
     <div className={layoutClassName} onClick={onDocumentClick}>
-      <div className="layout-main">
-        {/* <AppTopBar
-          // items={menu}
-          menuMode={menuMode}
-          menuActive={menuActive}
-          // topbarMenuActive={topbarMenuActive}
-          // activeInlineProfile={activeInlineProfile}
-          // onTopbarItemClick={onTopbarItemClick}
-          onMenuButtonClick={onMenuButtonClick}
-          // onToggleMenu={onToggleMenu}
-          // onChangeActiveInlineMenu={onChangeActiveInlineMenu}
-          // onMenuClick={onMenuClick}
-          // onMenuItemClick={onMenuItemClick}
-          // onRootMenuItemClick={onRootMenuItemClick}
-          resetActiveIndex={resetActiveIndex}
-          // onSidebarMouseOver={onSidebarMouseOver}
-          // onSidebarMouseLeave={onSidebarMouseLeave}
-          // sidebarActive={sidebarActive}
-          sidebarStatic={sidebarStatic}
-          // pinActive={pinActive}
-        /> */}
-      </div>
-      {/* <AppMenu
-        // model={menu}
-        // onRootMenuItemClick={onRootMenuItemClick}
-        // onMenuItemClick={onMenuItemClick}
-        // onToggleMenu={onToggleMenu}
-        // onMenuClick={onMenuClick}
-        menuMode={menuMode}
-        // colorScheme={props.colorScheme}
-        menuActive={menuActive}
-        // sidebarActive={sidebarActive}
-        sidebarStatic={sidebarStatic}
-        // pinActive={pinActive}
-        // onSidebarMouseLeave={onSidebarMouseLeave}
-        // onSidebarMouseOver={onSidebarMouseOver}
-        // activeInlineProfile={activeInlineProfile}
-        // onChangeActiveInlineMenu={onChangeActiveInlineMenu}
-        resetActiveIndex={resetActiveIndex}
-      /> */}
+      <div className="layout-main"></div>
       <div className="layout-main-content">
-        <AppNavbar></AppNavbar>
-        {/* <LoadingProvider> */}
+        <AppNavbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/todo" element={<Todo />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/nas" element={<NAS />} />
           <Route path="/network" element={<Network />} />
-
           <Route path="/login" element={<Login />} />
         </Routes>
-        {/* </LoadingProvider> */}
-
         <AppFooter />
       </div>
     </div>
@@ -190,4 +135,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-4;

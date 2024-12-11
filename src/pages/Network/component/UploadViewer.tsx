@@ -1,4 +1,4 @@
-import { useLoading } from "context/LoadingContext";
+import { LoadingProvider, useLoading } from "context/LoadingContext";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { FileUpload } from "primereact/fileupload";
@@ -111,174 +111,180 @@ const UploadViewer: React.FC = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", padding: "20px" }}>
-      {/* Upload Section */}
-      <div>
-        <Toast ref={toastRef} />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "10px",
-            marginBottom: "20px",
-          }}
-        >
-          <Image
-            src="src/assets/images/data-server.png"
-            width="120"
-            height="auto"
-            style={{ marginRight: "8px" }}
-          />
-          <h1>NAS.UV DSM223</h1>
-        </div>
+    <LoadingProvider>
+      <div style={{ display: "flex", flexWrap: "wrap", padding: "20px" }}>
+        {/* Upload Section */}
         <div>
+          <Toast ref={toastRef} />
           <div
             style={{
               display: "flex",
-              width: "100%",
-              gap: "10px",
-              marginBottom: "10px",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "10px",
+              marginBottom: "20px",
             }}
           >
-            <Dropdown
-              id="fileDropdown"
-              value={selectedFolder}
-              options={folderList}
-              onChange={(e) => setSelectedFolder(e.value)}
-              optionLabel="folder_name"
-              placeholder="Select a folder"
-              style={{ flex: "3" }}
-              showClear
+            <Image
+              src="src/assets/images/data-server.png"
+              width="120"
+              height="auto"
+              style={{ marginRight: "8px" }}
             />
-            <FileUpload
-              mode="basic"
-              name="files"
-              ref={fileUploadRef}
-              accept={activeIndex === 0 ? "image/*,application/pdf" : "video/*"}
-              customUpload
-              multiple
-              uploadHandler={handleFileSelect}
-              maxFileSize={100 * 1024 * 1024}
-              auto={true}
-              chooseLabel="Select"
-              style={{ flex: "1" }}
-              disabled={isLoading}
-            />
+            <h1>NAS.UV DSM223</h1>
           </div>
-          {/* Preview Section */}
-          {uploadList.length > 0 && (
-            <div
-              style={{
-                width: "100%",
-                padding: "10px",
-                border: "1px solid #ddd",
-                borderRadius: "5px",
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              <h3 style={{ marginBottom: "10px" }}>Selected Files</h3>
-              <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
-                {uploadList.map((file, index) => (
-                  <li
-                    key={index}
-                    style={{
-                      padding: "5px 10px",
-                      borderBottom: "1px solid #eee",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "inline-block",
-                        maxWidth: "150px", // Adjust the width as needed
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {file.name}
-                    </span>{" "}
-                    <span style={{ fontSize: "0.85rem", color: "#888" }}>
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <Button
-                label="Upload"
-                icon="pi pi-upload"
-                severity="success"
-                onClick={handleSubmit}
-                disabled={isLoading}
-                style={{ marginTop: "10px", width: "100%" }}
-              />
-
-              <Button
-                label="Clear"
-                icon="pi pi-trash"
-                severity="danger"
-                onClick={handleClear}
-                disabled={isLoading}
-                style={{ marginTop: "10px", width: "100%" }}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Viewer Section */}
-      <div
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          width: "600px",
-        }}
-      >
-        <div style={{ width: "100%", height: "100%", padding: "30px" }}>
-          <div style={{ marginBottom: "20px", display: "flex", width: "100%" }}>
-            <Dropdown
-              id="fileDropdown"
-              value={selectedFile}
-              options={fileList}
-              onChange={(e) => setSelectedFile(e.value)}
-              optionLabel="file_name"
-              placeholder="Select a file"
-              style={{ width: "100%" }}
-            />
-            <Button
-              onClick={() => setSelectedFile(null)}
-              style={{ marginLeft: "10px", width: "10%" }}
-              severity="success"
-              icon="pi pi-sync"
-            />
-          </div>
-
-          <Panel className="mb-2" header="PDF Viewer">
+          <div>
             <div
               style={{
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "350px",
+                width: "100%",
+                gap: "10px",
+                marginBottom: "10px",
               }}
             >
-              {selectedFile ? (
-                <embed
-                  src={selectedFile.file_path}
-                  width="100%"
-                  height="100%"
-                  type="application/pdf"
-                />
-              ) : (
-                <p style={{ textAlign: "center" }}>No file selected.</p>
-              )}
+              <Dropdown
+                id="fileDropdown"
+                value={selectedFolder}
+                options={folderList}
+                onChange={(e) => setSelectedFolder(e.value)}
+                optionLabel="folder_name"
+                placeholder="Select a folder"
+                style={{ flex: "3" }}
+                showClear
+              />
+              <FileUpload
+                mode="basic"
+                name="files"
+                ref={fileUploadRef}
+                accept={
+                  activeIndex === 0 ? "image/*,application/pdf" : "video/*"
+                }
+                customUpload
+                multiple
+                uploadHandler={handleFileSelect}
+                maxFileSize={100 * 1024 * 1024}
+                auto={true}
+                chooseLabel="Select"
+                style={{ flex: "1" }}
+                disabled={isLoading}
+              />
             </div>
-          </Panel>
+            {/* Preview Section */}
+            {uploadList.length > 0 && (
+              <div
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  border: "1px solid #ddd",
+                  borderRadius: "5px",
+                  backgroundColor: "#f9f9f9",
+                }}
+              >
+                <h3 style={{ marginBottom: "10px" }}>Selected Files</h3>
+                <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
+                  {uploadList.map((file, index) => (
+                    <li
+                      key={index}
+                      style={{
+                        padding: "5px 10px",
+                        borderBottom: "1px solid #eee",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          maxWidth: "150px", // Adjust the width as needed
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {file.name}
+                      </span>{" "}
+                      <span style={{ fontSize: "0.85rem", color: "#888" }}>
+                        {(file.size / 1024 / 1024).toFixed(2)} MB
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  label="Upload"
+                  icon="pi pi-upload"
+                  severity="success"
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                  style={{ marginTop: "10px", width: "100%" }}
+                />
+
+                <Button
+                  label="Clear"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  onClick={handleClear}
+                  disabled={isLoading}
+                  style={{ marginTop: "10px", width: "100%" }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Viewer Section */}
+        <div
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            width: "600px",
+          }}
+        >
+          <div style={{ width: "100%", height: "100%", padding: "30px" }}>
+            <div
+              style={{ marginBottom: "20px", display: "flex", width: "100%" }}
+            >
+              <Dropdown
+                id="fileDropdown"
+                value={selectedFile}
+                options={fileList}
+                onChange={(e) => setSelectedFile(e.value)}
+                optionLabel="file_name"
+                placeholder="Select a file"
+                style={{ width: "100%" }}
+              />
+              <Button
+                onClick={() => setSelectedFile(null)}
+                style={{ marginLeft: "10px", width: "10%" }}
+                severity="success"
+                icon="pi pi-sync"
+              />
+            </div>
+
+            <Panel className="mb-2" header="PDF Viewer">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "350px",
+                }}
+              >
+                {selectedFile ? (
+                  <embed
+                    src={selectedFile.file_path}
+                    width="100%"
+                    height="100%"
+                    type="application/pdf"
+                  />
+                ) : (
+                  <p style={{ textAlign: "center" }}>No file selected.</p>
+                )}
+              </div>
+            </Panel>
+          </div>
         </div>
       </div>
-    </div>
+    </LoadingProvider>
   );
 };
 
