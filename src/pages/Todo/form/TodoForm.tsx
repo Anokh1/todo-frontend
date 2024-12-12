@@ -50,19 +50,19 @@ const TodoForm = ({
           description: Yup.string().required("Description is required"),
         })}
         onSubmit={(values: any) => {
-          let apiFunction;
+          let apiFunc;
           let data: any = {
             title: values.title,
             description: values.description,
           };
           if (isEdit) {
-            apiFunction = todoService.updateTodo;
+            apiFunc = todoService.updateTodo;
             data = { ...data, id: selectedTodo.id };
           } else {
-            apiFunction = todoService.createTodo;
+            apiFunc = todoService.createTodo;
           }
 
-          callApi({ apiFunction, setLoading }, data).then((res: any) => {
+          callApi({ apiFunc, setLoading }, data).then((res: any) => {
             if (res.status) {
               setVisibleAddTodoDialog?.(false);
               setVisibleEditTodoDialog?.(false);

@@ -64,7 +64,7 @@ const Todo = () => {
                   icon: "pi pi-exclamation-triangle",
                   accept: () => {
                     callApi(
-                      { apiFunction: todoService.deactivateTodo, setLoading },
+                      { apiFunc: todoService.deactivateTodo, setLoading },
                       { id: selectedTodo?.id }
                     ).then((res: any) => {
                       if (res.status) {
@@ -103,7 +103,7 @@ const Todo = () => {
   }, []);
 
   const callGetTodoList = () => {
-    callApi({ apiFunction: todoService.getTodo, setLoading }, filters).then(
+    callApi({ apiFunc: todoService.getTodo, setLoading }, filters).then(
       (res: any) => {
         if (res.status) {
           setTodoList(res.data);
