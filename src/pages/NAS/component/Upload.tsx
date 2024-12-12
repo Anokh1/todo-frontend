@@ -13,6 +13,7 @@ import {
   showWarning,
 } from "utilities/Function/toast.function";
 import { LoadingProvider, useLoading } from "context/LoadingContext";
+import { callApi } from "utilities/Function/callApi.function";
 
 interface UploadProps {
   onUpdateFileList: (files: NasFile[]) => void;
@@ -22,7 +23,7 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
   const fileUploadRef = useRef<FileUpload>(null);
   const toastRef = useRef<Toast>(null);
   const { startLoading, stopLoading } = useLoading();
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedFolder, setSelectedFolder] = useState<NasFolder | null>(null);
   const [folderList, setFolderList] = useState<NasFolder[]>([]);
@@ -30,6 +31,9 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
   const [newFolder, setNewFolder] = useState<string>("");
 
   const synologyService = new SynologyService();
+
+  let apiFunc;
+  let data;
 
   const fetchList = async (path: string) => {
     const res = await synologyService.getFileList(path);
@@ -45,10 +49,12 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
   }, [selectedFolder]);
 
   const fetchFolder = async () => {
-    const res = await synologyService.getFolderList();
-    if (res.status) {
-      setFolderList(res.data);
-    }
+    apiFunc = synologyService.getFolderList;
+    callApi({ apiFunc, setLoading }, data).then((res: any) => {
+      if (res.status) {
+        setFolderList(res.data);
+      }
+    });
   };
 
   useEffect(() => {
@@ -56,14 +62,17 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
   }, []);
 
   const addFolder = async (folder: string) => {
-    const res = await synologyService.createFolder(folder);
-    if (res.status) {
-      showSuccess(toastRef, res.message);
-      fetchFolder();
-    } else {
-      showError(toastRef, "Folder exists");
-    }
-    setNewFolder("");
+    apiFunc = synologyService.createFolder;
+    data = folder;
+    callApi({ apiFunc, setLoading }, data).then((res: any) => {
+      if (res.status) {
+        showSuccess(toastRef, res.message);
+        fetchFolder();
+      } else {
+        showError(toastRef, "Folder exists");
+      }
+      setNewFolder("");
+    });
   };
 
   const handleFileSelect = (event: any) => {
@@ -81,7 +90,7 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
       const networkPath = selectedFolder.folder_path;
       formData.append("networkPath", networkPath);
       startLoading();
-      setIsLoading(true);
+      setLoading(true);
       try {
         let res;
         if (activeIndex === 0) {
@@ -101,7 +110,7 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
         showError(toastRef, "Upload error");
       }
       stopLoading();
-      setIsLoading(false);
+      setLoading(false);
     } else {
       showWarning(toastRef, "No path selected");
     }
@@ -142,7 +151,7 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
                   <Button
                     label="Create Folder"
                     onClick={() => addFolder(newFolder)}
-                    disabled={isLoading || newFolder.trim() === ""}
+                    disabled={loading || newFolder.trim() === ""}
                     className="w-full"
                     severity="secondary"
                   />
@@ -156,14 +165,14 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
                       icon="pi pi-upload"
                       className="p-button-success w-full"
                       onClick={handleSubmit}
-                      disabled={isLoading || uploadList.length === 0}
+                      disabled={loading || uploadList.length === 0}
                     />
                     <Button
                       label="Cancel"
                       icon="pi pi-times"
                       className="p-button-danger w-full"
                       onClick={handleClear}
-                      disabled={isLoading || uploadList.length === 0}
+                      disabled={loading || uploadList.length === 0}
                     />
                   </div>
                 </div>
@@ -182,7 +191,7 @@ const Upload: React.FC<UploadProps> = ({ onUpdateFileList }) => {
                   auto={true}
                   chooseLabel="Add Files For Upload"
                   style={{ width: "100%" }}
-                  disabled={isLoading}
+                  disabled={loading}
                   onSelect={(event) => {
                     setUploadList((prevList) => [...prevList, ...event.files]);
                   }}
