@@ -10,6 +10,12 @@ export default class FileService {
     return axiosInstance.get(url + "/getImage").then((res) => res.data);
   }
 
+  getImageByDate(date: Date) {
+    return axiosInstance
+      .get(url + "/getImageByDate/" + date)
+      .then((res) => res.data);
+  }
+
   uploadImage(files: any) {
     return axiosInstance
       .post(url + "/uploadImage", files)

@@ -35,7 +35,8 @@ const Upload: React.FC<UploadProps> = ({
   const fileService = new FileService();
 
   const fetchImage = async () => {
-    const res = await fileService.getImage();
+    // const res = await fileService.getImage();
+    const res = await fileService.getImageByDate(date);
     if (res.status) {
       // setImageFile(
       onUpdateImageList(
@@ -49,7 +50,7 @@ const Upload: React.FC<UploadProps> = ({
 
   useEffect(() => {
     fetchImage();
-  }, []);
+  }, [date]);
 
   const handleUpload = async (event: any) => {
     const formData = new FormData();
