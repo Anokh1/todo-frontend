@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import { Chart } from "chart.js";
+import { Button } from "primereact/button";
 
 interface SpinWheelProps {
   initialPrizes: string[];
@@ -11,6 +12,8 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ initialPrizes }) => {
   const chartRef = useRef<Chart<"doughnut"> | null>(null);
   const [prizes, setPrizes] = useState(initialPrizes); // State for updated prize list
   const [spinning, setSpinning] = useState(false);
+  const [prizeWon, setPrizeWon] = useState<string | null>(null);
+  const [prizeMessage, setPrizeMessage] = useState<string | null>(null);
 
   // Prepare chart data
   const chartData = {
@@ -25,16 +28,34 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ initialPrizes }) => {
     ],
   };
 
+  // Custom plugin to display the prize name in the center
+  const centerTextPlugin = {
+    id: "centerText",
+    beforeDraw: (chart: Chart) => {
+      if (chart && chart.ctx) {
+        const ctx = chart.ctx;
+        const width = chart.width;
+        const height = chart.height;
+        const text = prizeWon || "Spin Me!";
+        ctx.save();
+        ctx.font = "bold 16px Arial";
+        ctx.fillStyle = "#333";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(text, width / 2, height / 2);
+        ctx.restore();
+      }
+    },
+  };
+
   const spinWheel = () => {
     if (chartRef.current) {
-      setSpinning(true); // Start spinning state
+      setSpinning(true);
 
-      // Get the current rotation angle
       const currentAngle = chartRef.current.options.rotation || 0;
 
-      // Generate a random spin angle with a large base for multiple rotations
-      const baseRotation = 5 * 360; // At least 5 full spins
-      const randomRotation = Math.random() * 360; // Random final stopping position
+      const baseRotation = 5 * 360;
+      const randomRotation = Math.random() * 360;
       const newAngle = currentAngle + baseRotation + randomRotation;
 
       chartRef.current.options.rotation = newAngle;
@@ -44,25 +65,25 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ initialPrizes }) => {
       };
       chartRef.current.update();
 
-      // Display the prize after spinning
       setTimeout(() => {
-        const normalizedAngle = newAngle % 360; // Normalize angle to 0-360
-        const segmentSize = 360 / prizes.length; // Size of each segment
+        const normalizedAngle = newAngle % 360;
+        const segmentSize = 360 / prizes.length;
         const selectedIndex = Math.floor(normalizedAngle / segmentSize);
         const prize = prizes[selectedIndex];
+        setPrizeWon(prize);
 
-        document.getElementById(
-          "prize-display"
-        )!.innerText = `You won: ${prize}`;
+        setPrizeMessage(`You won: ${prize}`);
 
         // Update prize list to remove the won prize
         // setPrizes(prizes.filter((_, index) => index !== selectedIndex));
-        setSpinning(false); // End spinning state
-      }, 1000); // Delay for spin completion
+        setSpinning(false);
+
+        setTimeout(() => setPrizeMessage(null), 2000);
+      }, 1000);
     }
   };
 
-  // Handle keypress events for spinning the wheel
+  // Control and Enter to spin the wheel
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === "Enter") {
@@ -85,24 +106,41 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ initialPrizes }) => {
         width: "60%",
       }}
     >
-      <Doughnut ref={chartRef} data={chartData} />
-      <button
-        onClick={spinWheel}
-        style={{
-          marginTop: 20,
-          padding: 10,
-          backgroundColor: spinning ? "grey" : "blue",
-          cursor: spinning ? "not-allowed" : "pointer",
-          color: "white",
+      <Doughnut
+        ref={chartRef}
+        data={chartData}
+        options={{
+          plugins: {
+            legend: {
+              position: "right", // Explicitly cast to accepted literal type
+              align: "start", // Align legend items in a column
+            },
+          },
         }}
+      />
+      <Button
+        label={spinning ? "Spinning..." : "Spin Wheel"}
+        onClick={spinWheel}
         disabled={spinning}
-      >
-        {spinning ? "Spinning..." : "Spin Wheel"}
-      </button>
-      <div
-        id="prize-display"
-        style={{ marginTop: 20, fontSize: "20px", color: "#333" }}
-      ></div>
+      />
+      {prizeMessage && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            fontSize: "24px",
+            fontWeight: "bold",
+            background: "rgba(255, 255, 255, 0.8)",
+            padding: "20px",
+            borderRadius: "10px",
+            textAlign: "center",
+          }}
+        >
+          {prizeMessage}
+        </div>
+      )}
     </div>
   );
 };
