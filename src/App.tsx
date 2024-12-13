@@ -10,6 +10,7 @@ import Network from "pages/Network";
 import { classNames } from "primereact/utils";
 import { useState } from "react";
 import { LoadingProvider } from "utilities/Context/LoadingContext";
+import Scan from "pages/Scan";
 
 const App: React.FC = () => {
   const [menuMode, setMenuMode] = useState("sidebar");
@@ -127,6 +128,7 @@ const App: React.FC = () => {
           <Route path="/nas" element={<NAS />} />
           <Route path="/network" element={<Network />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/scan" element={<Scan />} />
         </Routes>
         <AppFooter />
       </div>

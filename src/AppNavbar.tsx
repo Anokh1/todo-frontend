@@ -34,6 +34,11 @@ const AppNavbar: React.FC = () => {
       icon: "pi pi-sitemap",
       command: () => navigate("/network"),
     },
+    {
+      label: "Scan",
+      icon: "pi pi-scan",
+      command: () => navigate("/scan"),
+    },
   ];
 
   const start = (
