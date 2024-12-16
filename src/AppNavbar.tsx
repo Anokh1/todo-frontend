@@ -36,7 +36,7 @@ const AppNavbar: React.FC = () => {
     },
     {
       label: "Scan",
-      icon: "pi pi-scan",
+      icon: "pi pi-id-card",
       command: () => navigate("/scan"),
     },
   ];
