@@ -14,6 +14,9 @@ import { ImageFile } from "utilities/Interface/AdminInterface";
 import SpinWheel from "./component/SpinWheel";
 import EmployeeInput from "./component/EmployeeInput";
 import UploadDownload from "./component/UploadDownload";
+import ScanService from "services/scan.service";
+import { showError } from "utilities/Function/toast.function";
+import { Toast } from "primereact/toast";
 
 const Scan: React.FC = () => {
   // const { startLoading, stopLoading } = useLoading();
@@ -21,9 +24,21 @@ const Scan: React.FC = () => {
   const [image, setImage] = useState<ImageFile>();
   const [date, setDate] = useState<Date>(new Date());
   const menuRef = useRef<Menu>(null);
+  const toastRef = useRef<Toast>(null);
   const dateRef = useRef<Date>(date);
+  const [nameList, setNameList] = useState([]);
 
   const fileService = new FileService();
+  const scanService = new ScanService();
+
+  const fetchData = async () => {
+    try {
+      const res = await scanService.getData("name_list");
+      setNameList(res.data);
+    } catch (error) {
+      showError(toastRef, "Access Card and ID column cannot be empty");
+    }
+  };
 
   const updateImageList = (images: ImageFile[]) => {
     setImageList(images);
@@ -59,6 +74,7 @@ const Scan: React.FC = () => {
 
   return (
     <LoadingProvider>
+      <Toast ref={toastRef} />
       <div className="flex flex-column min-h-screen p-4">
         <Menu model={menuImage} popup ref={menuRef} className="mb-4" />
 
@@ -67,63 +83,6 @@ const Scan: React.FC = () => {
             <TabPanel header="Non Duplicate Attendance">
               <TabView className="flex-grow w-full md:w-[800px]">
                 <TabPanel header="Full Name List">
-                  <div className="flex flex-column justify-content-between items-center mb-4">
-                    <div className="flex-1"></div>
-                    <Upload
-                      onUpdateImageList={updateImageList}
-                      date={date}
-                      setDate={setDate}
-                    />
-                  </div>
-
-                  <div className="grid grid-nogutter justify-content-center gap-3">
-                    {imageList.map((image, index) => (
-                      <Card
-                        key={index}
-                        className="flex flex-column align-items-center justify-content-start"
-                        style={{
-                          width: "200px",
-                          height: "260px",
-                          overflow: "hidden",
-                          flexShrink: 0,
-                        }}
-                        onClick={(event) => handleImageClick(image, event)}
-                      >
-                        <div
-                          className="flex justify-content-center align-items-center"
-                          style={{ height: "180px" }}
-                        >
-                          <Image
-                            src={image.actual_url}
-                            width="80"
-                            height="auto"
-                            className="mb-2"
-                            preview
-                          />
-                        </div>
-                        <div
-                          className="text-sm text-center text-ellipsis overflow-hidden whitespace-nowrap"
-                          style={{
-                            maxWidth: "180px",
-                            lineHeight: "1.2rem",
-                            maxHeight: "1.2rem",
-                          }}
-                        >
-                          {image.file_name}
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
-                </TabPanel>
-                <TabPanel header="Check In">
-                  <div className="flex flex-column justify-content-between items-center mb-4">
-                    <div className="flex-1"></div>
-                    <Upload
-                      onUpdateImageList={updateImageList}
-                      date={date}
-                      setDate={setDate}
-                    />
-                  </div>
                   <div className="p-fluid">
                     <DataTable
                       value={imageList}
@@ -162,9 +121,24 @@ const Scan: React.FC = () => {
                     </DataTable>
                   </div>
                 </TabPanel>
+                <TabPanel header="Check In">
+                  <div className="grid p-4">
+                    <EmployeeInput title="Check In" description={<></>} />
+                  </div>
+                </TabPanel>
                 <TabPanel header="Spin N Win">
                   <div className="grid p-4">
-                    <EmployeeInput />
+                    <EmployeeInput
+                      title="Welcome to Spin N Win!"
+                      description={
+                        <>
+                          Spin the wheel and stand a chance to win exciting
+                          prizes like a Car, Vacation, Gift Cards, and more!
+                          Click the button or use <kbd>Ctrl</kbd> +{" "}
+                          <kbd>Enter</kbd> to spin.
+                        </>
+                      }
+                    />
                     <div className="col-12 md:col-6 flex justify-content-center align-items-center">
                       <SpinWheel
                         initialPrizes={[
@@ -189,57 +163,59 @@ const Scan: React.FC = () => {
               </TabView>
             </TabPanel>
             <TabPanel header="Attendance">
-              <div className="flex flex-column justify-content-between items-center mb-4">
-                <div className="flex-1"></div>
-                <Upload
-                  onUpdateImageList={updateImageList}
-                  date={date}
-                  setDate={setDate}
-                />
-              </div>
-
-              <div className="grid grid-nogutter justify-content-center gap-3">
-                {imageList.map((image, index) => (
-                  <Card
-                    key={index}
-                    className="flex flex-column align-items-center justify-content-start"
-                    style={{
-                      width: "200px",
-                      height: "260px",
-                      overflow: "hidden",
-                      flexShrink: 0,
-                    }}
-                    onClick={(event) => handleImageClick(image, event)}
-                  >
-                    <div
-                      className="flex justify-content-center align-items-center"
-                      style={{ height: "180px" }}
+              <TabView className="flex-grow w-full md:w-[800px]">
+                <TabPanel header="Attendance Sign In">
+                  <div className="grid p-4">
+                    <EmployeeInput
+                      title="Attendance Sign In"
+                      description={<></>}
+                    />
+                  </div>
+                </TabPanel>
+                <TabPanel header="Attendance List">
+                  <div className="p-fluid">
+                    <DataTable
+                      value={imageList}
+                      className="p-datatable-striped"
                     >
-                      <Image
-                        src={image.actual_url}
-                        width="80"
-                        height="auto"
-                        className="mb-2"
-                        preview
+                      <Column
+                        field="file_name"
+                        header="File Name"
+                        style={{ minWidth: "200px" }}
                       />
-                    </div>
-                    <div
-                      className="text-sm text-center text-ellipsis overflow-hidden whitespace-nowrap"
-                      style={{
-                        maxWidth: "180px",
-                        lineHeight: "1.2rem",
-                        maxHeight: "1.2rem",
-                      }}
-                    >
-                      {image.file_name}
-                    </div>
-                  </Card>
-                ))}
-              </div>
+                      <Column
+                        field="insert_date"
+                        header="Insert Date"
+                        body={(rowData) => (
+                          <span>
+                            {moment(rowData.insert_date).format(
+                              "DD MMM YYYY h:mm A"
+                            )}
+                          </span>
+                        )}
+                        style={{ minWidth: "150px" }}
+                      />
+                      <Column
+                        header=""
+                        body={(rowData) => (
+                          <Button
+                            className="p-button-text"
+                            onClick={(event) =>
+                              handleImageClick(rowData, event)
+                            }
+                            icon="pi pi-ellipsis-h"
+                          />
+                        )}
+                        style={{ minWidth: "10px" }}
+                      />
+                    </DataTable>
+                  </div>
+                </TabPanel>
+              </TabView>
             </TabPanel>
             <TabPanel header="Settings">
               <div className="p-fluid">
-                <UploadDownload />
+                <UploadDownload fetchData={fetchData} />
               </div>
             </TabPanel>
           </TabView>

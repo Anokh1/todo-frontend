@@ -6,4 +6,5 @@ export const serviceApiPrefix = {
   FILE_API_PREFIX: "file",
   SYNOLOGY_API_PREFIX: "synology",
   NAS_API_PREFIX: "nas",
+  SCAN_API_PREFIX: "scan",
 };

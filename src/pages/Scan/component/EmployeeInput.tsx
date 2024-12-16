@@ -1,24 +1,23 @@
-import { Chart } from "chart.js";
-import "chart.js/auto";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import React, { useRef, useState } from "react";
+import React from "react";
+import { EmployeeInputProps } from "utilities/Interface/ScanInterface";
 
-const EmployeeInput: React.FC = () => {
-  const chartRef = useRef<Chart<"doughnut"> | null>(null);
-  const [spinning, setSpinning] = useState(false);
-  const [prizeWon, setPrizeWon] = useState<string | null>(null);
-  const [prizeMessage, setPrizeMessage] = useState<string | null>(null);
-
+const EmployeeInput: React.FC<EmployeeInputProps> = ({
+  title,
+  description,
+}) => {
   return (
     <div className="col-12 md:col-6">
       <div className="p-3">
-        <h2 className="text-center">Welcome to Spin N Win!</h2>
+        {/* <h2 className="text-center">Welcome to Spin N Win!</h2>
         <p>
           Spin the wheel and stand a chance to win exciting prizes like a Car,
           Vacation, Gift Cards, and more! Click the button or use{" "}
           <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to spin.
-        </p>
+        </p> */}
+        <h2 className="text-center">{title}</h2>
+        <p>{description}</p>
       </div>
 
       {/* Inputs and Submit Button */}
@@ -38,11 +37,7 @@ const EmployeeInput: React.FC = () => {
           />
         </div>
         <div className="col-12">
-          <Button
-            label="Submit"
-            style={{ width: "100%" }}
-            disabled={spinning}
-          />
+          <Button label="Submit" style={{ width: "100%" }} />
         </div>
       </div>
     </div>
