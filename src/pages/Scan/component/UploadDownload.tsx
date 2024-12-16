@@ -1,20 +1,27 @@
 import { Chart } from "chart.js";
 import "chart.js/auto";
 import { Button } from "primereact/button";
+import { Card } from "primereact/card";
+import { Dialog } from "primereact/dialog";
 import { FileUpload } from "primereact/fileupload";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import React, { useRef, useState } from "react";
 import ScanService from "services/scan.service";
-import { showError, showSuccess } from "utilities/Function/toast.function";
+import { downloadExcel } from "utilities/Function/downloadExcel.function";
+import {
+  showError,
+  showSuccess,
+  showWarning,
+} from "utilities/Function/toast.function";
 import { SettingProps } from "utilities/Interface/ScanInterface";
 
 const UploadDownload: React.FC<SettingProps> = ({ fetchData }) => {
   const toastRef = useRef<Toast>(null);
 
-  const [spinning, setSpinning] = useState(false);
-  const [prizeWon, setPrizeWon] = useState<string | null>(null);
-  const [prizeMessage, setPrizeMessage] = useState<string | null>(null);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<string>("");
+  const [fileType, setFileType] = useState<string>("");
 
   const scanService = new ScanService();
 
@@ -73,6 +80,48 @@ const UploadDownload: React.FC<SettingProps> = ({ fetchData }) => {
     }
   };
 
+  const getFolderFile = async (type: string) => {
+    try {
+      const res = await scanService.getFolderFile(type);
+      if (res.status && res.data) {
+        if (res.data.length > 0) {
+          setVisible(true);
+          setSelectedFile(res.data[0].name);
+          setFileType(res.data[0].type);
+        } else {
+          showWarning(toastRef, "No file uploaded");
+        }
+      }
+    } catch (error) {
+      showError(toastRef, "File retrieve fail");
+    }
+  };
+
+  const handleDownload = async () => {
+    const res = await scanService.downloadFile(fileType);
+    if (res.status) {
+      const link = res.data.filePath;
+      const fileName = link.split("/").pop();
+      await downloadExcel(link, fileName);
+      showSuccess(toastRef, "File downloaded");
+    } else {
+      showError(toastRef, "Download failed");
+    }
+    setVisible(false);
+  };
+
+  const handleDelete = async () => {
+    const res = await scanService.deleteFile(selectedFile, fileType);
+    if (res.status) {
+      showSuccess(toastRef, "File deleted");
+    } else {
+      showError(toastRef, "File delete failed");
+    }
+    setVisible(false);
+    setSelectedFile("");
+    setFileType("");
+  };
+
   return (
     <div className="col-12 md:col-6">
       <Toast ref={toastRef} />
@@ -104,7 +153,7 @@ const UploadDownload: React.FC<SettingProps> = ({ fetchData }) => {
             <Button
               label="Download"
               style={{ width: "100%" }}
-              disabled={spinning}
+              onClick={() => getFolderFile("name_list")}
             />
           </div>
         </div>
@@ -129,7 +178,7 @@ const UploadDownload: React.FC<SettingProps> = ({ fetchData }) => {
             <Button
               label="Download"
               style={{ width: "100%" }}
-              disabled={spinning}
+              onClick={() => getFolderFile("prize")}
             />
           </div>
         </div>
@@ -155,11 +204,56 @@ const UploadDownload: React.FC<SettingProps> = ({ fetchData }) => {
             <Button
               label="Download"
               style={{ width: "100%" }}
-              disabled={spinning}
+              onClick={() => getFolderFile("attendance")}
             />
           </div>
         </div>
       </div>
+
+      <Dialog
+        className="w-30rem" // Set width using PrimeFlex
+        header="Download File"
+        visible={visible}
+        onHide={() => {
+          setVisible(false);
+          setSelectedFile("");
+          setFileType("");
+        }}
+      >
+        <div>
+          {selectedFile !== "" ? (
+            <div>
+              <div
+                className="flex align-items-center justify-content-between mb-2"
+                style={{
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  padding: "10px",
+                  background: "#f9f9f9",
+                }}
+              >
+                <p style={{ margin: 0 }}>{selectedFile}</p>
+              </div>
+              <div className="flex justify-content-end gap-2">
+                <Button
+                  label="Download"
+                  icon="pi pi-download"
+                  className="p-button-success p-button-sm"
+                  onClick={handleDownload}
+                />
+                <Button
+                  label="Delete"
+                  icon="pi pi-trash"
+                  className="p-button-danger p-button-sm"
+                  onClick={handleDelete}
+                />
+              </div>
+            </div>
+          ) : (
+            <p>No files available to download.</p>
+          )}
+        </div>
+      </Dialog>
     </div>
   );
 };

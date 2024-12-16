@@ -29,6 +29,11 @@ export default class ScanService {
       .get("/getData", { params: { type } })
       .then((res) => res.data);
   }
+  getFolderFile(type: string) {
+    return axiosInstance
+      .get("/getFolderFile/", { params: { type } })
+      .then((res) => res.data);
+  }
   downloadFile(type: string) {
     return axiosInstance
       .get("/downloadFile", { params: { type } })
@@ -44,6 +49,12 @@ export default class ScanService {
   uploadAttendance(file: any) {
     return axiosInstance
       .post("/uploadAttendance", file)
+      .then((res) => res.data);
+  }
+
+  deleteFile(file: string, type: string) {
+    return axiosInstance
+      .delete("/deleteFile", { data: { file, type } })
       .then((res) => res.data);
   }
 }

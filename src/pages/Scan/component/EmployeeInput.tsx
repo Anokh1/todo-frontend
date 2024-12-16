@@ -10,17 +10,10 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
   return (
     <div className="col-12 md:col-6">
       <div className="p-3">
-        {/* <h2 className="text-center">Welcome to Spin N Win!</h2>
-        <p>
-          Spin the wheel and stand a chance to win exciting prizes like a Car,
-          Vacation, Gift Cards, and more! Click the button or use{" "}
-          <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to spin.
-        </p> */}
         <h2 className="text-center">{title}</h2>
         <p>{description}</p>
       </div>
 
-      {/* Inputs and Submit Button */}
       <div className="grid">
         <div className="col-12 md:col-6">
           <InputText

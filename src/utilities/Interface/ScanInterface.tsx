@@ -6,5 +6,5 @@ export interface SettingProps {
 
 export interface EmployeeInputProps {
   title: string;
-  description: React.ReactNode; // Accepts JSX elements, strings, or other renderable types
+  description: React.ReactNode;
 }
