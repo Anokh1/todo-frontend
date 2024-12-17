@@ -16,6 +16,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ prizeList }) => {
   const [spinning, setSpinning] = useState(false);
   const [prizeWon, setPrizeWon] = useState<string | null>(null);
   const [prizeMessage, setPrizeMessage] = useState<string | null>(null);
+  const [drawsLeft, setDrawsLeft] = useState(0);
 
   // Prepare chart data
   const chartData = {
@@ -109,8 +110,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ prizeList }) => {
           options={{
             plugins: {
               legend: {
-                position: "right", // Legend position
-                align: "start", // Align legend items in a column
+                display: false, // Hide the legend
               },
             },
           }}
@@ -118,15 +118,15 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ prizeList }) => {
         <Button
           label={spinning ? "Spinning..." : "Spin Wheel"}
           onClick={spinWheel}
-          disabled={spinning}
+          disabled={spinning || drawsLeft <= 0}
           className="mt-4"
         />
       </div>
 
-      {/* DataTable Container */}
-      <div className="col-12 md:col-6">
+      {/* Right Component - DataTable Container */}
+      <div className="col-12 md:col-5">
         <div className="card">
-          <h3 className="text-center mb-3">Prize List</h3>
+          <h3 className="text-center mb-3">Draws Left: {drawsLeft}</h3>
           <DataTable
             value={prizeList}
             paginator

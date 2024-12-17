@@ -103,7 +103,7 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
   };
 
   return (
-    <div className="col-6 md:col-3">
+    <div className="col-12 md:col-12">
       <Toast ref={toastRef} />
 
       <div className="p-3">

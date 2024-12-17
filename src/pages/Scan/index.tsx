@@ -189,25 +189,26 @@ const Scan: React.FC = () => {
                   </div>
                 </TabPanel>
                 <TabPanel header="Spin N Win">
-                  <div className="grid p-4">
-                    <EmployeeInput
-                      title="Welcome to Spin N Win!"
-                      description={
-                        <>
-                          Spin the wheel and stand a chance to win exciting
-                          prizes like a Car, Vacation, Gift Cards, and more!
-                          Click the button or use <kbd>Ctrl</kbd> +{" "}
-                          <kbd>Enter</kbd> to spin.
-                        </>
-                      }
-                      type="attendance"
-                      nameList={nameList}
-                      onFetchData={fetchNameList}
-                    />
-                    <div className="col-12 md:col-6 flex justify-content-center align-items-center">
-                      <SpinWheel
-                        prizeList={prizeList}
+                  <div className="grid">
+                    <div className="col-12 md:col-4">
+                      <EmployeeInput
+                        title="Welcome to Spin N Win!"
+                        description={
+                          <>
+                            Spin the wheel and stand a chance to win exciting
+                            prizes like a Car, Vacation, Gift Cards, and more!
+                            Click the button or use <kbd>Ctrl</kbd> +{" "}
+                            <kbd>Enter</kbd> to spin.
+                          </>
+                        }
+                        type="attendance"
+                        nameList={nameList}
+                        onFetchData={fetchNameList}
                       />
+                    </div>
+
+                    <div className="col-12 md:col-8 flex justify-content-center align-items-center">
+                      <SpinWheel prizeList={prizeList} />
                     </div>
                   </div>
                 </TabPanel>
