@@ -16,7 +16,11 @@ import {
 } from "utilities/Function/toast.function";
 import { SettingProps } from "utilities/Interface/ScanInterface";
 
-const UploadDownload: React.FC<SettingProps> = ({ fetchData }) => {
+const UploadDownload: React.FC<SettingProps> = ({
+  fetchName,
+  fetchPrize,
+  fetchNameList,
+}) => {
   const toastRef = useRef<Toast>(null);
 
   const [visible, setVisible] = useState<boolean>(false);
@@ -35,7 +39,7 @@ const UploadDownload: React.FC<SettingProps> = ({ fetchData }) => {
       try {
         const res = await scanService.uploadName(formData);
         if (res.status && res.data.filePath) {
-          fetchData();
+          fetchName();
           showSuccess(toastRef, "File uploaded");
         }
       } catch (error) {
@@ -54,6 +58,7 @@ const UploadDownload: React.FC<SettingProps> = ({ fetchData }) => {
       try {
         const res = await scanService.uploadPrize(formData);
         if (res.status && res.data.filePath) {
+          fetchPrize();
           showSuccess(toastRef, "File uploaded");
         }
       } catch (error) {
@@ -120,6 +125,7 @@ const UploadDownload: React.FC<SettingProps> = ({ fetchData }) => {
     setVisible(false);
     setSelectedFile("");
     setFileType("");
+    fetchNameList();
   };
 
   return (

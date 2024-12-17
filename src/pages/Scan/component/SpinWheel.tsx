@@ -3,14 +3,16 @@ import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import { Chart } from "chart.js";
 import { Button } from "primereact/button";
+import { SpinWheelProps } from "utilities/Interface/ScanInterface";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
-interface SpinWheelProps {
-  initialPrizes: string[];
-}
-
-const SpinWheel: React.FC<SpinWheelProps> = ({ initialPrizes }) => {
+const SpinWheel: React.FC<SpinWheelProps> = ({ prizeList }) => {
+  const prizeName = prizeList.map((prize) => {
+    return prize.Item;
+  });
   const chartRef = useRef<Chart<"doughnut"> | null>(null);
-  const [prizes, setPrizes] = useState(initialPrizes); // State for updated prize list
+  const [prizes, setPrizes] = useState(prizeName); // State for updated prize list
   const [spinning, setSpinning] = useState(false);
   const [prizeWon, setPrizeWon] = useState<string | null>(null);
   const [prizeMessage, setPrizeMessage] = useState<string | null>(null);
@@ -98,31 +100,51 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ initialPrizes }) => {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        width: "60%",
-      }}
-    >
-      <Doughnut
-        ref={chartRef}
-        data={chartData}
-        options={{
-          plugins: {
-            legend: {
-              position: "right", // Explicitly cast to accepted literal type
-              align: "start", // Align legend items in a column
+    <div className="grid align-items-start">
+      {/* Doughnut Chart and Button Container */}
+      <div className="col-12 md:col-6 flex flex-column align-items-center">
+        <Doughnut
+          ref={chartRef}
+          data={chartData}
+          options={{
+            plugins: {
+              legend: {
+                position: "right", // Legend position
+                align: "start", // Align legend items in a column
+              },
             },
-          },
-        }}
-      />
-      <Button
-        label={spinning ? "Spinning..." : "Spin Wheel"}
-        onClick={spinWheel}
-        disabled={spinning}
-      />
+          }}
+        />
+        <Button
+          label={spinning ? "Spinning..." : "Spin Wheel"}
+          onClick={spinWheel}
+          disabled={spinning}
+          className="mt-4"
+        />
+      </div>
+
+      {/* DataTable Container */}
+      <div className="col-12 md:col-6">
+        <div className="card">
+          <h3 className="text-center mb-3">Prize List</h3>
+          <DataTable
+            value={prizeList}
+            paginator
+            rows={10}
+            selectionMode="single"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} names"
+            emptyMessage="No record found."
+            scrollable
+            className="p-datatable-striped"
+          >
+            <Column field="Item" header="Prize Name" />
+            <Column field="Quantity" header="Quantity" />
+          </DataTable>
+        </div>
+      </div>
+
+      {/* Prize Message */}
       {prizeMessage && (
         <div
           style={{

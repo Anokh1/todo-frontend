@@ -57,4 +57,50 @@ export default class ScanService {
       .delete("/deleteFile", { data: { file, type } })
       .then((res) => res.data);
   }
+
+  addSpin(
+    inputType: "scan" | "employeeId",
+    inputValue: string,
+    columnToUpdate: string
+  ) {
+    return axiosInstance
+      .post("/addSpin", {
+        inputType,
+        inputValue,
+        columnToUpdate,
+      })
+      .then((res) => res.data);
+  }
+
+  addAttendance(
+    inputType: "scan" | "employeeId",
+    inputValue: string,
+    columnToUpdate: string
+  ) {
+    return axiosInstance
+      .post("/addAttendance", {
+        inputType,
+        inputValue,
+        columnToUpdate,
+      })
+      .then((res) => res.data);
+  }
+
+  addEmployeePrize(inputValue: string, employeeId: string) {
+    return axiosInstance
+      .post("/addEmployeePrize", {
+        inputValue,
+        employeeId,
+      })
+      .then((res) => res.data);
+  }
+
+  addPrizeWinner(inputValue: string, prizeName: string) {
+    return axiosInstance
+      .post("/addPrizeWinner", {
+        inputValue,
+        prizeName,
+      })
+      .then((res) => res.data);
+  }
 }

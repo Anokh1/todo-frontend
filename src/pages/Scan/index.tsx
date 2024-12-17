@@ -28,10 +28,11 @@ const Scan: React.FC = () => {
   });
   const toastRef = useRef<Toast>(null);
   const [nameList, setNameList] = useState([]);
+  const [prizeList, setPrizeList] = useState([]);
 
   const scanService = new ScanService();
 
-  const fetchData = async () => {
+  const fetchNameList = async () => {
     try {
       const res = await scanService.getData("name_list");
       setNameList(res.data);
@@ -40,9 +41,18 @@ const Scan: React.FC = () => {
     }
   };
 
+  const fetchPrizeList = async () => {
+    try {
+      const res = await scanService.getData("prize");
+      setPrizeList(res.data);
+    } catch (error) {
+      showError(toastRef, "Prize list cannot be empty");
+    }
+  };
+
   useEffect(() => {
-    fetchData();
-    // fetchPmrize();
+    fetchNameList();
+    fetchPrizeList();
   }, []);
 
   const renderTimestamp = (rowData: any, column: string) => {
@@ -158,7 +168,13 @@ const Scan: React.FC = () => {
                 </TabPanel>
                 <TabPanel header="Check In">
                   <div className="grid p-4">
-                    <EmployeeInput title="Check In" description={<></>} />
+                    <EmployeeInput
+                      title="Check In"
+                      description={<></>}
+                      type="attendance"
+                      nameList={nameList}
+                      onFetchData={fetchNameList}
+                    />
                   </div>
                 </TabPanel>
                 <TabPanel header="Collection Door Gift">
@@ -166,6 +182,9 @@ const Scan: React.FC = () => {
                     <EmployeeInput
                       title="Collection Door Gift"
                       description={<></>}
+                      type="attendance"
+                      nameList={nameList}
+                      onFetchData={fetchNameList}
                     />
                   </div>
                 </TabPanel>
@@ -181,24 +200,13 @@ const Scan: React.FC = () => {
                           <kbd>Enter</kbd> to spin.
                         </>
                       }
+                      type="attendance"
+                      nameList={nameList}
+                      onFetchData={fetchNameList}
                     />
                     <div className="col-12 md:col-6 flex justify-content-center align-items-center">
                       <SpinWheel
-                        initialPrizes={[
-                          "Car",
-                          "Vacation",
-                          "Gift Card",
-                          "TV",
-                          "Headphones",
-                          "Laptop",
-                          "Smartphone",
-                          "Watch",
-                          "Bicycle",
-                          "Mystery Box",
-                          "HP Pro Book",
-                          "Samsung Galaxy S24 FE",
-                          "Huawei Watch",
-                        ]}
+                        prizeList={prizeList}
                       />
                     </div>
                   </div>
@@ -212,6 +220,9 @@ const Scan: React.FC = () => {
                     <EmployeeInput
                       title="Attendance Sign In"
                       description={<></>}
+                      type="attendance"
+                      nameList={nameList}
+                      onFetchData={fetchNameList}
                     />
                   </div>
                 </TabPanel>
@@ -258,7 +269,11 @@ const Scan: React.FC = () => {
             </TabPanel>
             <TabPanel header="Settings">
               <div className="p-fluid">
-                <UploadDownload fetchData={fetchData} />
+                <UploadDownload
+                  fetchName={fetchNameList}
+                  fetchPrize={fetchPrizeList}
+                  fetchNameList={fetchNameList}
+                />
               </div>
             </TabPanel>
           </TabView>
