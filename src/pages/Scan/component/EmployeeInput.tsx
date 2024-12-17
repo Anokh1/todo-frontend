@@ -1,7 +1,7 @@
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ScanService from "services/scan.service";
 import {
   showError,
@@ -15,7 +15,8 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
   description,
   type,
   nameList,
-  onFetchData,
+  onFetchName,
+  employeeInfo,
 }) => {
   const [accessCard, setAccessCard] = useState("");
   const [employeeId, setEmployeeId] = useState("");
@@ -26,6 +27,12 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
   const toastRef = useRef<Toast>(null);
 
   const scanService = new ScanService();
+
+  useEffect(() => {
+    if (employeeInfo && employeeData) {
+      employeeInfo(employeeData);
+    }
+  }, [employeeData, employeeInfo]);
 
   const getColumnToUpdate = () => {
     switch (activeTab) {
@@ -59,7 +66,7 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
     const trimAccessCard = accessCard.replace(/^0+/, "");
     const trimEmployeeId = employeeId.trim();
 
-    if (!trimAccessCard || !trimEmployeeId) {
+    if (!trimAccessCard && !trimEmployeeId) {
       showWarning(toastRef, "No required details provided");
       return;
     }
@@ -86,7 +93,8 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
         if (res.status) {
           showSuccess(toastRef, res.message);
 
-          if (activeTab === 3) {
+          // if (activeTab === 3) {
+          if (type === "submit") {
             await getDrawsLeft(findEmployee, findEmployee["Lucky Draw Entry"]);
           }
         } else {
@@ -95,7 +103,7 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
 
         setAccessCard("");
         setEmployeeId("");
-        await onFetchData();
+        await onFetchName();
       }
     } catch (error) {
       showError(toastRef, "Submit failed");
@@ -131,7 +139,11 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
           />
         </div>
         <div className="col-12">
-          <Button label="Submit" style={{ width: "100%" }} />
+          <Button
+            label="Submit"
+            onClick={handleSubmit}
+            style={{ width: "100%" }}
+          />
         </div>
       </div>
     </div>

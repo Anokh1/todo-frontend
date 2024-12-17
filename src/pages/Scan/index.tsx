@@ -10,7 +10,6 @@ import { Menu } from "primereact/menu";
 import { TabPanel, TabView } from "primereact/tabview";
 import { useEffect, useRef, useState } from "react";
 import FileService from "services/file.service";
-import { ImageFile } from "utilities/Interface/AdminInterface";
 import SpinWheel from "./component/SpinWheel";
 import EmployeeInput from "./component/EmployeeInput";
 import UploadDownload from "./component/UploadDownload";
@@ -29,8 +28,13 @@ const Scan: React.FC = () => {
   const toastRef = useRef<Toast>(null);
   const [nameList, setNameList] = useState([]);
   const [prizeList, setPrizeList] = useState([]);
+  const [employeeInfo, setEmployeeInfo] = useState();
 
   const scanService = new ScanService();
+
+  const handleEmployeeInfo = (data) => {
+    setEmployeeInfo(data);
+  };
 
   const fetchNameList = async () => {
     try {
@@ -173,7 +177,8 @@ const Scan: React.FC = () => {
                       description={<></>}
                       type="attendance"
                       nameList={nameList}
-                      onFetchData={fetchNameList}
+                      onFetchName={fetchNameList}
+                      employeeInfo={handleEmployeeInfo}
                     />
                   </div>
                 </TabPanel>
@@ -184,7 +189,8 @@ const Scan: React.FC = () => {
                       description={<></>}
                       type="attendance"
                       nameList={nameList}
-                      onFetchData={fetchNameList}
+                      onFetchName={fetchNameList}
+                      employeeInfo={handleEmployeeInfo}
                     />
                   </div>
                 </TabPanel>
@@ -201,14 +207,20 @@ const Scan: React.FC = () => {
                             <kbd>Enter</kbd> to spin.
                           </>
                         }
-                        type="attendance"
+                        type="submit"
                         nameList={nameList}
-                        onFetchData={fetchNameList}
+                        onFetchName={fetchNameList}
+                        employeeInfo={handleEmployeeInfo}
                       />
                     </div>
 
                     <div className="col-12 md:col-8 flex justify-content-center align-items-center">
-                      <SpinWheel prizeList={prizeList} />
+                      <SpinWheel
+                        prizeList={prizeList}
+                        employeeInfo={employeeInfo}
+                        onFetchPrize={fetchPrizeList}
+                        onFetchName={fetchNameList}
+                      />
                     </div>
                   </div>
                 </TabPanel>
@@ -223,7 +235,8 @@ const Scan: React.FC = () => {
                       description={<></>}
                       type="attendance"
                       nameList={nameList}
-                      onFetchData={fetchNameList}
+                      onFetchName={fetchNameList}
+                      employeeInfo={handleEmployeeInfo}
                     />
                   </div>
                 </TabPanel>

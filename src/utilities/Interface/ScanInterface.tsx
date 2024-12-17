@@ -10,10 +10,14 @@ export interface EmployeeInputProps {
   description: React.ReactNode;
   type: string;
   nameList: any[];
-  onFetchData: () => void | Promise<void>;
+  onFetchName: () => void | Promise<void>;
+  employeeInfo: any;
 }
 
 export interface SpinWheelProps {
   // initialPrizes: string[];
   prizeList: any[];
+  employeeInfo: any;
+  onFetchPrize: () => void | Promise<void>;
+  onFetchName: () => void | Promise<void>;
 }

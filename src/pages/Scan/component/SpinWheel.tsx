@@ -6,17 +6,30 @@ import { Button } from "primereact/button";
 import { SpinWheelProps } from "utilities/Interface/ScanInterface";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { showError, showSuccess } from "utilities/Function/toast.function";
+import { Toast } from "primereact/toast";
+import ScanService from "services/scan.service";
 
-const SpinWheel: React.FC<SpinWheelProps> = ({ prizeList }) => {
-  const prizeName = prizeList.map((prize) => {
+const SpinWheel: React.FC<SpinWheelProps> = ({
+  prizeList,
+  employeeInfo,
+  onFetchPrize,
+  onFetchName,
+}) => {
+  let prizeNames = prizeList.map((prize) => {
     return prize.Item;
   });
   const chartRef = useRef<Chart<"doughnut"> | null>(null);
-  const [prizes, setPrizes] = useState(prizeName); // State for updated prize list
+  const [prizes, setPrizes] = useState(prizeNames); // State for updated prize list
   const [spinning, setSpinning] = useState(false);
   const [prizeWon, setPrizeWon] = useState<string | null>(null);
   const [prizeMessage, setPrizeMessage] = useState<string | null>(null);
   const [drawsLeft, setDrawsLeft] = useState(0);
+  const [employeeData, setEmployeeData] = useState(employeeInfo);
+
+  const scanService = new ScanService();
+
+  const toastRef = useRef<Toast>(null);
 
   // Prepare chart data
   const chartData = {
@@ -31,28 +44,37 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ prizeList }) => {
     ],
   };
 
-  // Custom plugin to display the prize name in the center
-  const centerTextPlugin = {
-    id: "centerText",
-    beforeDraw: (chart: Chart) => {
-      if (chart && chart.ctx) {
-        const ctx = chart.ctx;
-        const width = chart.width;
-        const height = chart.height;
-        const text = prizeWon || "Spin Me!";
-        ctx.save();
-        ctx.font = "bold 16px Arial";
-        ctx.fillStyle = "#333";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(text, width / 2, height / 2);
-        ctx.restore();
-      }
-    },
+  const handleSpinComplete = async (prize: string, employeeId: any) => {
+    if (employeeId && drawsLeft > 0) {
+      try {
+        const prizeItem = prizeList.find((item) => item.Item === prize);
+        if (!prizeItem) {
+          showError(toastRef, "Prize not found");
+          return;
+        }
+        const prizeQuantity = prizeItem.Quantity - 1;
+        const prizeName = prizeItem.Item;
+
+        const res = await scanService.addPrizeWinner(
+          prizeQuantity.toString(),
+          prizeName
+        );
+
+        if (res.status) {
+          showSuccess(toastRef, res.message);
+          setDrawsLeft((prevDraws) => prevDraws - 1);
+          await onFetchPrize();
+
+          await scanService.addEmployeePrize(prize, employeeId);
+
+          await onFetchName();
+        }
+      } catch (error) {}
+    }
   };
 
   const spinWheel = () => {
-    if (chartRef.current) {
+    if (chartRef.current && drawsLeft > 0) {
       setSpinning(true);
 
       const currentAngle = chartRef.current.options.rotation || 0;
@@ -81,6 +103,8 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ prizeList }) => {
         // setPrizes(prizes.filter((_, index) => index !== selectedIndex));
         setSpinning(false);
 
+        handleSpinComplete(prize, employeeData.ID);
+
         setTimeout(() => setPrizeMessage(null), 2000);
       }, 1000);
     }
@@ -100,8 +124,17 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ prizeList }) => {
     };
   }, []);
 
+  useEffect(() => {
+    setEmployeeData(employeeInfo);
+  }, [employeeInfo]);
+
+  useEffect(() => {
+    setDrawsLeft(employeeData?.["Lucky Draw Entry"] || 0);
+  }, [employeeData]);
+
   return (
     <div className="grid align-items-start">
+      <Toast ref={toastRef} />
       {/* Doughnut Chart and Button Container */}
       <div className="col-12 md:col-6 flex flex-column align-items-center">
         <Doughnut
@@ -126,6 +159,9 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ prizeList }) => {
       {/* Right Component - DataTable Container */}
       <div className="col-12 md:col-5">
         <div className="card">
+          {employeeData && (
+            <h3 className="text-center mb-3">Employee: {employeeData.Name}</h3>
+          )}
           <h3 className="text-center mb-3">Draws Left: {drawsLeft}</h3>
           <DataTable
             value={prizeList}
