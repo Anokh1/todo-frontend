@@ -15,14 +15,11 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
   employeeInfo,
   onFetchPrize,
   onFetchName,
+  onUpdateEmployeeInfo,
 }) => {
-  let prizeNames = prizeList.map((prize) => {
-    return prize.Item;
-  });
   const chartRef = useRef<Chart<"doughnut"> | null>(null);
-  const [prizes, setPrizes] = useState(prizeNames); // State for updated prize list
+  const [prizes, setPrizes] = useState<string[]>([]);
   const [spinning, setSpinning] = useState(false);
-  const [prizeWon, setPrizeWon] = useState<string | null>(null);
   const [prizeMessage, setPrizeMessage] = useState<string | null>(null);
   const [drawsLeft, setDrawsLeft] = useState(0);
   const [employeeData, setEmployeeData] = useState(employeeInfo);
@@ -31,7 +28,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
 
   const toastRef = useRef<Toast>(null);
 
-  // Prepare chart data
   const chartData = {
     labels: prizes,
     datasets: [
@@ -44,7 +40,11 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
     ],
   };
 
-  const handleSpinComplete = async (prize: string, employeeId: any) => {
+  const handleSpinComplete = async (
+    prize: string,
+    employeeId: any,
+    employeeName: string
+  ) => {
     if (employeeId && drawsLeft > 0) {
       try {
         const prizeItem = prizeList.find((item) => item.Item === prize);
@@ -56,20 +56,29 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
         const prizeName = prizeItem.Item;
 
         const res = await scanService.addPrizeWinner(
-          prizeQuantity.toString(),
-          prizeName
+          prizeQuantity,
+          prizeName,
+          employeeName
         );
 
         if (res.status) {
           showSuccess(toastRef, res.message);
           setDrawsLeft((prevDraws) => prevDraws - 1);
+
+          if (drawsLeft < 1) {
+            // Only update employeeInfo after the component is done rendering
+            setTimeout(() => onUpdateEmployeeInfo(null), 500);
+          }
+
           await onFetchPrize();
-
+          const updatedPrizeNames = prizeList.map((item) => item.Item);
+          setPrizes(updatedPrizeNames);
           await scanService.addEmployeePrize(prize, employeeId);
-
           await onFetchName();
         }
-      } catch (error) {}
+      } catch (error) {
+        showError(toastRef, "Spin incomplete");
+      }
     }
   };
 
@@ -95,22 +104,25 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
         const segmentSize = 360 / prizes.length;
         const selectedIndex = Math.floor(normalizedAngle / segmentSize);
         const prize = prizes[selectedIndex];
-        setPrizeWon(prize);
 
         setPrizeMessage(`You won: ${prize}`);
-
-        // Update prize list to remove the won prize
-        // setPrizes(prizes.filter((_, index) => index !== selectedIndex));
         setSpinning(false);
 
-        handleSpinComplete(prize, employeeData.ID);
+        handleSpinComplete(prize, employeeData.ID, employeeData.Name);
 
         setTimeout(() => setPrizeMessage(null), 2000);
       }, 1000);
     }
   };
 
-  // Control and Enter to spin the wheel
+  useEffect(() => {
+    setEmployeeData(employeeInfo);
+  }, [employeeInfo]);
+
+  //   useEffect(() => {
+  //     setDrawsLeft(employeeData?.["Lucky Draw Entry"] || 0);
+  //   }, [employeeData]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === "Enter") {
@@ -125,42 +137,43 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
   }, []);
 
   useEffect(() => {
-    setEmployeeData(employeeInfo);
-  }, [employeeInfo]);
+    if (prizeList.length > 0) {
+      const prizeNames = prizeList.map((prize) => prize.Item);
+      setPrizes(prizeNames);
+    }
+  }, [prizeList]);
 
   useEffect(() => {
+    setEmployeeData(employeeInfo);
     setDrawsLeft(employeeData?.["Lucky Draw Entry"] || 0);
-  }, [employeeData]);
+  }, [employeeInfo, employeeData]);
 
   return (
     <div className="grid align-items-start">
       <Toast ref={toastRef} />
-      {/* Doughnut Chart and Button Container */}
       <div className="col-12 md:col-6 flex flex-column align-items-center">
-        <Doughnut
-          ref={chartRef}
-          data={chartData}
-          options={{
-            plugins: {
-              legend: {
-                display: false, // Hide the legend
-              },
-            },
-          }}
-        />
         <Button
           label={spinning ? "Spinning..." : "Spin Wheel"}
           onClick={spinWheel}
           disabled={spinning || drawsLeft <= 0}
           className="mt-4"
         />
+        <Doughnut
+          ref={chartRef}
+          data={chartData}
+          options={{
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          }}
+        />
       </div>
-
-      {/* Right Component - DataTable Container */}
       <div className="col-12 md:col-5">
         <div className="card">
           {employeeData && (
-            <h3 className="text-center mb-3">Employee: {employeeData.Name}</h3>
+            <h3 className="text-center mb-3">{employeeData.Name}</h3>
           )}
           <h3 className="text-center mb-3">Draws Left: {drawsLeft}</h3>
           <DataTable
@@ -169,7 +182,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
             rows={10}
             selectionMode="single"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} names"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} prizes"
             emptyMessage="No record found."
             scrollable
             className="p-datatable-striped"
@@ -179,8 +192,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
           </DataTable>
         </div>
       </div>
-
-      {/* Prize Message */}
       {prizeMessage && (
         <div
           style={{

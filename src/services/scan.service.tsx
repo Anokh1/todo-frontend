@@ -95,11 +95,12 @@ export default class ScanService {
       .then((res) => res.data);
   }
 
-  addPrizeWinner(inputValue: string, prizeName: string) {
+  addPrizeWinner(inputValue: number, prizeName: string, employeeName: string) {
     return axiosInstance
       .post("/addPrizeWinner", {
         inputValue,
         prizeName,
+        employeeName
       })
       .then((res) => res.data);
   }

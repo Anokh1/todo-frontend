@@ -1,23 +1,17 @@
 import { LoadingProvider } from "context/LoadingContext";
 import moment from "moment";
-import Upload from "pages/Admin/component/Upload";
-import { Button } from "primereact/button";
-import { Card } from "primereact/card";
+import { FilterMatchMode } from "primereact/api";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { Image } from "primereact/image";
-import { Menu } from "primereact/menu";
+import { InputText } from "primereact/inputtext";
 import { TabPanel, TabView } from "primereact/tabview";
+import { Toast } from "primereact/toast";
 import { useEffect, useRef, useState } from "react";
-import FileService from "services/file.service";
-import SpinWheel from "./component/SpinWheel";
-import EmployeeInput from "./component/EmployeeInput";
-import UploadDownload from "./component/UploadDownload";
 import ScanService from "services/scan.service";
 import { showError } from "utilities/Function/toast.function";
-import { Toast } from "primereact/toast";
-import { InputText } from "primereact/inputtext";
-import { FilterMatchMode } from "primereact/api";
+import EmployeeInput from "./component/EmployeeInput";
+import SpinWheel from "./component/SpinWheel";
+import UploadDownload from "./component/UploadDownload";
 
 const Scan: React.FC = () => {
   // const { startLoading, stopLoading } = useLoading();
@@ -220,6 +214,7 @@ const Scan: React.FC = () => {
                         employeeInfo={employeeInfo}
                         onFetchPrize={fetchPrizeList}
                         onFetchName={fetchNameList}
+                        onUpdateEmployeeInfo={setEmployeeInfo}
                       />
                     </div>
                   </div>

@@ -1,18 +1,15 @@
-import { Chart } from "chart.js";
 import "chart.js/auto";
 import { Button } from "primereact/button";
-import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
 import { FileUpload } from "primereact/fileupload";
-import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import React, { useRef, useState } from "react";
 import ScanService from "services/scan.service";
 import { downloadExcel } from "utilities/Function/downloadExcel.function";
 import {
-  showError,
-  showSuccess,
-  showWarning,
+    showError,
+    showSuccess,
+    showWarning,
 } from "utilities/Function/toast.function";
 import { SettingProps } from "utilities/Interface/ScanInterface";
 

@@ -15,9 +15,9 @@ export interface EmployeeInputProps {
 }
 
 export interface SpinWheelProps {
-  // initialPrizes: string[];
   prizeList: any[];
   employeeInfo: any;
   onFetchPrize: () => void | Promise<void>;
   onFetchName: () => void | Promise<void>;
+  onUpdateEmployeeInfo: (info: any) => void;
 }
