@@ -9,9 +9,11 @@ export interface EmployeeInputProps {
   title: string;
   description: React.ReactNode;
   type: string;
-  nameList: any[];
-  onFetchName: () => void | Promise<void>;
+  // nameList: any[];
+  dataList: any[];
+  onFetchDataList: () => void | Promise<void>;
   employeeInfo: any;
+  activeTab: number
 }
 
 export interface SpinWheelProps {

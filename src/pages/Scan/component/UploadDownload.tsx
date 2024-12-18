@@ -7,9 +7,9 @@ import React, { useRef, useState } from "react";
 import ScanService from "services/scan.service";
 import { downloadExcel } from "utilities/Function/downloadExcel.function";
 import {
-    showError,
-    showSuccess,
-    showWarning,
+  showError,
+  showSuccess,
+  showWarning,
 } from "utilities/Function/toast.function";
 import { SettingProps } from "utilities/Interface/ScanInterface";
 
@@ -157,6 +157,15 @@ const UploadDownload: React.FC<SettingProps> = ({
               label="Download"
               style={{ width: "100%" }}
               onClick={() => getFolderFile("name_list")}
+              severity="success"
+            />
+          </div>
+          <div className="ml-2">
+            <Button
+              label="Template"
+              style={{ width: "100%" }}
+              onClick={() => getFolderFile("name_list")}
+              severity="secondary"
             />
           </div>
         </div>
@@ -182,6 +191,15 @@ const UploadDownload: React.FC<SettingProps> = ({
               label="Download"
               style={{ width: "100%" }}
               onClick={() => getFolderFile("prize")}
+              severity="success"
+            />
+          </div>
+          <div className="ml-2">
+            <Button
+              label="Template"
+              style={{ width: "100%" }}
+              onClick={() => getFolderFile("name_list")}
+              severity="secondary"
             />
           </div>
         </div>
@@ -208,6 +226,15 @@ const UploadDownload: React.FC<SettingProps> = ({
               label="Download"
               style={{ width: "100%" }}
               onClick={() => getFolderFile("attendance")}
+              severity="success"
+            />
+          </div>
+          <div className="ml-2">
+            <Button
+              label="Template"
+              style={{ width: "100%" }}
+              onClick={() => getFolderFile("name_list")}
+              severity="secondary"
             />
           </div>
         </div>

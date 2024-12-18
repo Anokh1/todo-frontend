@@ -105,7 +105,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
         const selectedIndex = Math.floor(normalizedAngle / segmentSize);
         const prize = prizes[selectedIndex];
 
-        setPrizeMessage(`You won: ${prize}`);
+        setPrizeMessage(`${prize}`);
         setSpinning(false);
 
         handleSpinComplete(prize, employeeData.ID, employeeData.Name);
@@ -199,15 +199,19 @@ const SpinWheel: React.FC<SpinWheelProps> = ({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
+            zIndex: 1000, // Ensure it appears above other components
             fontSize: "24px",
             fontWeight: "bold",
-            background: "rgba(255, 255, 255, 0.8)",
-            padding: "20px",
-            borderRadius: "10px",
+            color: "#ffffff",
+            background: "linear-gradient(90deg, #ff8c00, #ffcc00)",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+            padding: "30px 40px",
+            borderRadius: "20px",
             textAlign: "center",
+            animation: "pulse 1.5s infinite",
           }}
         >
-          {prizeMessage}
+          🎉 {prizeMessage} 🎉
         </div>
       )}
     </div>

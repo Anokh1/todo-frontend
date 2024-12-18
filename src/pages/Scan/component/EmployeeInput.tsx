@@ -14,13 +14,15 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
   title,
   description,
   type,
-  nameList,
-  onFetchName,
+  // nameList,
+  dataList,
+  onFetchDataList,
   employeeInfo,
+  activeTab,
 }) => {
   const [accessCard, setAccessCard] = useState("");
   const [employeeId, setEmployeeId] = useState("");
-  const [activeTab, setActiveTab] = useState(0);
+  // const [activeTab, setActiveTab] = useState(0);
   const [drawsLeft, setDrawsLeft] = useState(0);
   const [employeeData, setEmployeeData] = useState(null);
 
@@ -71,7 +73,7 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
       return;
     }
 
-    const findEmployee = nameList.find(
+    const findEmployee = dataList.find(
       (row) =>
         (trimEmployeeId && String(row["ID"]) === trimEmployeeId) ||
         (trimAccessCard && String(row["Access Card"]) === trimAccessCard)
@@ -93,8 +95,7 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
         if (res.status) {
           showSuccess(toastRef, res.message);
 
-          // if (activeTab === 3) {
-          if (type === "submit") {
+          if (activeTab === 3) {
             await getDrawsLeft(findEmployee, findEmployee["Lucky Draw Entry"]);
           }
         } else {
@@ -103,7 +104,22 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
 
         setAccessCard("");
         setEmployeeId("");
-        await onFetchName();
+        await onFetchDataList();
+      } else if (type === "attendance") {
+        const res = await scanService.addAttendance(
+          trimAccessCard ? "scan" : "employeeId",
+          trimAccessCard || trimEmployeeId,
+          "Clock In"
+        );
+        if (res.status) {
+          showSuccess(toastRef, res.message);
+        } else {
+          showError(toastRef, res.message);
+        }
+
+        setAccessCard("");
+        setEmployeeId("");
+        await onFetchDataList();
       }
     } catch (error) {
       showError(toastRef, "Submit failed");

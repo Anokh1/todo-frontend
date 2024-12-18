@@ -22,12 +22,18 @@ const Scan: React.FC = () => {
   const toastRef = useRef<Toast>(null);
   const [nameList, setNameList] = useState([]);
   const [prizeList, setPrizeList] = useState([]);
+  const [attendanceList, setAttendanceList] = useState([]);
   const [employeeInfo, setEmployeeInfo] = useState();
+  const [activeTab, setActiveTab] = useState(0);
 
   const scanService = new ScanService();
 
   const handleEmployeeInfo = (data) => {
     setEmployeeInfo(data);
+  };
+
+  const handleActiveTab = (data) => {
+    setActiveTab(data);
   };
 
   const fetchNameList = async () => {
@@ -48,16 +54,26 @@ const Scan: React.FC = () => {
     }
   };
 
+  const fetchAttendanceList = async () => {
+    try {
+      const res = await scanService.getData("attendance");
+      setAttendanceList(res.data);
+    } catch (error) {
+      showError(toastRef, "Attendance list cannot be empty");
+    }
+  };
+
   useEffect(() => {
     fetchNameList();
     fetchPrizeList();
+    fetchAttendanceList();
   }, []);
 
   const renderTimestamp = (rowData: any, column: string) => {
     return rowData[column] ? new Date(rowData[column]).toLocaleString() : "";
   };
 
-  const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onNameGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const _filter: any = { ...globalFilter };
     _filter["global"].value = value;
@@ -66,7 +82,7 @@ const Scan: React.FC = () => {
     setGlobalFilterValue(value);
   };
 
-  const renderSearchHeader = () => {
+  const renderNameSearchHeader = () => {
     return (
       <div className="flex justify-content-end">
         <span className="p-input-icon-right w-full md:w-20rem">
@@ -74,7 +90,7 @@ const Scan: React.FC = () => {
           <InputText
             type="text"
             value={globalFilterValue}
-            onChange={(e) => onGlobalFilterChange(e)}
+            onChange={(e) => onNameGlobalFilterChange(e)}
             placeholder="Search Employee"
           />
         </span>
@@ -89,12 +105,16 @@ const Scan: React.FC = () => {
         <div className="flex flex-col flex-grow">
           <TabView className="flex-grow w-full md:w-[800px]">
             <TabPanel header="Non Duplicate Attendance">
-              <TabView className="flex-grow w-full md:w-[800px]">
+              <TabView
+                className="flex-grow w-full md:w-[800px]"
+                activeIndex={activeTab}
+                onTabChange={(e) => setActiveTab(e.index)}
+              >
                 <TabPanel header="Full Name List">
                   <div className="p-fluid">
                     <DataTable
                       value={nameList}
-                      header={renderSearchHeader}
+                      header={renderNameSearchHeader}
                       paginator
                       rows={30}
                       selectionMode="single"
@@ -169,10 +189,11 @@ const Scan: React.FC = () => {
                     <EmployeeInput
                       title="Check In"
                       description={<></>}
-                      type="attendance"
-                      nameList={nameList}
-                      onFetchName={fetchNameList}
+                      type="submit"
+                      dataList={nameList}
+                      onFetchDataList={fetchNameList}
                       employeeInfo={handleEmployeeInfo}
+                      activeTab={activeTab}
                     />
                   </div>
                 </TabPanel>
@@ -181,10 +202,11 @@ const Scan: React.FC = () => {
                     <EmployeeInput
                       title="Collection Door Gift"
                       description={<></>}
-                      type="attendance"
-                      nameList={nameList}
-                      onFetchName={fetchNameList}
+                      type="submit"
+                      dataList={nameList}
+                      onFetchDataList={fetchNameList}
                       employeeInfo={handleEmployeeInfo}
+                      activeTab={activeTab}
                     />
                   </div>
                 </TabPanel>
@@ -202,9 +224,10 @@ const Scan: React.FC = () => {
                           </>
                         }
                         type="submit"
-                        nameList={nameList}
-                        onFetchName={fetchNameList}
+                        dataList={nameList}
+                        onFetchDataList={fetchNameList}
                         employeeInfo={handleEmployeeInfo}
+                        activeTab={activeTab}
                       />
                     </div>
 
@@ -229,9 +252,10 @@ const Scan: React.FC = () => {
                       title="Attendance Sign In"
                       description={<></>}
                       type="attendance"
-                      nameList={nameList}
-                      onFetchName={fetchNameList}
+                      dataList={attendanceList}
+                      onFetchDataList={fetchAttendanceList}
                       employeeInfo={handleEmployeeInfo}
+                      activeTab={activeTab}
                     />
                   </div>
                 </TabPanel>
