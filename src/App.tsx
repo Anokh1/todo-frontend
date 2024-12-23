@@ -1,5 +1,5 @@
 import Admin from "pages/Admin";
-import Todo from "pages/Todo";
+import Todo from "pages/Todoz";
 import { Route, Routes } from "react-router-dom";
 import AppFooter from "AppFooter";
 import AppNavbar from "AppNavbar";

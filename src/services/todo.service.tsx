@@ -19,8 +19,10 @@ axiosInstance.interceptors.request.use(
 );
 
 export default class TodoService {
-  getTodo() {
-    return axiosInstance.get(url + "/getTodo").then((res) => res.data);
+  getTodo(startDate?: Date, endDate?: Date) {
+    return axiosInstance
+      .get(url + "/getTodo", { params: { startDate, endDate } })
+      .then((res) => res.data);
   }
 
   createTodo(values: any) {
