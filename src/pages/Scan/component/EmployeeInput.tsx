@@ -86,7 +86,7 @@ const EmployeeInput: React.FC<EmployeeInputProps> = ({
     try {
       if (type === "submit") {
         const columnToUpdate = getColumnToUpdate();
-        const res = await scanService.addSpin(
+        const res = await scanService.addToNameList(
           trimAccessCard ? "scan" : "employeeId",
           trimAccessCard || trimEmployeeId,
           columnToUpdate

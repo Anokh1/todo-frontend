@@ -58,13 +58,13 @@ export default class ScanService {
       .then((res) => res.data);
   }
 
-  addSpin(
+  addToNameList(
     inputType: "scan" | "employeeId",
     inputValue: string,
     columnToUpdate: string
   ) {
     return axiosInstance
-      .post("/addSpin", {
+      .post("/addToNameList", {
         inputType,
         inputValue,
         columnToUpdate,
